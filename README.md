@@ -19,8 +19,8 @@ Welcome to my profile! I am a **Software Engineer (MSc student)** with a unique 
 ## 📊 GitHub Stats
 
 <p align="left">
-  <img src="https://github-readme-stats.vercel.app/api?username=jfriisj&show_icons=true&theme=radical&count_private=true" alt="Jon's GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=jfriisj&layout=compact&theme=radical&hide=html,css" alt="Top Languages" />
+  <img src="https://github-readme-stats.vercel.app/api.png?username=jfriisj&show_icons=true&theme=radical&count_private=true" alt="Jon's GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs.png?username=jfriisj&layout=compact&theme=radical&hide=html,css" alt="Top Languages" />
 </p>
 
 ## 🏆 Achievements
