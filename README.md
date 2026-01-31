@@ -14,7 +14,7 @@ Welcome to my profile! I am a **Software Engineer (MSc student)** with a unique 
 - **Languages:** Java, Python, C#, SQL
 - **Frameworks:** Spring Boot, Angular, .NET
 - **DevOps:** Docker, Kubernetes, CI/CD, Git
-- **Special:** Hexagonal Architecture, Micro-frontends, Applied AI
+- **Special:** Architecture, Micro-frontends, Applied AI
 
 ## 📈 Activity & Streaks
 
