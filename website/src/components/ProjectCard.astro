@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { entry: CollectionEntry<'projects'>; archive?: boolean; }
-const { entry, archive = false } = Astro.props;
+interface Props { entry: CollectionEntry<'projects'>; archive?: boolean; locale:string; }
+const { entry, archive = false, locale } = Astro.props;
+const tr=(key:string)=>translate(locale,key);
 const project = entry.data;
 const types = {
   software: 'software',
@@ -19,6 +20,7 @@ const palettes = {
   electrical: 'art-automation',
   business: 'art-software'
 };
+import { translate, pathFor } from '../i18n/index';
 ---
 <article
   class="project-card"
@@ -63,6 +65,6 @@ const palettes = {
     <span class="project-tag">{project.typeLabel}</span>
     <h3>{project.title}</h3>
     <p>{project.summary}</p>
-    <a class="project-card-link" href={'/projekter/' + entry.id + '/'} aria-label={'Læs om projektet ' + project.title}>Læs projekt <span aria-hidden="true">→</span></a>
+    <a class="project-card-link" href={pathFor(locale,'/projekter/' + entry.id + '/')} aria-label={'Læs om projektet ' + project.title}>Læs projekt <span aria-hidden="true">→</span></a>
   </div>
 </article>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import ProjectCard from '../ProjectCard.astro';
+const projects = (await getCollection('projects', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title, 'da'));
+import { translate, pathFor } from '../../i18n/index';
+interface Props {locale:string;}
+const {locale}=Astro.props;
+const tr=(key:string)=>translate(locale,key);
+---
+<ArchiveLayout locale={locale} title={tr("Projekter")} description={tr("Udvalgte projekter inden for software, el, automation og tekniske systemer.")}>
+  <section class="wrap archive-hero">
+    <a class="archive-breadcrumb" href={pathFor(locale,"/")}>{tr("← Forside")}</a>
+    <div class="eyebrow">{tr("Portfolio / Projekter")}</div>
+    <h1 class="section-title">{tr("Projekter og tekniske løsninger.")}</h1>
+    <p class="section-intro">{tr("Udvalgt arbejde med softwareudvikling, systemdesign, industri og tekniske installationer. Projekterne kan suppleres med billeder, kildekode og dokumentation.")}</p>
+    <div class="archive-tools" data-archive-controls>
+      <input class="archive-search" type="search" data-search aria-label="Søg i projekter" placeholder="Søg i projekter …" />
+      <div class="archive-filters" role="group" aria-label="Filtrer projekter">
+        <button type="button" data-filter="alle" aria-pressed="true">{tr("Alle")}</button>
+        <button type="button" data-filter="software" aria-pressed="false">{tr("Software")}</button>
+        <button type="button" data-filter="research" aria-pressed="false">{tr("Studie og research")}</button>
+        <button type="button" data-filter="automation" aria-pressed="false">{tr("Automation")}</button>
+        <button type="button" data-filter="electrical" aria-pressed="false">{tr("El")}</button>
+        <button type="button" data-filter="network" aria-pressed="false">{tr("Netværk")}</button>
+        <button type="button" data-filter="business" aria-pressed="false">{tr("Selvstændig")}</button>
+      </div>
+    </div>
+    <p class="muted" data-result-count aria-live="polite" data-count-label={tr("resultCount")}>{projects.length} projekter</p>
+  </section>
+  <section class="wrap archive-footer-space" aria-label="Projektoversigt">
+    {projects.length ? (
+      <div class="archive-grid" data-archive-list>
+        {projects.map(project => <ProjectCard entry={project} locale={locale} archive />)}
+      </div>
+    ) : <p class="archive-empty">{tr("Ingen projekter er offentliggjort endnu.")}</p>}
+    <p class="archive-empty" data-no-results hidden>{tr("Ingen projekter matcher søgningen.")}</p>
+  </section>
+  <script is:inline src="/scripts/archive.js"></script>
+</ArchiveLayout>

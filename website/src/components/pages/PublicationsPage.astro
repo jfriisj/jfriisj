@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+const publications = (await getCollection('publications', ({ data }) => !data.draft))
+  .sort((a,b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0) || a.data.order - b.data.order);
+const labels = { rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Andet' };
+import { translate, pathFor } from '../../i18n/index';
+interface Props {locale:string;}
+const {locale}=Astro.props;
+const tr=(key:string)=>translate(locale,key);
+---
+<ArchiveLayout locale={locale} title={tr("Publikationer")} description={tr("Faglige artikler, studieprojekter og tekniske rapporter skrevet af Jon Friis Jakobsen.")}>
+  <section class="wrap archive-hero">
+    <a class="archive-breadcrumb" href={pathFor(locale,"/")}>{tr("← Forside")}</a>
+    <div class="eyebrow">{tr("Portfolio / Publikationer")}</div>
+    <h1 class="section-title">{tr("Rapporter og artikler.")}</h1>
+    <p class="section-intro">{tr("Faglige rapporter og artikler præsenteret direkte på hjemmesiden. Den originale PDF tilbydes, når den er godkendt til offentliggørelse.")}</p>
+    <div class="archive-tools" data-archive-controls>
+      <input class="archive-search" type="search" data-search aria-label="Søg i publikationer" placeholder="Søg i publikationer …" />
+      <div class="archive-filters" role="group" aria-label="Filtrer publikationer">
+        <button type="button" data-filter="alle" aria-pressed="true">{tr("Alle")}</button>
+        <button type="button" data-filter="rapport" aria-pressed="false">{tr("Rapporter")}</button>
+        <button type="button" data-filter="artikel" aria-pressed="false">{tr("Artikler")}</button>
+        <button type="button" data-filter="opgave" aria-pressed="false">{tr("Studieopgaver")}</button>
+      </div>
+    </div>
+    <p class="muted" data-result-count aria-live="polite" data-count-label={tr("resultCount")}>{publications.length} publikationer</p>
+  </section>
+  <section class="wrap archive-footer-space" aria-label="Publikationsoversigt">
+    {publications.length ? (
+      <div class="archive-list" data-archive-list>
+        {publications.map(entry => <a
+          class="archive-item"
+          data-archive-item
+          data-kind={entry.data.type}
+          data-search-text={(entry.data.title + ' ' + entry.data.summary + ' ' + entry.data.tags.join(' ')).toLocaleLowerCase('da-DK')}
+          href={pathFor(locale,'/publikationer/' + entry.id + '/')}
+        >
+          <span class="meta">{labels[entry.data.type]}{entry.data.date ? ' · ' + entry.data.date.getFullYear() : ''}{entry.data.pdf ? ' · PDF' : ''}</span>
+          <h2>{entry.data.title}</h2>
+          <p>{entry.data.summary}</p>
+          <span class="tags">{entry.data.tags.map(tag => <span>{tag}</span>)}</span>
+        </a>)}
+      </div>
+    ) : <p class="archive-empty">{tr("Ingen publikationer er offentliggjort endnu.")}</p>}
+    <p class="archive-empty" data-no-results hidden>{tr("Ingen publikationer matcher søgningen.")}</p>
+  </section>
+  <script is:inline src="/scripts/archive.js"></script>
+</ArchiveLayout>

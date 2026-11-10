@@ -1,9 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { entry: CollectionEntry<'publications'>; }
-const { entry } = Astro.props;
+interface Props { entry: CollectionEntry<'publications'>; locale: string; }
+const { entry, locale } = Astro.props;
+const tr=(key:string)=>translate(locale,key);
 const pub = entry.data;
 const label = ({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Publikation' } as const)[pub.type];
+import { translate, pathFor } from '../i18n/index';
 ---
 <article class="pub" data-reveal>
   <div class="pub-icon" aria-hidden="true">
@@ -11,7 +13,7 @@ const label = ({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave',
   </div>
   <div>
     <div class="pub-type">{label}</div>
-    <h3 class="pub-name"><a href={'/publikationer/' + entry.id + '/'}>{pub.title}</a></h3>
+    <h3 class="pub-name"><a href={pathFor(locale,'/publikationer/' + entry.id + '/')}>{pub.title}</a></h3>
     <p>{pub.summary}</p>
   </div>
   <span class="pub-status">{pub.pdf ? 'Læs online · PDF' : 'Læs online'}</span>
