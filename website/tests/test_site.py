@@ -181,7 +181,7 @@ class SiteTests(unittest.TestCase):
                 self.assertIn('data-architecture-edge="gateway-storage"', markup)
                 self.assertIn('data-architecture-edge="broker-orchestrator"', markup)
                 self.assertIn('data-architecture-edge="orchestrator-redis"', markup)
-                self.assertEqual(len(re.findall(r'data-architecture-step="\\d+"', markup)), 11)
+                self.assertEqual(len(re.findall(r'data-architecture-step="\d+"', markup)), 11)
                 self.assertIn(expected, markup)
                 self.assertIn('pipeline.completed', markup)
                 self.assertIn('tts_audio_uri', markup)
