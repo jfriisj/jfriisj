@@ -1,62 +1,79 @@
-# friis-jakobsen.dk – personal portfolio
+# friis-jakobsen.dk — personal portfolio
 
-Static personal portfolio based on v0.3. No database or private credentials. CV and publication content must be reviewed before a public launch. PDF cards are placeholders.
+This is version 0.3 of a **static** personal portfolio. The project has no database or site secrets. The CV, project claims, contact details and publication placeholders require review before publication. No PDF files are deployed yet.
 
-## Validate
+## Authoritative infrastructure references
 
-From repository root:
+- [Central Dockhand operating model](https://github.com/jfriisj/development-knowledge/blob/main/deploy/dockhand/README.md)
+- [Dockhand manual onboarding gates](https://github.com/jfriisj/development-knowledge/blob/main/deploy/dockhand/onboarding.md)
+- [Official Dockhand Git-stack deployment](https://dockhand.pro/manual/)
 
-    python3 -m unittest discover -s website/tests -v
-    docker compose -f website/compose.yaml config -q
-    docker compose -f website/compose.yaml build
+**Selected target (owner-confirmed 2026-11-10):** Proxmox VM 1214, Docker environment `ci-runner`.
 
-On an approved test host when port 8188 is free:
+**Observed from user-provided Dockhand screenshot:** Ubuntu 24.04.5 LTS, Docker 29.9.2, Hawser Standard 0.2.52; running containers include cloudflared, VM-local Dockhand, Tailscale, Hawser and Gnosis. SilverBullet is exited. These observations are not a full host or health audit.
 
-    docker compose -f website/compose.yaml up -d
-    curl -fsS http://127.0.0.1:8188/healthz
+**Observed from owner-provided read-only commands:** `cloudflare-cloudflared-1` uses Docker `NetworkMode=development-proxy`, and a Docker bridge network with that exact name already exists on VM 1214. This supports connecting a **new standalone** portfolio container to that external network without modifying or restarting cloudflared.
 
-## Dockhand manual Git deployment
+## Docker networking
 
-Follow the owner's existing central-Dockhand operating model and gates:
-https://github.com/jfriisj/development-knowledge/blob/main/deploy/dockhand/README.md
-https://github.com/jfriisj/development-knowledge/blob/main/deploy/dockhand/onboarding.md
+The Compose project in `website/compose.yaml`:
 
-1. Verify the actual central Dockhand host behind https://docker.friis-jakobsen.dk, its Docker environment, backups, permissions and license. Do not assume VM 1214 is the controller, and do not migrate existing stacks.
-2. Review/merge this PR. Create a NEW Git stack named friis-jakobsen-portfolio, tracking approved main. Use Compose path website/compose.yaml and context directory website if required by the installed Dockhand version.
-3. Enable Build images on deploy. Keep auto-sync, webhooks, schedules and image auto-update OFF. Verify localhost TCP 8188 is available, then manually deploy only the new stack with owner approval.
-4. Confirm local health and the deployed commit. Review a fixed base image digest before production use; the Dockerfile currently uses an upstream version tag, not a digest.
-5. If cloudflared runs on the same host *with host networking*, add the published application hostname friis-jakobsen.dk with service URL http://localhost:8188, after checking existing DNS and route ownership. If cloudflared is containerized in a different network, localhost means its own container; use an explicitly approved shared Docker network with http://portfolio:8080 or a secure private origin instead. Never open a Docker management port or expose the site port on all interfaces as a shortcut.
-6. Verify public HTTPS, correct responsive layout, missing PDFs and link behavior; record target host, Compose project, commit SHA and rollback revision.
+- Uses `development-proxy` as an **external** network. It does not create, delete, or own that shared network.
+- Declares the unique, project-specific DNS alias `friis-jakobsen-portfolio`.
+- Serves unencrypted HTTP **inside the bridge network** on port 8080; the public browser connection uses Cloudflare HTTPS.
+- Publishes **no host ports**.
+- Uses no persistent volumes, Docker socket mounts or environment secrets.
+- Runs Nginx as a non-root user with a read-only filesystem and health check.
 
-## Isolation and rollback
+Intended Cloudflare Tunnel public-hostname route, only **after approval and successful deployment**:
 
-This site does not mount Docker socket, existing networks, volumes or secrets. Its only published port is localhost:8188. To roll back, remove only this site's Cloudflare hostname, then stop or redeploy only the friis-jakobsen-portfolio Git stack. Never modify Gnosis, OpenCode, existing Dockhand instances, Hawser or Tailscale while launching this site.
+| Setting | Value |
+| --- | --- |
+| Public hostname | `friis-jakobsen.dk` |
+| Service type | `HTTP` |
+| Service URL | `http://friis-jakobsen-portfolio:8080` |
+| Tunnel | Reuse the existing Tunnel backing `cloudflare-cloudflared-1` on VM 1214 |
 
-Status: review candidate, not deployed.
+`localhost:8188` from the older Compose proposal **does not work** for this Docker bridge connection and is intentionally removed. The alias is resolvable only from containers attached to `development-proxy`. Never expose the Docker API, Hawser, or port 8080 directly to the internet.
 
+## Read-only preflight on VM 1214
 
-## Target host: ci-runner / Proxmox VM 1214 (selected 2026-11-10)
+From an authorized shell; do not share credentials, tokens, unredacted `docker inspect` environments or tunnel configuration secrets:
 
-Owner selected VM 1214 to host this website. Dockhand screenshot shows Ubuntu 24.04.5 LTS, Docker 29.9.2 and Hawser Standard 0.2.52, with running containers for Cloudflare, Dockhand, Hawser, Tailscale, Gnosis and the Gnosis tunnel. SilverBullet is exited. This is visual evidence only, not an audited live runtime or network configuration.
+```sh
+hostname
+docker compose ls --all
+docker network inspect development-proxy --format '{{range .Containers}}{{println .Name}}{{end}}'
+docker inspect cloudflare-cloudflared-1 --format '{{.HostConfig.NetworkMode}}'
+docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+```
 
-The existing documentation in development-knowledge explicitly identifies VM 1214 as a **remote Docker environment**, not the intended central Dockhand controller. Keep the VM-local Dockhand and its existing stacks untouched. Manage this new portfolio stack from the central controller through the verified VM 1214 Hawser environment; only one Dockhand must own the new portfolio Compose project.
+Check the central Dockhand controller (the existing `https://docker.friis-jakobsen.dk/` interface) points through Hawser to **VM 1214**, with the expected Docker environment. The VM-local Dockhand remains the owner of its existing legacy stacks; do not migrate, adopt, recreate or upgrade them as part of website deployment. Two controllers must not operate on the **same** Compose project.
 
-### Read-only preflight on VM 1214
+Check that the external network really contains the existing Cloudflare container and that the network is intended for application origins. Record existing Gnosis, Cloudflare, Tailscale, Hawser, Dockhand health and recovery paths. Check any existing `friis-jakobsen.dk` DNS record and Cloudflare Tunnel hostname assignment before editing either.
 
-Run from an authorized shell. Never paste secret environment values or Cloudflare credentials:
+## Validate source changes
 
-    hostname
-    docker compose ls --all
-    docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
-    docker network ls --format 'table {{.Name}}\t{{.Driver}}'
-    docker inspect cloudflare-cloudflared-1 --format '{{.HostConfig.NetworkMode}}'
-    docker inspect cloudflare-cloudflared-1 --format '{{json .NetworkSettings.Networks}}'
-    sudo ss -ltn '( sport = :8188 )'
+From the repository root:
 
-Confirm that ci-runner VM 1214 is the exact selected Dockhand/Hawser environment. Validate existing Gnosis, Tunnel, Dockhand and Hawser health and compare after deployment. Verify Dockhand remote Git build context support, project identity, backups/rollback, operator permissions and port 8188 availability.
+```sh
+python3 -m unittest discover -s website/tests -v
+docker compose -f website/compose.yaml config -q
+docker compose -f website/compose.yaml build
+```
 
-**Cloudflare routing:** Cloudflared is containerized on VM 1214. Same VM does not imply shared localhost or shared Docker DNS. If cloudflared is host-networked, localhost:8188 may be usable. If bridge-networked, first review a narrowly scoped shared Docker network and a planned attachment of the existing Cloudflare container, or a separately reviewed private origin method. Preserve all existing Cloudflare hostnames and stacks. Never publish 8188 on 0.0.0.0 as a shortcut.
+CI builds and validates the website, but **does not deploy** anything.
 
-After separate owner approval, manually deploy only the new Git stack, confirm /healthz and page content via the private origin, then add friis-jakobsen.dk to the existing Cloudflare Tunnel only when origin reachability and DNS ownership are verified. Public HTTPS, mobile/desktop display, existing container health and deployed commit SHA are required acceptance evidence. Keep automatic deployments disabled. Document rollback limited to this site's stack and hostname.
+## Owner-approved manual Git stack
 
-**Status:** GitHub implementation is available; VM 1214 deployment and Cloudflare publication are unverified and not performed by this change.
+1. Review and merge the portfolio deployment PR. Verify the target external `development-proxy` network exists on VM 1214 and that its use is approved.
+2. From the **central Dockhand**, select the `ci-runner` environment via its established Hawser Standard connection. Create **only a new Git stack**, `friis-jakobsen-portfolio`.
+3. Configure repository `jfriisj/jfriisj`, branch `main`, compose path `website/compose.yaml`, and default context directory (the `website/` directory). Enable **Build images on deploy**. Keep auto-sync, webhook deployment, scheduled deployment, and image auto-update **off**.
+4. Verify that the build uses the reviewed source revision. Before production launch, review and pin an approved immutable base-image digest (the current Dockerfile references an explicit version tag only). After owner approval, **manually deploy only this new stack**.
+5. Confirm the new container is healthy and accessible from the `development-proxy` network. For instance, from an approved test container on that network, request `http://friis-jakobsen-portfolio:8080/healthz` and the root page. Do not assume `cloudflared` has a shell or HTTP diagnostic tools.
+6. Only then add the `friis-jakobsen.dk` public-hostname route to the **existing** Cloudflare Tunnel and verify its DNS conflicts/ownership. Keep all pre-existing tunnel routes unchanged.
+7. Verify public HTTPS, correct site content on phone and desktop, project/PDF placeholders, and the existing services' health. Record target VM, actual Git revision, new stack identity, DNS change, and rollback plan.
+
+**Rollback:** Remove **only** the new Cloudflare published hostname if needed; stop or redeploy **only** the new portfolio stack. Do not delete the external `development-proxy` network or touch Gnosis, OpenCode, VM-local Dockhand, Tailscale or Hawser.
+
+**Status:** GitHub preparation only. No VM deployment, live DNS change or Cloudflare configuration change has been performed by this repository update.
