@@ -261,7 +261,7 @@ class SiteTests(unittest.TestCase):
         html = (DIST / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/projekter/"', html)
         self.assertIn('href="/publikationer/"', html)
-        self.assertIn("Operiva", html)
+        self.assertIn("Generative adaptive soundtracks", html)
 
     def test_source_security(self):
         html = (DIST / "index.html").read_text(encoding="utf-8")
