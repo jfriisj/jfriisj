@@ -1,0 +1,45 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import ThesisExperience from '../../components/ThesisExperience.astro';
+import { translate, pathFor } from '../../i18n/index';
+
+const { entry, locale } = Astro.props;
+const { Content } = await render(entry);
+const pub = entry.data;
+const tr=(key:string)=>translate(locale,key);
+const title=tr(`publication.${entry.id}.title`);
+const summary=tr(`publication.${entry.id}.summary`);
+const typeLabel = tr(({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Andet' } as const)[pub.type]);
+---
+{entry.id === 'analysis-and-design-of-a-platform-for-real-time-speech-translation' ? (
+  <ThesisExperience locale={locale} />
+) : (
+<ArchiveLayout locale={locale} title={title} description={summary}>
+  <section class="wrap archive-hero">
+    <a class="archive-breadcrumb" href={pathFor(locale, "/publikationer/")}>{tr("← Alle publikationer")}</a>
+    <div class="eyebrow">{typeLabel}</div>
+    <h1 class="section-title">{title}</h1>
+    <p class="section-intro">{summary}</p>
+    <div class="detail-meta">
+      {pub.date && <span>{pub.date.toLocaleDateString('da-DK', { year: 'numeric', month: 'long' })}</span>}
+      {pub.authors && <span>{pub.authors.join(', ')}</span>}
+    </div>
+    <div class="detail-tags">{pub.tags.map(tag => <span>{tag}</span>)}</div>
+    <div class="detail-actions">
+      {pub.pdf ? (
+        <>
+          <a class="btn btn-primary" href={pub.pdf} target="_blank" rel="noopener noreferrer">{tr("Åbn PDF ↗")}</a>
+          <a class="btn" href={pub.pdf} download>{tr("Hent PDF ↓")}</a>
+        </>
+      ) : <p class="muted">{tr("PDF er endnu ikke offentliggjort.")}</p>}
+      {pub.externalUrl && <a class="btn" href={pub.externalUrl} target="_blank" rel="noopener noreferrer">{tr("Eksternt link ↗")}</a>}
+    </div>
+  </section>
+  <section class="wrap archive-footer-space">
+    <article class="article-body">{locale === 'da' ? <Content /> : tr(`publication.${entry.id}.body`).split('\\n\\n').map((paragraph:string) => <p>{paragraph}</p>)}</article>
+    {pub.pdf && <div style="margin-top:35px"><h2 class="section-title" style="font-size:28px">{tr("Læs dokumentet")}</h2><iframe class="pdf-preview" src={pub.pdf + '#view=FitH'} title={'PDF: ' + pub.title} loading="lazy"></iframe></div>}
+    <a class="about-link" href="/publikationer/">{tr("← Til publikationsarkivet")}</a>
+  </section>
+</ArchiveLayout>
+)}

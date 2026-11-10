@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import { translate, pathFor } from '../../i18n/index';
+interface Props { locale: string; entry: any; }
+
+const { entry, locale } = Astro.props;
+const { Content } = await render(entry);
+const project = entry.data;
+const tr=(key:string)=>translate(locale,key);
+const title=tr(`project.${entry.id}.title`);
+const summary=tr(`project.${entry.id}.summary`);
+const typeLabel=tr(`project.${entry.id}.typeLabel`);
+---
+<ArchiveLayout locale={locale} title={title} description={summary}>
+  <section class="wrap archive-hero">
+    <a class="archive-breadcrumb" href={pathFor(locale, "/projekter/")}>{tr("← Alle projekter")}</a>
+    <div class="eyebrow">{typeLabel}</div>
+    <h1 class="section-title">{title}</h1>
+    <p class="section-intro">{summary}</p>
+    <div class="detail-meta">
+      <span>{tr("Projekt")}</span>{project.year && <span>· {project.year}</span>}
+    </div>
+    <div class="detail-tags">{project.tags.map(tag => <span>{tag}</span>)}</div>
+    {project.externalUrl && <div class="detail-actions"><a class="btn" href={project.externalUrl} target="_blank" rel="noopener noreferrer">{tr("Eksternt projektlink ↗")}</a></div>}
+  </section>
+  <section class="wrap archive-footer-space">
+    <article class="article-body">{locale === 'da' ? <Content /> : tr(`project.${entry.id}.body`).split('\\n\\n').map((paragraph:string) => <p>{paragraph}</p>)}</article>
+    <a class="about-link" href="/projekter/">{tr("← Til projektoversigten")}</a>
+  </section>
+</ArchiveLayout>
