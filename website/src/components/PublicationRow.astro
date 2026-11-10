@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { entry: CollectionEntry<'publications'>; }
+const { entry } = Astro.props;
+const pub = entry.data;
+const label = ({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Publikation' } as const)[pub.type];
+---
+<article class="pub" data-reveal>
+  <div class="pub-icon" aria-hidden="true">
+    <svg width="28" height="34" fill="none" viewBox="0 0 28 34"><path d="M5 1.5h12l6 6V32H5z" stroke="currentColor" stroke-width="1.5"/><path d="M17 2v6h6M9 15h11M9 20h11M9 25h8" stroke="currentColor" stroke-width="1.5"/></svg>
+  </div>
+  <div>
+    <div class="pub-type">{label}</div>
+    <h3 class="pub-name"><a href={'/publikationer/' + entry.id + '/'}>{pub.title}</a></h3>
+    <p>{pub.summary}</p>
+  </div>
+  <span class="pub-status">{pub.pdf ? 'PDF tilgængelig' : 'PDF afventes'}</span>
+</article>
