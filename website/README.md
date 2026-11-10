@@ -160,3 +160,16 @@ No PDF, private source diagram, source data, or generated academic artifact was 
 Review: build, run site tests, inspect the architecture on desktop and narrow screens (diagram is horizontally scrollable), Tab through the component and 11 step buttons, try previous/next/play/reset, check aria-live text and reduced-motion settings in both locales.
 
 Manual deployment remains: reviewed merge → Dockhand Git Sync → Rebuild → Deploy only the portfolio stack.
+
+## Academic study projects (v0.9)
+
+The homepage now features three **academic group projects** rather than private initiatives, which remain listed in the complete project archive. They have shared bilingual case-study pages driven by `src/data/academicCases.ts` (source-derived numeric measurements, original process steps and credited coauthors) and `src/i18n/locales/*.json` (localized summaries, explanations and source limitations). The shared template is `src/components/AcademicCase.astro`.
+
+Featured cases:
+- `/projekter/adaptive-game-soundtracks/` — *Generative Adaptive Soundtracks for Video Games*, source PDF supplied by the owner: benchmark tables IV–V. Distinguishes backend streaming timings from final Unity batch delivery.
+- `/projekter/co-located-vr/` — *Co-located Multi-user VR System*, source PDF supplied by the owner: tables I–III. Stationary spatial alignment and P95 RTT limitations are explicitly disclosed.
+- `/projekter/work-storage-caching/` — *Work-Storage Balancing through Caching*, source PDF supplied by the owner: tables I–II. The caching experiment's workloads, biases and negative results are reported, without claiming RL superiority.
+
+All three papers have **multiple authors**. The case-study content attributes documented individual roles where the paper states them; the caching paper does not substantiate individual module ownership. These are *editorial summaries and reproductions of numerical results*, not full published academic papers. Original PDFs are **not copied to this public repository**; request explicit approval of rights and coauthors before releasing the PDFs, original figures or other source artifacts.
+
+The current pages use clickable process stages and tabbed numeric comparisons with accessible HTML tables. No live music playback, VR execution or model inference is represented. Charts are built from reported numbers, not live data. A new academic project only needs one data record, three locale strings for the card, and its content keys — not a new Astro layout.

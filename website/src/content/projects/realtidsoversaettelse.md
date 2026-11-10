@@ -5,7 +5,7 @@ category: research
 typeLabel: "Studie / Systemdesign"
 tags: ["Software", "Studieprojekt", "Systemdesign", "Forskning"]
 order: 20
-featured: true
+featured: false
 draft: false
 ---
 ## Problemstilling og tilgang
