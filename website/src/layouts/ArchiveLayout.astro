@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+import '../styles/archive.css';
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f7f3" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).toString()} />
+    <title>{title} | Friis-Jakobsen</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="wrap nav" aria-label="Hovednavigation">
+        <a class="brand" href="/" aria-label="Friis-Jakobsen, til forsiden">friis—jakobsen<span class="dot">.</span></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Åbn menu">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+        </button>
+        <div class="navlinks" id="navlinks">
+          <a href="/">Forside</a>
+          <a href="/#om-mig">Om mig</a>
+          <a href="/#kompetencer">Kompetencer</a>
+          <a href="/#erfaring">Erfaring</a>
+          <a href="/projekter/">Projekter</a>
+          <a href="/publikationer/">Publikationer</a>
+          <a href="/#kontakt">Kontakt</a>
+        </div>
+        <a class="nav-contact" href="/#kontakt">Kontakt <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+    <main class="archive-page" id="top">
+      <slot />
+    </main>
+    <nav class="mobile-dock" aria-label="Hurtig navigation">
+      <a href="/"><span class="dock-icon" aria-hidden="true">⌂</span><span>Profil</span></a>
+      <a href="/#erfaring"><span class="dock-icon" aria-hidden="true">↗</span><span>CV</span></a>
+      <a href="/projekter/"><span class="dock-icon" aria-hidden="true">▦</span><span>Projekter</span></a>
+      <a href="/publikationer/"><span class="dock-icon" aria-hidden="true">≡</span><span>Artikler</span></a>
+    </nav>
+    <footer class="footer"><div class="wrap footer-inner"><span class="brand">friis—jakobsen.</span><span>Elektriker · Civilingeniør i software · Selvstændig</span><a href="https://github.com/jfriisj" rel="noopener noreferrer" target="_blank">GitHub ↗</a></div></footer>
+    <script is:inline>
+      const menu = document.querySelector('.menu-toggle');
+      const links = document.querySelector('.navlinks');
+      function closeMenu() {
+        links?.classList.remove('open');
+        menu?.setAttribute('aria-expanded', 'false');
+        menu?.setAttribute('aria-label', 'Åbn menu');
+      }
+      menu?.addEventListener('click', () => {
+        const expanded = menu.getAttribute('aria-expanded') === 'true';
+        links.classList.toggle('open', !expanded);
+        menu.setAttribute('aria-expanded', String(!expanded));
+        menu.setAttribute('aria-label', expanded ? 'Åbn menu' : 'Luk menu');
+      });
+      links?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+      document.addEventListener('click', event => { if (!event.target.closest('.nav')) closeMenu(); });
+    </script>
+  </body>
+</html>

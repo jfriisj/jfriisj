@@ -1,6 +1,11 @@
+"""Checks for the generated site. Run after npm run build."""
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+DIST = ROOT / "dist"
 
 class Structure(HTMLParser):
     def __init__(self):
@@ -9,32 +14,68 @@ class Structure(HTMLParser):
         self.fragments = []
         self.titles = 0
         self.h1s = 0
-        self.external_links = []
+        self.external = []
+
     def handle_starttag(self, tag, attrs):
         props = dict(attrs)
-        if 'id' in props: self.ids.append(props['id'])
-        if tag == 'a':
-            href = props.get('href', '')
-            if href.startswith('#'): self.fragments.append(href[1:])
-            if props.get('target') == '_blank': self.external_links.append(props.get('rel', ''))
-        if tag == 'title': self.titles += 1
-        if tag == 'h1': self.h1s += 1
+        if "id" in props:
+            self.ids.append(props["id"])
+        if tag == "a":
+            href = props.get("href", "")
+            if href.startswith("#"):
+                self.fragments.append(href[1:])
+            if props.get("target") == "_blank":
+                self.external.append(props.get("rel", ""))
+        if tag == "title":
+            self.titles += 1
+        if tag == "h1":
+            self.h1s += 1
 
 class SiteTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.html = (Path(__file__).resolve().parents[1] / 'index.html').read_text(encoding='utf-8')
-        cls.page = Structure()
-        cls.page.feed(cls.html)
-    def test_title_and_h1(self):
-        self.assertEqual((self.page.titles, self.page.h1s), (1, 1))
-    def test_fragments(self):
-        self.assertFalse(set(self.page.fragments) - set(self.page.ids))
-    def test_unique_ids(self):
-        self.assertEqual(len(self.page.ids), len(set(self.page.ids)))
-    def test_new_tabs(self):
-        self.assertTrue(all('noopener' in rel and 'noreferrer' in rel for rel in self.page.external_links))
-    def test_no_external_scripts(self):
-        self.assertNotIn('<script src=', self.html.lower())
-    def test_language(self):
-        self.assertIn('<html lang="da">', self.html)
+    def test_all_expected_routes_exist(self):
+        for path in [
+            "index.html",
+            "projekter/index.html",
+            "projekter/operiva/index.html",
+            "projekter/realtidsoversaettelse/index.html",
+            "projekter/plc-industri/index.html",
+            "publikationer/index.html",
+            "publikationer/analysis-and-design-of-a-platform-for-real-time-speech-translation/index.html",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((DIST / path).is_file(), path)
+
+    def test_document_links_do_not_precede_documents(self):
+        for html in DIST.rglob("*.html"):
+            content = html.read_text(encoding="utf-8")
+            for pdf in re.findall(r'href=["\'](/documents/[^"\']+\.pdf)', content):
+                self.assertTrue((DIST / pdf.lstrip("/")).is_file(), str(html) + " -> " + pdf)
+
+    def test_each_page_has_accessible_structure(self):
+        for html in DIST.rglob("*.html"):
+            with self.subTest(path=str(html)):
+                parser = Structure()
+                parser.feed(html.read_text(encoding="utf-8"))
+                self.assertEqual(parser.titles, 1)
+                self.assertEqual(parser.h1s, 1)
+                self.assertEqual(len(parser.ids), len(set(parser.ids)))
+                self.assertFalse(set(parser.fragments) - set(parser.ids))
+                self.assertTrue(all("noopener" in rel and "noreferrer" in rel for rel in parser.external))
+
+    def test_drafts_not_published(self):
+        self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
+        self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))
+
+    def test_home_has_links_to_both_archives(self):
+        html = (DIST / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/projekter/"', html)
+        self.assertIn('href="/publikationer/"', html)
+        self.assertIn("Operiva", html)
+
+    def test_source_security(self):
+        html = (DIST / "index.html").read_text(encoding="utf-8")
+        self.assertIn('<html lang="da">', html)
+        self.assertNotIn("dummypassword", html)
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { entry: CollectionEntry<'projects'>; archive?: boolean; }
+const { entry, archive = false } = Astro.props;
+const project = entry.data;
+const types = {
+  software: 'software',
+  research: 'software research',
+  automation: 'automation research',
+  network: 'network',
+  electrical: 'automation',
+  business: 'software'
+};
+const palettes = {
+  software: 'art-software',
+  research: 'art-research',
+  automation: 'art-automation',
+  network: 'art-software',
+  electrical: 'art-automation',
+  business: 'art-software'
+};
+---
+<article
+  class="project-card"
+  data-reveal
+  data-archive-item={archive ? '' : undefined}
+  data-kind={project.category}
+  data-search-text={(project.title + ' ' + project.summary + ' ' + project.tags.join(' ')).toLocaleLowerCase('da-DK')}
+  data-project-type={types[project.category]}
+>
+  <div class={'project-art ' + palettes[project.category]}>
+    <span class="art-label">{project.typeLabel}</span>
+    {project.category === 'research' ? (
+      <svg viewBox="0 0 300 160" fill="none" aria-hidden="true">
+        <rect x="14" y="37" width="272" height="87" rx="12" fill="#fafaff" stroke="#afb0d4"/>
+        <path d="M32 81h12l7-25 10 52 8-37 8 10h17l7-14 8 25 10-44 12 64 10-31h16l9-24 9 48 10-25h13l7-9h17l8 11h14l9-16 7 16h14" stroke="#7b80bd" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+    ) : project.category === 'automation' || project.category === 'electrical' ? (
+      <svg viewBox="0 0 300 160" fill="none" aria-hidden="true">
+        <rect x="33" y="29" width="87" height="102" rx="8" fill="#f7f6ed" stroke="#a9a68a"/>
+        <rect x="46" y="43" width="60" height="26" rx="4" fill="#cfdbc9"/>
+        <circle cx="51" cy="89" r="5" fill="#6b8d7b"/>
+        <circle cx="68" cy="89" r="5" fill="#9eac93"/>
+        <circle cx="85" cy="89" r="5" fill="#b7ad86"/>
+        <path d="M120 81h50m0 0-8-6m8 6-8 6" stroke="#829984" stroke-width="2"/>
+        <rect x="176" y="42" width="92" height="79" rx="8" fill="#fffef8" stroke="#a9a68a"/>
+        <path d="M191 58h60M191 73h30M191 89h52M191 104h39" stroke="#c8cfbd" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+    ) : (
+      <svg viewBox="0 0 300 160" fill="none" aria-hidden="true">
+        <rect x="12" y="16" width="276" height="132" rx="12" fill="#f5faf6" stroke="#8aaea0"/>
+        <path d="M12 51h276" stroke="#bdd2c4"/>
+        <circle cx="29" cy="34" r="4" fill="#6a9b88"/>
+        <circle cx="42" cy="34" r="4" fill="#b7d2c5"/>
+        <rect x="30" y="69" width="66" height="59" rx="5" fill="#d7e9dc"/>
+        <rect x="111" y="70" width="156" height="14" rx="4" fill="#a4c8b6"/>
+        <rect x="111" y="93" width="127" height="9" rx="4" fill="#d7e9dc"/>
+        <rect x="111" y="112" width="142" height="9" rx="4" fill="#d7e9dc"/>
+      </svg>
+    )}
+  </div>
+  <div class="project-copy">
+    <span class="project-tag">{project.typeLabel}</span>
+    <h3>{project.title}</h3>
+    <p>{project.summary}</p>
+    <a class="project-card-link" href={'/projekter/' + entry.id + '/'} aria-label={'Læs om projektet ' + project.title}>Læs projekt <span aria-hidden="true">→</span></a>
+  </div>
+</article>

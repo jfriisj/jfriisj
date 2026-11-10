@@ -15,9 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Test page structure
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Astro dependencies
+        run: npm install --prefix website --no-audit --no-fund
+      - name: Validate content and build static site
+        run: npm run --prefix website build
+      - name: Test generated public pages
         run: python3 -m unittest discover -s website/tests -v
       - name: Validate Compose
         run: docker compose -f website/compose.yaml config -q
-      - name: Build image without publishing
+      - name: Build Docker image without deploying
         run: docker compose -f website/compose.yaml build
