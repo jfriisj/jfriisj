@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import ThesisExperience from '../../components/ThesisExperience.astro';
 export async function getStaticPaths() {
   const publications = await getCollection('publications', ({ data }) => !data.draft);
   return publications.map(entry => ({ params: { slug: entry.id }, props: { entry } }));
@@ -10,6 +11,9 @@ const { Content } = await render(entry);
 const pub = entry.data;
 const typeLabel = { rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Publikation' }[pub.type];
 ---
+{entry.id === 'analysis-and-design-of-a-platform-for-real-time-speech-translation' ? (
+  <ThesisExperience />
+) : (
 <ArchiveLayout title={pub.title} description={pub.summary}>
   <section class="wrap archive-hero">
     <a class="archive-breadcrumb" href="/publikationer/">← Alle publikationer</a>
@@ -37,3 +41,4 @@ const typeLabel = { rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgav
     <a class="about-link" href="/publikationer/">← Til publikationsarkivet</a>
   </section>
 </ArchiveLayout>
+)}
