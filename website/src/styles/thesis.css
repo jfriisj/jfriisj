@@ -1,0 +1,132 @@
+/* The interactive thesis: scoped to the editorial case study only. */
+.thesis{--thesis-ink:#1a3030;--thesis-green:#1f7569;--thesis-light:#e8f3ed;--thesis-line:#cddfd5;overflow:hidden}
+.thesis-hero{padding-top:80px;padding-bottom:70px;position:relative}
+.thesis-hero::after{content:"";position:absolute;z-index:-1;right:-210px;top:65px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,#d8e9dd 0,#d8e9dd00 72%);pointer-events:none}
+.thesis-hero h1{max-width:960px;font-size:clamp(44px,7.6vw,103px);font-weight:670;letter-spacing:-.075em;line-height:1.035;margin:17px 0 28px}
+.thesis-hero h1 span{color:var(--thesis-green)}
+.thesis-lead{font-size:clamp(18px,2.2vw,23px);line-height:1.58;max-width:840px;color:#455e57;margin:0 0 30px}
+.thesis-hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.thesis-source-note{font-size:12px;max-width:830px;line-height:1.7;color:#547066;margin:22px 0 0}
+.thesis-source-note a{text-decoration:underline;text-underline-offset:2px}
+.thesis-source-note code{font-size:12px}
+.thesis-highlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:54px 0 0}
+.thesis-highlights>div{padding:23px 23px 25px;border-top:2px solid #7aa897;background:#eaf2eb;border-radius:0 0 15px 15px}
+.thesis-highlights dt{font-size:clamp(29px,4vw,46px);font-weight:700;letter-spacing:-.055em;color:var(--thesis-ink)}
+.thesis-highlights dd{font-size:13px;max-width:275px;line-height:1.6;color:#547066;margin:3px 0 0}
+.thesis-toc{position:sticky;top:78px;z-index:30;background:rgba(245,249,245,.96);border-top:1px solid var(--thesis-line);border-bottom:1px solid var(--thesis-line);backdrop-filter:blur(16px)}
+.thesis-toc-inner{display:flex;gap:28px;align-items:center;min-height:56px;overflow-x:auto;white-space:nowrap;scrollbar-width:thin}
+.thesis-toc a{color:#3e6359;font-size:12px;font-weight:720;letter-spacing:.015em}
+.thesis-toc a:hover,.thesis-toc a:focus-visible{color:#0d3f36;text-decoration:underline;text-underline-offset:6px}
+.thesis-chapter{padding-top:90px;padding-bottom:96px;scroll-margin-top:160px}
+.thesis-chapter-number{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--thesis-green);font-weight:800;margin-bottom:20px}
+.thesis-reading{max-width:790px}
+.thesis-reading h2{font-size:clamp(32px,5vw,61px);font-weight:680;letter-spacing:-.065em;line-height:1.12;margin:0 0 25px;color:var(--thesis-ink)}
+.thesis-reading p{color:#485e58;font-size:17px;line-height:1.82;margin:0 0 18px}
+.thesis-reading strong{color:#193e37}
+.thesis-caption{font-size:12px!important;color:#5b766a!important;line-height:1.7!important;margin:15px 0 0!important;max-width:830px}
+.thesis-band{background:#eaf2eb;border-top:1px solid #d5e3d9;border-bottom:1px solid #d5e3d9;scroll-margin-top:135px}
+.thesis-band .thesis-chapter{padding-block:90px}
+.thesis-demo,.thesis-architecture,.thesis-chart{background:#fff;border:1px solid #d7e4dc;border-radius:23px;box-shadow:0 18px 40px #18382e0c}
+.thesis-demo{padding:29px;margin-top:30px}
+.thesis-flow{display:flex;gap:9px;align-items:center;justify-content:space-between}
+.thesis-stage{flex:1;min-width:0;padding:20px 10px;border:1px solid #c8d9d1;background:#f5f9f5;color:#2c5149;text-align:left;border-radius:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:background .15s,border-color .15s,transform .15s}
+.thesis-stage:hover{border-color:#83aea1;transform:translateY(-2px)}
+.thesis-stage.is-active{background:#1c4945;border-color:#1c4945;color:#fff;box-shadow:0 10px 26px #173c3830}
+.thesis-stage-index{font-size:11px;letter-spacing:.08em;font-weight:780;opacity:.72}
+.thesis-stage strong{font-size:clamp(20px,2.7vw,32px);line-height:1;letter-spacing:-.035em}
+.thesis-stage small{font-size:11px;line-height:1.45}
+.thesis-flow-arrow{flex:none;font-size:24px;color:#8caea2}
+.thesis-detail{margin-top:23px;border-top:1px solid #e1ebe4;padding-top:24px;display:flex;justify-content:space-between;gap:24px;align-items:center}
+.thesis-detail h3{font-size:25px;letter-spacing:-.04em;margin:8px 0 6px}
+.thesis-detail p{margin:0;max-width:650px;color:#557067;font-size:14px;line-height:1.7}
+.thesis-control{display:flex;gap:7px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.thesis-control .btn{font-size:12px;padding:10px 13px}
+.thesis-architecture{display:grid;grid-template-columns:1.4fr .85fr;gap:0;margin-top:33px;overflow:hidden}
+.thesis-architecture-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:23px;background:#f5f9f6}
+.thesis-node{border:1px solid #cbdcd3;border-radius:13px;background:#fff;text-align:left;padding:17px;display:flex;flex-direction:column;gap:4px;cursor:pointer;color:#355f55}
+.thesis-node:hover{border-color:#6eac99}
+.thesis-node.is-active{border-color:#245d52;box-shadow:inset 0 0 0 1px #245d52;background:#e2efe8}
+.thesis-node span{font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:780;color:#4b8172}
+.thesis-node strong{font-size:17px;letter-spacing:-.03em;color:#1a3b35}
+.thesis-node small{font-size:12px;line-height:1.4;color:#587469}
+.thesis-architecture-detail{padding:35px 28px;background:#1b3734;color:#e5f1e8;display:flex;flex-direction:column;justify-content:center}
+.thesis-architecture-detail .eyebrow{color:#9cddc3}
+.thesis-architecture-detail h3{font-size:clamp(24px,3vw,34px);letter-spacing:-.04em;margin:15px 0 10px;color:#fff}
+.thesis-architecture-detail p{font-size:15px;line-height:1.75;color:#c6dfd4;margin:0}
+.thesis-two-column{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.thesis-two-column>div{border-left:3px solid #8fbfae;padding:10px 15px}
+.thesis-two-column h3{font-size:20px;letter-spacing:-.04em;margin:0 0 7px}
+.thesis-two-column p{font-size:14px;line-height:1.75;color:#5b7469;margin:0}
+.thesis-chart{padding:29px;margin-top:30px}
+.thesis-chart-head{display:flex;align-items:start;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.thesis-chart-head h3{font-size:25px;letter-spacing:-.04em;margin:0 0 6px}
+.thesis-chart-head p{font-size:12px;color:#557166;margin:0}
+.thesis-chart-controls{display:flex;gap:10px;flex-wrap:wrap}
+.thesis-chart-controls>div{display:flex;gap:3px;border:1px solid #bfd5c9;padding:4px;background:#f2f8f3;border-radius:100px}
+.thesis-chart-controls button{border:0;border-radius:100px;background:transparent;color:#4a6e5e;padding:8px 14px;font-size:12px;font-weight:750;cursor:pointer}
+.thesis-chart-controls button[aria-pressed="true"]{background:#1b4843;color:#fff}
+.thesis-chart-legend{display:flex;gap:23px;flex-wrap:wrap;margin:26px 0 22px;font-size:12px;color:#49635a}
+.thesis-chart-legend span{display:inline-flex;align-items:center;gap:8px}
+.thesis-key{display:block;width:13px;height:13px;border-radius:4px}
+.thesis-key-single{background:#a8cabe}
+.thesis-key-scaled{background:#24796f}
+.thesis-chart-plot{display:grid;gap:17px;padding:4px 0 10px}
+.thesis-chart-row{display:grid;grid-template-columns:43px minmax(0,1fr) 126px;gap:13px;align-items:center}
+.thesis-c-label{font-size:13px;font-weight:750;color:#456158}
+.thesis-chart-pair{display:grid;gap:5px}
+.thesis-bar{height:12px;border-radius:2px 7px 7px 2px;min-width:2px;transition:width .25s ease}
+.thesis-bar-single{background:#a8cabe}
+.thesis-bar-scaled{background:#24796f}
+.thesis-chart-values{font-variant-numeric:tabular-nums;font-size:11px;white-space:nowrap;text-align:right;color:#4a695b}
+.thesis-chart-message{background:#e7f2e9;border:1px solid #d1e3d6;color:#285a48;padding:12px 15px;border-radius:10px;font-size:13px;font-weight:650;margin:19px 0}
+.thesis-table-scroll{overflow-x:auto}
+.thesis-table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+.thesis-table caption{text-align:left;font-size:12px;color:#60786c;padding-bottom:11px}
+.thesis-table th,.thesis-table td{padding:10px 12px;border-bottom:1px solid #e3ede5;text-align:left}
+.thesis-table thead th{background:#f0f6f2;font-weight:750}
+.thesis-table tbody th{font-weight:650}
+.thesis-finding-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:20px}
+.thesis-finding-grid>div{background:#f9fcf9;border:1px solid #d9e5dd;border-radius:17px;padding:23px}
+.thesis-finding-grid strong{font-size:clamp(25px,3.4vw,41px);line-height:1.2;font-weight:720;letter-spacing:-.06em;color:#1d6759}
+.thesis-finding-grid h3{font-size:17px;letter-spacing:-.025em;margin:13px 0 7px}
+.thesis-finding-grid p{font-size:13px;color:#567065;line-height:1.7;margin:0}
+.thesis-conclusion{padding-bottom:110px}
+.thesis-read-more{display:flex;justify-content:space-between;align-items:center;gap:35px;border-radius:22px;background:#193934;padding:35px;margin-top:33px;color:#e7f3ec}
+.thesis-read-more .eyebrow{color:#9cdbbd}
+.thesis-read-more h3{font-size:27px;letter-spacing:-.04em;margin:9px 0}
+.thesis-read-more p{font-size:13px;line-height:1.75;max-width:610px;color:#bfd8ca;margin:0}
+.thesis-read-more-actions{display:flex;gap:9px;flex-wrap:wrap;max-width:410px}
+.thesis-read-more .btn{font-size:12px;color:#fff;border-color:#64897a}
+.thesis-read-more .btn-primary{background:#e2f0e8;color:#1d4238;border-color:#e2f0e8}
+@media(max-width:950px){
+  .thesis-toc{top:68px}
+  .thesis-architecture{grid-template-columns:1fr}
+  .thesis-architecture-detail{min-height:180px}
+  .thesis-detail{flex-direction:column;align-items:start}
+  .thesis-read-more{flex-direction:column;align-items:stretch}
+}
+@media(max-width:640px){
+  .thesis-hero{padding-block:48px}
+  .thesis-highlights{grid-template-columns:1fr;gap:8px;margin-top:32px}
+  .thesis-highlights>div{padding:14px 17px}
+  .thesis-highlights dt{font-size:31px}
+  .thesis-chapter,.thesis-band .thesis-chapter{padding-block:59px}
+  .thesis-reading p{font-size:15px}
+  .thesis-demo,.thesis-chart{padding:16px;border-radius:16px}
+  .thesis-flow{display:grid;grid-template-columns:1fr 24px 1fr;gap:6px}
+  .thesis-flow-arrow:nth-of-type(4){display:none}
+  .thesis-flow-arrow:nth-of-type(2){display:none}
+  .thesis-stage{min-height:94px;padding:13px}
+  .thesis-stage strong{font-size:24px}
+  .thesis-stage small{font-size:10px}
+  .thesis-flow-arrow{justify-self:center}
+  .thesis-architecture-grid{padding:13px;gap:8px}
+  .thesis-node{padding:13px}
+  .thesis-node strong{font-size:15px}
+  .thesis-architecture-detail{padding:24px}
+  .thesis-two-column,.thesis-finding-grid{grid-template-columns:1fr}
+  .thesis-chart-row{grid-template-columns:32px minmax(0,1fr) 104px;gap:7px}
+  .thesis-chart-values{font-size:10px}
+  .thesis-read-more{padding:25px}
+}
+@media(prefers-reduced-motion:reduce){.thesis-stage,.thesis-bar{transition:none}}
