@@ -522,5 +522,12 @@
   "academic.co-located-vr.glance.result": "85.1-minute three-headset session; mean RTT 58.2 ms, P95 86 ms",
   "academic.work-storage-caching.glance.challenge": "Balance processing time and cache storage using heuristic and RL policies",
   "academic.work-storage-caching.glance.role": "Co-authored research; individual module ownership is not documented",
-  "academic.work-storage-caching.glance.result": "TTL achieved a 94.53% hit ratio at 1 req/s; RL was not superior in these trials"
+  "academic.work-storage-caching.glance.result": "TTL achieved a 94.53% hit ratio at 1 req/s; RL was not superior in these trials",
+  "contact.options.heading": "Choose a contact option",
+  "contact.private.title": "Personal and professional contact",
+  "contact.private.description": "CV, software engineering, academic projects and professional discussions.",
+  "contact.business.title": "Business enquiries · Simpeltnetvaerk",
+  "contact.business.description": "Enquiries about electrical work, technical services and project quotes.",
+  "contact.action": "Send email",
+  "contact.footer": "Contact"
 }

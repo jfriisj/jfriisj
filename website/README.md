@@ -181,3 +181,13 @@ First bounded slice of the November 2026 source-based UI/UX audit: make the firs
 The audit identified missing direct contact details. **No new personal email, phone or LinkedIn URL has been invented or published.** The GitHub profile is clearly labelled as such; the direct contact destination needs owner approval before a contact CTA can be considered complete.
 
 This is not a browser-verified visual accessibility audit. Review at 320/375/390/768/1280 px, with keyboard, 200% zoom, screen reader and both locales. Remaining audit actions include visual project differentiation, mobile chart testing, formal WCAG checks, social previews and component consolidation.
+
+## Two public contact addresses (v1.0.1)
+
+The homepage contact section shows two independently labelled, keyboard-accessible mailto links:
+- Personal and software/academic enquiries: `jonfjakobsen@gmail.com`
+- Business / Simpeltnetvaerk enquiries: `simpeltnetvaerk@gmail.com`
+
+Both addresses were verified against the owner's connected Gmail account profiles and **explicitly approved by the owner for public display** on 10 November 2026. Labels and short descriptions are translated through the JSON locale catalogs, while the addresses remain shared source data. No email is sent automatically, no contact form or backend service is introduced, and no unrelated infrastructure is modified.
+
+Deployment remains manual after review: merge PR → Dockhand Git Sync → Rebuild → Deploy portfolio stack.
