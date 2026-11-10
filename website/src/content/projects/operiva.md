@@ -5,7 +5,7 @@ category: software
 typeLabel: "Software / Arkitektur"
 tags: ["Software", "Systemarkitektur", "Backend"]
 order: 10
-featured: true
+featured: false
 draft: false
 ---
 ## Projektet

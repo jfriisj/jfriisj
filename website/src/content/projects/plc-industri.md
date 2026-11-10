@@ -5,7 +5,7 @@ category: automation
 typeLabel: "Automation / Integration"
 tags: ["Automation", "Industri", "PLC"]
 order: 30
-featured: true
+featured: false
 draft: false
 ---
 ## Fra praktisk teknik til software

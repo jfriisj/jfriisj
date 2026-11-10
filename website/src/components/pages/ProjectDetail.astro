@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
+import AcademicCase from '../AcademicCase.astro';
+import { isAcademicCase } from '../../data/academicCases';
 import { translate, pathFor } from '../../i18n/index';
 interface Props { locale: string; entry: any; }
 
@@ -12,7 +14,7 @@ const title=tr(`project.${entry.id}.title`);
 const summary=tr(`project.${entry.id}.summary`);
 const typeLabel=tr(`project.${entry.id}.typeLabel`);
 ---
-<ArchiveLayout locale={locale} title={title} description={summary}>
+{isAcademicCase(entry.id) ? <AcademicCase id={entry.id} locale={locale} /> : <ArchiveLayout locale={locale} title={title} description={summary}>
   <section class="wrap archive-hero">
     <a class="archive-breadcrumb" href={pathFor(locale, "/projekter/")}>{tr("← Alle projekter")}</a>
     <div class="eyebrow">{typeLabel}</div>
@@ -28,4 +30,4 @@ const typeLabel=tr(`project.${entry.id}.typeLabel`);
     <article class="article-body">{locale === 'da' ? <Content /> : tr(`project.${entry.id}.body`).split('\n\n').map((paragraph:string) => <p>{paragraph}</p>)}</article>
     <a class="about-link" href={pathFor(locale,"/projekter/")}>{tr("← Til projektoversigten")}</a>
   </section>
-</ArchiveLayout>
+</ArchiveLayout>}

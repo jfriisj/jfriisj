@@ -196,6 +196,63 @@ class SiteTests(unittest.TestCase):
         self.assertIn('@media(prefers-reduced-motion:reduce)', css)
         self.assertNotIn("fetch(", component)
 
+
+    def test_academic_project_routes_in_both_languages(self):
+        cases = ("adaptive-game-soundtracks", "co-located-vr", "work-storage-caching")
+        for language in ("", "en/"):
+            for slug in cases:
+                with self.subTest(language=language or "da", project=slug):
+                    path = DIST / language / "projekter" / slug / "index.html"
+                    self.assertTrue(path.is_file(), str(path))
+                    html = path.read_text(encoding="utf-8")
+                    self.assertIn("data-academic-case", html)
+                    self.assertIn("data-chart-select", html)
+                    self.assertIn("data-case-step", html)
+                    self.assertIn("academic-chart-table", html)
+                    self.assertIn("data-chart-tbody", html)
+                    self.assertNotIn('href="/documents/', html)
+
+    def test_academic_cases_preserve_measured_results_and_limitations(self):
+        cases = {
+            "adaptive-game-soundtracks": (
+                "30–43 ms", "10.8–15.7×", "6.0–8.8 s",
+                "30", "43", "298", "631", "batch",
+            ),
+            "co-located-vr": (
+                "85.1 min", "58.2 ms", "1.21 mm", "86", "5.78",
+                "stationary", "Photon",
+            ),
+            "work-storage-caching": (
+                "94.53%", "A2C", "DQN", "LFU", "LRU", "PPO", "TTL",
+                "44.19", "RL",
+            ),
+        }
+        for slug, expected in cases.items():
+            path = DIST / "en" / "projekter" / slug / "index.html"
+            html = path.read_text(encoding="utf-8")
+            with self.subTest(project=slug):
+                for item in expected:
+                    self.assertIn(item, html)
+
+    def test_home_features_only_three_academic_cases(self):
+        for language in ("", "en/"):
+            html = (DIST / language / "index.html").read_text(encoding="utf-8")
+            self.assertEqual(html.count('class="project-card"'), 3)
+            for slug in ("adaptive-game-soundtracks", "co-located-vr", "work-storage-caching"):
+                self.assertIn("/projekter/" + slug + "/", html)
+            self.assertNotIn('href="/projekter/operiva/"', html)
+
+    def test_academic_cases_have_same_numeric_data_and_localized_copy(self):
+        import json
+        folder = ROOT / "src" / "i18n" / "locales"
+        for language in ("da", "en"):
+            values = json.loads((folder / (language + ".json")).read_text(encoding="utf-8"))
+            for slug in ("adaptive-game-soundtracks", "co-located-vr", "work-storage-caching"):
+                for key in ("title","summary","typeLabel","problem","finding","limits","contributions"):
+                    name = "academic." + slug + "." + key
+                    self.assertIn(name, values)
+                    self.assertTrue(values[name].strip())
+
     def test_drafts_not_published(self):
         self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
         self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))

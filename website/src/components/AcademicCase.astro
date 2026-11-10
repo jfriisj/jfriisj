@@ -1,0 +1,162 @@
+---
+import ArchiveLayout from '../layouts/ArchiveLayout.astro';
+import { translate, pathFor } from '../i18n/index';
+import { academicCases, type CaseId } from '../data/academicCases';
+import '../styles/academic.css';
+interface Props { id: CaseId; locale: string; }
+const { id, locale } = Astro.props;
+const caseStudy = academicCases[id];
+const tr = (key: string) => translate(locale, key);
+const tx = (key: string) => tr('academic.' + id + '.' + key);
+const firstChart = caseStudy.charts[0];
+const max = firstChart.max;
+const clientPayload = JSON.stringify({
+  flow: caseStudy.flow.map(step => ({title:tx('flow.'+step.key),description:tx('flow.'+step.detailKey)})),
+  charts: caseStudy.charts.map(view => ({title:tx('chart.'+view.key),unit:view.unit,max:view.max,rows:view.rows})),
+  locale
+}).replace(/</g, '\\u003c');
+const formatNumber = (n:number)=>new Intl.NumberFormat(locale, {maximumFractionDigits: 2}).format(n);
+---
+<ArchiveLayout locale={locale} title={tx('title')} description={tx('summary')}>
+  <article class="academic-case" data-academic-case>
+    <header class="wrap academic-hero">
+      <a class="archive-breadcrumb" href={pathFor(locale,'/projekter/')}>{tr('← Alle projekter')}</a>
+      <div class="eyebrow">{tx('typeLabel')}</div>
+      <h1>{tx('title')}</h1>
+      <p class="academic-lead">{tx('summary')}</p>
+      <dl class="academic-metrics">
+        {caseStudy.metrics.map(metric => <div class="academic-metric">
+          <dt>{metric.value}</dt>
+          <dd><strong>{tx(metric.key)}</strong><span>{tx(metric.noteKey)}</span></dd>
+        </div>)}
+      </dl>
+    </header>
+    <nav class="academic-toc" aria-label={tx('title')}>
+      <div class="wrap academic-toc-inner">
+        <a href="#problem">{tr('academic.section.problem')}</a>
+        <a href="#design">{tr('academic.section.flow')}</a>
+        <a href="#results">{tr('academic.section.evidence')}</a>
+        <a href="#reflection">{tr('academic.section.limits')}</a>
+      </div>
+    </nav>
+    <section class="wrap academic-section" id="problem">
+      <div class="eyebrow">01 / {tr('academic.section.problem')}</div>
+      <h2>{tr('academic.section.problem')}</h2>
+      <p class="academic-prose">{tx('problem')}</p>
+    </section>
+    <section class="academic-band" id="design">
+      <div class="wrap academic-section">
+        <div class="eyebrow">02 / {tr('academic.section.flow')}</div>
+        <h2>{tr('academic.section.flow')}</h2>
+        <div class="academic-flow" role="group" aria-label={tr('academic.section.flow')}>
+          {caseStudy.flow.map((step,index) =>
+            <button type="button" class={index===0?'is-active':''} aria-pressed={index===0?'true':'false'} data-case-step={index}>
+              <span>{String(index+1).padStart(2,'0')}</span>{tx('flow.'+step.key)}
+            </button>
+          )}
+        </div>
+        <div class="academic-flow-detail" aria-live="polite" aria-atomic="true">
+          <h3 data-flow-title>{tx('flow.'+caseStudy.flow[0].key)}</h3>
+          <p data-flow-detail>{tx('flow.'+caseStudy.flow[0].detailKey)}</p>
+        </div>
+      </div>
+    </section>
+    <section class="wrap academic-section" id="results">
+      <div class="eyebrow">03 / {tr('academic.section.evidence')}</div>
+      <h2>{tr('academic.section.evidence')}</h2>
+      <p class="academic-prose">{tx('finding')}</p>
+      <div class="academic-chart" data-case-chart>
+        <div class="academic-chart-head">
+          <h3 data-chart-title>{tx('chart.'+firstChart.key)}</h3>
+          <div class="academic-chart-options" role="group" aria-label={tr('academic.controls.charts')}>
+            {caseStudy.charts.map((chart,index)=>
+              <button type="button" data-chart-select={index} aria-pressed={index===0?'true':'false'}>
+                {tx('chart.'+chart.key)}
+              </button>
+            )}
+          </div>
+        </div>
+        <div class="academic-chart-rows">
+          {firstChart.rows.map(row =>
+            <div class="academic-chart-row" data-chart-row>
+              <span class="academic-chart-label" data-chart-label>{row.label}</span>
+              <span class="academic-bar-track"><span class="academic-bar-fill" data-chart-bar style={'width: '+(row.value/max*100)+'%'}></span></span>
+              <span data-chart-value class="academic-chart-number">{formatNumber(row.value)} {firstChart.unit}</span>
+            </div>
+          )}
+        </div>
+        <table class="academic-chart-table">
+          <caption data-chart-caption>{tx('chart.'+firstChart.key)}</caption>
+          <thead><tr><th scope="col">{tr('academic.chart.category')}</th><th scope="col">{tr('academic.chart.value')}</th></tr></thead>
+          <tbody data-chart-tbody>
+            {firstChart.rows.map(row => <tr><th scope="row">{row.label}</th><td>{formatNumber(row.value)} {firstChart.unit}</td></tr>)}
+          </tbody>
+        </table>
+        <p class="thesis-caption">{tr('academic.legend.source')}</p>
+      </div>
+    </section>
+    <section class="academic-band" id="reflection">
+      <div class="wrap academic-section academic-reflection">
+        <div>
+          <div class="eyebrow">04 / {tr('academic.section.limits')}</div>
+          <h2>{tr('academic.section.limits')}</h2>
+          <p>{tx('limits')}</p>
+        </div>
+        <div>
+          <div class="eyebrow">{tr('academic.section.contributions')}</div>
+          <h2>{tr('academic.section.contributions')}</h2>
+          <p>{tx('contributions')}</p>
+          <h3>{tr('academic.section.authors')}</h3>
+          <p>{caseStudy.authorNames.join(' · ')}</p>
+        </div>
+      </div>
+    </section>
+    <footer class="wrap academic-footer">
+      <h2>{tr('academic.section.source')}</h2>
+      <p><strong>{caseStudy.source}</strong></p>
+      <p>{tr('academic.paper.note')}</p>
+      <p>{tr('academic.paper.notice')}</p>
+      <a class="about-link" href={pathFor(locale,'/projekter/')}>{tr('academic.navigation.back')} →</a>
+    </footer>
+  </article>
+  <script type="application/json" id="academic-case-data" set:html={clientPayload}/>
+  <script is:inline>
+  (() => {
+    const root=document.querySelector('[data-academic-case]');
+    const data=document.getElementById('academic-case-data');
+    if(!root||!data)return;
+    const { flow, charts, locale }=JSON.parse(data.textContent);
+    const nf=new Intl.NumberFormat(locale,{maximumFractionDigits:2});
+    const flowButtons=[...root.querySelectorAll('[data-case-step]')];
+    flowButtons.forEach((button,index)=>button.addEventListener('click',()=>{
+      flowButtons.forEach((other,i)=>{other.setAttribute('aria-pressed',String(i===index));other.classList.toggle('is-active',i===index);});
+      root.querySelector('[data-flow-title]').textContent=flow[index].title;
+      root.querySelector('[data-flow-detail]').textContent=flow[index].description;
+    }));
+    const choices=[...root.querySelectorAll('[data-chart-select]')];
+    const plot=root.querySelector('.academic-chart-rows');
+    const body=root.querySelector('[data-chart-tbody]');
+    function renderChart(index) {
+      const chart=charts[index];
+      choices.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));
+      root.querySelector('[data-chart-title]').textContent=chart.title;
+      root.querySelector('[data-chart-caption]').textContent=chart.title;
+      plot.replaceChildren();
+      body.replaceChildren();
+      chart.rows.forEach(item=>{
+        const row=document.createElement('div');row.className='academic-chart-row';
+        const label=document.createElement('span');label.className='academic-chart-label';label.textContent=item.label;
+        const track=document.createElement('span');track.className='academic-bar-track';
+        const bar=document.createElement('span');bar.className='academic-bar-fill';bar.style.width=(item.value/chart.max*100)+'%';
+        track.append(bar);
+        const value=document.createElement('span');value.className='academic-chart-number';value.textContent=nf.format(item.value)+' '+chart.unit;
+        row.append(label,track,value);plot.append(row);
+        const tr=document.createElement('tr'),th=document.createElement('th'),td=document.createElement('td');
+        th.scope='row';th.textContent=item.label;td.textContent=nf.format(item.value)+' '+chart.unit;
+        tr.append(th,td);body.append(tr);
+      });
+    }
+    choices.forEach((button,index)=>button.addEventListener('click',()=>renderChart(index)));
+  })();
+  </script>
+</ArchiveLayout>
