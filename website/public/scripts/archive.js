@@ -6,7 +6,7 @@
   const count = document.querySelector('[data-result-count]');
   let active = 'alle';
   const filter = () => {
-    const text = (input?.value || '').trim().toLocaleLowerCase('da-DK');
+    const text = (input?.value || '').trim().toLocaleLowerCase(document.documentElement.lang);
     let visible = 0;
     for (const item of entries) {
       const show = (active === 'alle' || item.dataset.kind === active) &&
@@ -15,7 +15,7 @@
       if (show) visible++;
     }
     if (empty) empty.hidden = visible !== 0 || entries.length === 0;
-    if (count) count.textContent = visible + ' af ' + entries.length + ' vist';
+    if (count) count.textContent=(count.dataset.countLabel||'{shown} / {total}').replace('{shown}',String(visible)).replace('{total}',String(entries.length));
   };
   buttons.forEach(button => button.addEventListener('click', () => {
     active = button.dataset.filter;

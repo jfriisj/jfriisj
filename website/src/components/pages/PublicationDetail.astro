@@ -37,9 +37,9 @@ const typeLabel = tr(({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieo
     </div>
   </section>
   <section class="wrap archive-footer-space">
-    <article class="article-body">{locale === 'da' ? <Content /> : tr(`publication.${entry.id}.body`).split('\\n\\n').map((paragraph:string) => <p>{paragraph}</p>)}</article>
+    <article class="article-body">{locale === 'da' ? <Content /> : tr(`publication.${entry.id}.body`).split('\n\n').map((paragraph:string) => <p>{paragraph}</p>)}</article>
     {pub.pdf && <div style="margin-top:35px"><h2 class="section-title" style="font-size:28px">{tr("Læs dokumentet")}</h2><iframe class="pdf-preview" src={pub.pdf + '#view=FitH'} title={'PDF: ' + pub.title} loading="lazy"></iframe></div>}
-    <a class="about-link" href="/publikationer/">{tr("← Til publikationsarkivet")}</a>
+    <a class="about-link" href={pathFor(locale,"/publikationer/")}>{tr("← Til publikationsarkivet")}</a>
   </section>
 </ArchiveLayout>
 )}

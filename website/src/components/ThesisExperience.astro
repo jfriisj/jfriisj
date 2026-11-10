@@ -13,7 +13,8 @@ import { translate, dictionary, pathFor } from '../i18n/index';
 interface Props { locale:string; }
 const {locale}=Astro.props;
 const tr=(key:string)=>translate(locale,key);
-const translations=dictionary(locale);
+const clientKeys=["Kafka er den fælles eventlog til kommandoer og resultater. Avro-kontrakter og Schema Registry hjælper med at holde services på fælles hændelsesformater.","Validerer workflowtilstand, håndterer korrelations-id og beslutter, hvilken af de sekventielle VAD-, ASR-, MT- og TTS-faser der må køre næste gang.","De selvstændige VAD-, ASR-, MT- og TTS-services udfører hver deres opgave og publicerer resultater. De vælger ikke selv den globale faseorden.","Opbevarer workflowtilstand, så Orchestrator kan kontrollere progression og relationen mellem events.","Store lyd- og tekst-artefakter lagres særskilt. Events bærer referencer, så selve brokertrafikken kan holdes lettere.","Genkender talesegmentets ord og producerer tekst. Resultatet knyttes til den samme workflow-korrelation.","Oversætter den genkendte tekst mellem de valgte sprog. En ugyldig sprogkombination skal blokere videre progression.","Genererer syntetiseret tale ud fra oversættelsen. Det endelige lydartefakt bliver en del af den sporede resultatkæde.","Trin "," af 4","Pause flow Ⅱ"," i millisekunder — værdier fra afhandlingens evaluering",": Den skalerede opsætning havde højere latenstid for alle fem belastningstrin.",": Den skalerede opsætning er hurtigere ved c=1–4, men langsommere ved c=5.",": Forskellene går begge veje; ved c=5 er medianerne ens.","Afspil flow ▶"];
+const translations=Object.fromEntries(clientKeys.map(key=>[key,tr(key)]));
 ---
 <ArchiveLayout locale={locale} title={tr("Realtidsoversættelse — interaktiv kandidatafhandling")} description={tr("En visuel gennemgang af arkitektur, flow og dokumenterede resultater fra en kandidatafhandling om realtidsoversættelse af tale.")}>
   <article class="thesis" data-thesis>
@@ -209,7 +210,7 @@ const translations=dictionary(locale);
       let timer = null;
       function stop() {
         if (timer !== null) { clearInterval(timer); timer = null; }
-        play.textContent = 'Afspil flow ▶';
+        play.textContent = tr("Afspil flow ▶");
       }
       function showStep(index) {
         current = index;

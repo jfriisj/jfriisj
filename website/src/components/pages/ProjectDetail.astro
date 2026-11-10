@@ -25,7 +25,7 @@ const typeLabel=tr(`project.${entry.id}.typeLabel`);
     {project.externalUrl && <div class="detail-actions"><a class="btn" href={project.externalUrl} target="_blank" rel="noopener noreferrer">{tr("Eksternt projektlink ↗")}</a></div>}
   </section>
   <section class="wrap archive-footer-space">
-    <article class="article-body">{locale === 'da' ? <Content /> : tr(`project.${entry.id}.body`).split('\\n\\n').map((paragraph:string) => <p>{paragraph}</p>)}</article>
-    <a class="about-link" href="/projekter/">{tr("← Til projektoversigten")}</a>
+    <article class="article-body">{locale === 'da' ? <Content /> : tr(`project.${entry.id}.body`).split('\n\n').map((paragraph:string) => <p>{paragraph}</p>)}</article>
+    <a class="about-link" href={pathFor(locale,"/projekter/")}>{tr("← Til projektoversigten")}</a>
   </section>
 </ArchiveLayout>

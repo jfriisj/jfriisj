@@ -19,7 +19,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.">
+  <meta name="description" content={tr("Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.")}>
   <meta name="theme-color" content="#f6f7f3">
   <title>{tr("Friis-Jakobsen | Om mig, erfaring og projekter")}</title>
   <link rel="canonical" href={new URL(pathFor(locale, '/'), Astro.site).toString()} />
@@ -30,9 +30,9 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
 <body>
   <div class="scroll-progress" aria-hidden="true"></div>
   <header class="header">
-    <nav class="wrap nav" aria-label="Hovednavigation">
-      <a class="brand" href="#top" aria-label="Friis-Jakobsen, til toppen">{tr("friis—jakobsen")}<span class="dot">.</span></a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Åbn menu">
+    <nav class="wrap nav" aria-label={tr("Hovednavigation")}>
+      <a class="brand" href="#top" aria-label={tr("Friis-Jakobsen, til toppen")}>{tr("friis—jakobsen")}<span class="dot">.</span></a>
+      <button class="menu-toggle" data-open-label={tr("Åbn menu")} data-close-label={tr("Luk menu")} type="button" aria-expanded="false" aria-controls="navlinks" aria-label={tr("Åbn menu")}>
         <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
       </button>
       <div class="navlinks" id="navlinks">
@@ -51,7 +51,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
         <div class="hero-actions"><a class="btn btn-primary" href="#om-mig">{tr("Læs om min baggrund")} <span aria-hidden="true">↘</span></a><a class="btn" href="#projekter">{tr("Se projekter")} <span aria-hidden="true">→</span></a></div>
         <div class="hero-sub"><span class="marker" aria-hidden="true"></span>{tr("Portfolio for faglig erfaring, projekter, rapporter og artikler")}</div>
       </div>
-      <div class="hero-visual" aria-label="Illustration, der forbinder el og industri, software og selvstændig virksomhed" role="img">
+      <div class="hero-visual" aria-label={tr("Illustration, der forbinder el og industri, software og selvstændig virksomhed")} role="img">
         <div class="connector"></div><div class="connector b"></div><div class="orbit"><span class="orbit-satellite" aria-hidden="true"></span></div>
         <div class="visual-center"><div><span>↗</span><br>{tr("ÉN SAMLET")}<br>{tr("PROFIL")}</div></div>
         <div class="skill-pill pill-a"><i></i> {tr("EL & INDUSTRI")}</div>
@@ -74,7 +74,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
           <p>{tr("Jeg begyndte min karriere som elektriker og har arbejdet med installationer, industri, service og fejlfinding. Gennem årene har jeg opbygget en praktisk forståelse for tekniske anlæg og for, hvordan løsninger skal fungere i virkeligheden.")}</p>
           <p>{tr("Senere videreuddannede jeg mig på Syddansk Universitet og blev civilingeniør i Software Engineering. Under studiet arbejdede jeg som Student Software Engineer hos Bankdata, hvor jeg fik erfaring med udvikling af større softwaresystemer.")}</p>
           <p>{tr("Jeg driver også Simpeltnetvaerk og arbejder i dag selvstændigt med tekniske opgaver. På denne side samler jeg erfaring, projekter og faglige publikationer fra hele min professionelle baggrund.")}</p>
-          <div class="about-facts" aria-label="Udvalgte fakta om min baggrund">
+          <div class="about-facts" aria-label={tr("Udvalgte fakta om min baggrund")}>
             <div class="fact"><span class="fact-top">2002–2019</span><span class="fact-label">{tr("Baggrund i el-faget")}</span></div>
             <div class="fact"><span class="fact-top">{tr("SDU · 2026")}</span><span class="fact-label">{tr("Civilingeniør i software")}</span></div>
             <div class="fact"><span class="fact-top">{tr("Siden 2019")}</span><span class="fact-label">{tr("Simpeltnetvaerk")}</span></div>
@@ -95,7 +95,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
       <div class="wrap time-layout">
         <div class="time-intro" data-reveal><div class="eyebrow">{tr("03 / Erfaring & uddannelse")}</div><h2 class="section-title" id="experience-title">{tr("Min faglige rejse.")}</h2><p class="section-intro">{tr("En CV-tidslinje, der viser forbindelsen mellem praktisk erhvervserfaring, uddannelse og selvstændigt arbejde.")}</p><span class="time-note">{tr("Tidslinjen viser de væsentligste perioder. En detaljeret oversigt over tidligere arbejdsgivere findes under el-erfaringen.")}</span></div>
         <div>
-          <div class="time-filters" role="group" aria-label="Filtrer tidslinje"><button class="filter-btn" data-timeline-filter="alle" aria-pressed="true">{tr("Alle")}</button><button class="filter-btn" data-timeline-filter="arbejde" aria-pressed="false">{tr("Arbejde")}</button><button class="filter-btn" data-timeline-filter="uddannelse" aria-pressed="false">{tr("Uddannelse")}</button><button class="filter-btn" data-timeline-filter="virksomhed" aria-pressed="false">{tr("Virksomhed")}</button></div>
+          <div class="time-filters" role="group" aria-label={tr("Filtrer tidslinje")}><button class="filter-btn" data-timeline-filter="alle" aria-pressed="true">{tr("Alle")}</button><button class="filter-btn" data-timeline-filter="arbejde" aria-pressed="false">{tr("Arbejde")}</button><button class="filter-btn" data-timeline-filter="uddannelse" aria-pressed="false">{tr("Uddannelse")}</button><button class="filter-btn" data-timeline-filter="virksomhed" aria-pressed="false">{tr("Virksomhed")}</button></div>
           <div class="timeline">
                         <article class="timeline-item" data-reveal data-timeline-type="arbejde virksomhed"><span class="timeline-date">{tr("2026 – nu")}</span><div class="timeline-card"><h3>{tr("Selvstændig elektriker · Simpeltnetvaerk")}</h3><p>{tr("Selvstændige elektrikeropgaver for virksomheder med fokus på praktisk udførelse, tekniske løsninger og samarbejde.")}</p><div class="chip-line"><span class="chip">{tr("Elinstallationer")}</span><span class="chip">{tr("Teknisk service")}</span><span class="chip">{tr("Selvstændig")}</span></div></div></article>
             <article class="timeline-item" data-reveal data-timeline-type="uddannelse"><span class="timeline-date">2024 – 2026</span><div class="timeline-card"><h3>{tr("Civilingeniør · Software Engineering, SDU")}</h3><p>{tr("Kandidatuddannelse ved Syddansk Universitet med fokus på software engineering, analyse, systemdesign og akademiske projekter.")}</p><div class="chip-line"><span class="chip">{tr("Cand.polyt.")}</span><span class="chip">{tr("Software engineering")}</span><span class="chip">{tr("Systemdesign")}</span></div></div></article>
@@ -111,9 +111,9 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
     </section>
     <section class="section wrap" id="projekter" aria-labelledby="projects-title">
       <div class="section-head" data-reveal><div><div class="eyebrow">{tr("04 / Udvalgte projekter")}</div><h2 class="section-title" id="projects-title">{tr("Fra idé til løsning.")}</h2></div><p class="section-intro">{tr("Projekter fra studiet, egne softwareinitiativer og teknisk arbejde. Hvert projekt kan senere få sin egen side med metode, resultater og dokumentation.")}</p></div>
-      <div class="project-filters" role="group" aria-label="Filtrer projekter"><button class="filter-btn" data-project-filter="alle" aria-pressed="true">{tr("Alle projekter")}</button><button class="filter-btn" data-project-filter="software" aria-pressed="false">{tr("Software")}</button><button class="filter-btn" data-project-filter="research" aria-pressed="false">{tr("Studie & research")}</button><button class="filter-btn" data-project-filter="automation" aria-pressed="false">{tr("Automation")}</button></div>
+      <div class="project-filters" role="group" aria-label={tr("Filtrer projekter")}><button class="filter-btn" data-project-filter="alle" aria-pressed="true">{tr("Alle projekter")}</button><button class="filter-btn" data-project-filter="software" aria-pressed="false">{tr("Software")}</button><button class="filter-btn" data-project-filter="research" aria-pressed="false">{tr("Studie & research")}</button><button class="filter-btn" data-project-filter="automation" aria-pressed="false">{tr("Automation")}</button></div>
       <div class="projects-meta"><span class="swipe-hint">{tr("Swipe for at udforske projekter")} <span aria-hidden="true">↔</span></span><span class="project-position" id="project-position">01 / 03</span></div>
-      <div class="projects-grid" tabindex="0" role="region" aria-label="Projektkort, kan rulles vandret på mobil">
+      <div class="projects-grid" tabindex="0" role="region" aria-label={tr("Projektkort, kan rulles vandret på mobil")}>
         {featuredProjects.map(project => <ProjectCard entry={project} locale={locale} />)}
       </div>
       <a class="section-more" href={pathFor(locale,"/projekter/")}>{tr("Udforsk alle projekter")} <span aria-hidden="true">→</span></a>
@@ -127,7 +127,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
     </div></section>
     <section class="contact-section" id="kontakt" aria-labelledby="contact-title"><div class="wrap contact-inner" data-reveal><div><div class="eyebrow">{tr("06 / Kontakt")}</div><h2 id="contact-title">{tr("Skal vi udveksle idéer?")}</h2><p>{tr("Jeg er interesseret i faglig sparring, projekter og nye muligheder på tværs af teknik, industri og software.")}</p></div><div class="contact-actions"><a class="btn btn-primary" href="https://github.com/jfriisj" target="_blank" rel="noopener noreferrer">{tr("GitHub")} <span aria-hidden="true">↗</span></a><a class="btn" href="#top">{tr("Til toppen")} <span aria-hidden="true">↑</span></a></div></div></section>
   </main>
-  <nav class="mobile-dock" aria-label="Hurtig navigation">
+  <nav class="mobile-dock" aria-label={tr("Hurtig navigation")}>
     <a href="#profil" data-dock="profil"><span class="dock-icon" aria-hidden="true">⌂</span><span>{tr("Profil")}</span></a>
     <a href="#erfaring" data-dock="erfaring"><span class="dock-icon" aria-hidden="true">↗</span><span>{tr("CV")}</span></a>
     <a href="#projekter" data-dock="projekter"><span class="dock-icon" aria-hidden="true">▦</span><span>{tr("Projekter")}</span></a>

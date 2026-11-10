@@ -33,7 +33,7 @@ const tr=(key:string)=>translate(locale,key);
           class="archive-item"
           data-archive-item
           data-kind={entry.data.type}
-          data-search-text={(tr(`publication.${entry.id}.title`) + ' ' + tr(`publication.${entry.id}.summary`) + ' ' + entry.data.tags.join(' ')).toLocaleLowerCase('da-DK')}
+          data-search-text={(tr(`publication.${entry.id}.title`) + ' ' + tr(`publication.${entry.id}.summary`) + ' ' + entry.data.tags.join(' ')).toLocaleLowerCase(locale)}
           href={pathFor(locale,'/publikationer/' + entry.id + '/')}
         >
           <span class="meta">{tr(labels[entry.data.type])}{entry.data.date ? ' · ' + entry.data.date.getFullYear() : ''}{entry.data.pdf ? ' · PDF' : ''}</span>

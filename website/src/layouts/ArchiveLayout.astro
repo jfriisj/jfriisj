@@ -22,9 +22,9 @@ import '../styles/i18n.css';
   </head>
   <body>
     <header class="header">
-      <nav class="wrap nav" aria-label="Hovednavigation">
-        <a class="brand" href={pathFor(locale,"/")} aria-label="Friis-Jakobsen, til forsiden">{tr("friis—jakobsen")}<span class="dot">.</span></a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Åbn menu">
+      <nav class="wrap nav" aria-label={tr("Hovednavigation")}>
+        <a class="brand" href={pathFor(locale,"/")} aria-label={tr("Friis-Jakobsen, til forsiden")}>{tr("friis—jakobsen")}<span class="dot">.</span></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navlinks" aria-label={tr("Åbn menu")}>
           <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
         </button>
         <div class="navlinks" id="navlinks">
@@ -43,26 +43,28 @@ import '../styles/i18n.css';
     <main class="archive-page" id="top">
       <slot />
     </main>
-    <nav class="mobile-dock" aria-label="Hurtig navigation">
+    <nav class="mobile-dock" aria-label={tr("Hurtig navigation")}>
       <a href={pathFor(locale,"/")}><span class="dock-icon" aria-hidden="true">⌂</span><span>{tr("Profil")}</span></a>
       <a href={pathFor(locale,"/") + "#erfaring"}><span class="dock-icon" aria-hidden="true">↗</span><span>{tr("CV")}</span></a>
       <a href={pathFor(locale,"/projekter/")}><span class="dock-icon" aria-hidden="true">▦</span><span>{tr("Projekter")}</span></a>
       <a href={pathFor(locale,"/publikationer/")}><span class="dock-icon" aria-hidden="true">≡</span><span>{tr("Artikler")}</span></a>
     </nav>
     <footer class="footer"><div class="wrap footer-inner"><span class="brand">{tr("friis—jakobsen.")}</span><span>{tr("Elektriker · Civilingeniør i software · Selvstændig")}</span><a href="https://github.com/jfriisj" rel="noopener noreferrer" target="_blank">{tr("GitHub ↗")}</a></div></footer>
+    <script type="application/json" id="menu-labels" set:html={JSON.stringify({open:tr("Åbn menu"),close:tr("Luk menu")})} />
     <script is:inline>
       const menu = document.querySelector('.menu-toggle');
+      const labels=JSON.parse(document.querySelector('#menu-labels')?.textContent||'{}');
       const links = document.querySelector('.navlinks');
       function closeMenu() {
         links?.classList.remove('open');
         menu?.setAttribute('aria-expanded', 'false');
-        menu?.setAttribute('aria-label', 'Åbn menu');
+        menu?.setAttribute('aria-label', labels.open);
       }
       menu?.addEventListener('click', () => {
         const expanded = menu.getAttribute('aria-expanded') === 'true';
         links.classList.toggle('open', !expanded);
         menu.setAttribute('aria-expanded', String(!expanded));
-        menu.setAttribute('aria-label', expanded ? 'Åbn menu' : 'Luk menu');
+        menu.setAttribute('aria-label', expanded ? labels.open : labels.close);
       });
       links?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
       document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });

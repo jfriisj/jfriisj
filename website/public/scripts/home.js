@@ -3,6 +3,9 @@ const menu = document.querySelector('.menu-toggle');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(pointer:fine)').matches;
     const progress = document.querySelector('.scroll-progress');
+    const localizedMenu = document.querySelector('.menu-toggle')?.dataset;
+    const openLabel=localizedMenu?.openLabel||'Åbn menu';
+    const closeLabel=localizedMenu?.closeLabel||'Luk menu';
     const timeline = document.querySelector('.timeline');
     const projectsGrid = document.querySelector('.projects-grid');
     const projectPosition = document.getElementById('project-position');
@@ -10,12 +13,12 @@ const menu = document.querySelector('.menu-toggle');
     function closeMenu() {
       links.classList.remove('open');
       menu.setAttribute('aria-expanded','false');
-      menu.setAttribute('aria-label','Åbn menu');
+      menu.setAttribute('aria-label',openLabel);
     }
     menu.addEventListener('click', () => {
       const expanded = menu.getAttribute('aria-expanded') === 'true';
       menu.setAttribute('aria-expanded', String(!expanded));
-      menu.setAttribute('aria-label', expanded ? 'Åbn menu' : 'Luk menu');
+      menu.setAttribute('aria-label', expanded ? openLabel : closeLabel);
       links.classList.toggle('open', !expanded);
     });
     links.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
