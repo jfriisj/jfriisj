@@ -109,7 +109,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
       </div>
       <a class="section-more" href="/projekter/">Udforsk alle projekter <span aria-hidden="true">→</span></a>
     </section>
-    <section class="section publication-section" id="publikationer" aria-labelledby="publication-title"><div class="wrap"><div class="section-head" data-reveal><div><div class="eyebrow">05 / Viden & dokumentation</div><h2 class="section-title" id="publication-title">Rapporter & artikler.</h2></div><p class="section-intro">Et arkiv for studieprojekter, faglige artikler og tekniske rapporter – med resuméer, kategorier og mulighed for PDF-visning.</p></div>
+    <section class="section publication-section" id="publikationer" aria-labelledby="publication-title"><div class="wrap"><div class="section-head" data-reveal><div><div class="eyebrow">05 / Viden & dokumentation</div><h2 class="section-title" id="publication-title">Rapporter & artikler.</h2></div><p class="section-intro">Faglige artikler og rapporter kan læses direkte på hjemmesiden med arkitekturdiagrammer, resultater og teknisk formidling.</p></div>
       <div class="pub-list">
         {featuredPublications.map(pub => <PublicationRow entry={pub} />)}
       </div>

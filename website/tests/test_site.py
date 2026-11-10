@@ -62,6 +62,27 @@ class SiteTests(unittest.TestCase):
                 self.assertFalse(set(parser.fragments) - set(parser.ids))
                 self.assertTrue(all("noopener" in rel and "noreferrer" in rel for rel in parser.external))
 
+    def test_interactive_thesis_is_accessible_and_source_bounded(self):
+        page = DIST / "publikationer" / "analysis-and-design-of-a-platform-for-real-time-speech-translation" / "index.html"
+        html = page.read_text(encoding="utf-8")
+        for expected in (
+            'data-thesis',
+            'data-architecture-node="orchestrator"',
+            'data-flow-step="3"',
+            'data-metric="ttft"',
+            'data-percentile="p90"',
+            "25 / 25",
+            "13,9 %",
+            "4078.4",
+            "4541.4",
+            "den fulde oplevede klient-til-klient-latenstid",
+        ):
+            with self.subTest(expected=expected):
+                self.assertIn(expected, html)
+        self.assertNotIn('href="https://github.com/jfriisj/Kandidat/', html)
+        self.assertNotIn('PDF er endnu ikke offentliggjort.', html)
+        self.assertIn("Original PDF afventer særskilt publiceringsgodkendelse", html)
+
     def test_drafts_not_published(self):
         self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
         self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))

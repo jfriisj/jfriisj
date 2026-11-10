@@ -82,3 +82,34 @@ After PR review and merge:
 The immutable image-digest pinning and lockfile hardening are follow-up production tasks; direct Astro dependency version is pinned, but transitive npm dependencies are not yet locked. No existing Docker network, tunnel, DNS record or service is modified by this PR.
 
 **Status:** Source change only until owner approves manual deployment. Version 0.3 remains live until Dockhand rebuilds/redeploys.
+
+
+## Interactive thesis case study (v0.5)
+
+The thesis entry at
+\`/publikationer/analysis-and-design-of-a-platform-for-real-time-speech-translation/\`
+renders \`src/components/ThesisExperience.astro\` rather than the generic Markdown
+detail template. Its editorial case-study experience provides:
+
+- keyboard-accessible architecture exploration based on central orchestration;
+- a conceptual VAD → ASR → MT → TTS stepper (not a live speech demo);
+- measured TTFT/TTFA P50/P90 at concurrency c=1–5 with an accessible HTML table;
+- source qualifications, limitations and responsive/reduced-motion styles.
+
+**Research source:** the private \`jfriisj/Kandidat\` repository, \`multilanguage\`
+branch, report LaTeX chapters 06 (design), 08 (evaluation) and 11 (conclusion).
+The inspected source head was \`27fa606c7f3362fc45aeda5d63bee035ca17d135\`.
+The chart numbers are transcribed from evaluation tables, not queried live.
+The web article is a curated explanation, not a full thesis transcription.
+If the source results change, update the arrays, descriptions and tests together.
+
+**Publication boundary:** \`Kandidat\` is private. Do not link to its PDF as
+though it were publicly accessible. Do not copy the PDF, diagrams, datasets
+or other non-public materials into this public repository without an explicit
+rights and confidentiality review. A separately cleared local PDF can be
+added later through the validated \`pdf\` frontmatter field.
+
+To review, run \`npm run build\` and \`python3 -m unittest discover -s tests\`,
+then inspect the interactive route with and without JavaScript and with
+keyboard navigation and reduced motion. A commit to GitHub never deploys
+the stack: merge, then manually Git Sync → Rebuild → Deploy in Dockhand.
