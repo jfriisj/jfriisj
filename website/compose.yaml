@@ -14,8 +14,14 @@ services:
       - no-new-privileges:true
     tmpfs:
       - /tmp:rw,nosuid,nodev,size=16m,mode=1777
-    ports:
-      - "127.0.0.1:8188:8080"
+    # Intentionally no published host ports: cloudflared and this service
+    # communicate over the pre-existing bridge network on VM 1214.
+    expose:
+      - "8080"
+    networks:
+      edge:
+        aliases:
+          - friis-jakobsen-portfolio
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
       interval: 30s
@@ -25,3 +31,7 @@ services:
     pids_limit: 64
     mem_limit: 128m
     cpus: 0.5
+networks:
+  edge:
+    external: true
+    name: development-proxy
