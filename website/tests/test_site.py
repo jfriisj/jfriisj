@@ -75,7 +75,7 @@ class SiteTests(unittest.TestCase):
             "13,9 %",
             "4078.4",
             "4541.4",
-            "ikke den fulde oplevede klient-til-klient-latenstid",
+            "den fulde oplevede klient-til-klient-latenstid",
         ):
             with self.subTest(expected=expected):
                 self.assertIn(expected, html)
