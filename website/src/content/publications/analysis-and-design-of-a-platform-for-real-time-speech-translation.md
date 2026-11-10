@@ -1,8 +1,8 @@
 ---
 title: "Analysis and Design of a Platform for Real-Time Speech Translation"
-summary: "En akademisk projektrapport om analyse og design af en platform til realtidsoversættelse af tale."
+summary: "Interaktiv gennemgang af eventdrevet arkitektur, VAD–ASR–MT–TTS-flow og målt latenstid i en kandidatrapport om taleoversættelse."
 type: rapport
-tags: ["Softwarearkitektur", "Taleoversættelse", "Systemdesign"]
+tags: ["Softwarearkitektur", "Taleoversættelse", "Systemdesign", "Evaluering"]
 project: "realtidsoversaettelse"
 order: 10
 featured: true
@@ -12,4 +12,6 @@ draft: false
 
 Rapporten er knyttet til [projektet om realtidsoversættelse af tale](/projekter/realtidsoversaettelse/).
 
-Denne side fungerer foreløbig som en oversigt over rapporten. Den fulde PDF er **ikke publiceret** endnu. Når filen er gennemgået og lagt i `public/documents/`, kan et `pdf`-felt tilføjes i rapportens Markdown-metadata.
+Den interaktive læseoplevelse formidler problemstilling, design, procesflow og udvalgte evalueringsresultater fra den nyere `multilanguage`-version af afhandlingen. Den er ikke en ordret transskription.
+
+Den originale PDF ligger i et **privat** repository og er ikke offentliggjort. Den må ikke linkes som offentligt tilgængelig eller kopieres til portfolien, før rettigheder og indhold er gennemgået.
