@@ -135,3 +135,12 @@ The Danish project body remains canonical in Markdown. Localized body copy for t
 Language-specific canonical and `hreflang` tags are generated for each route. There is no automatic language-based redirect; existing public Danish URLs are stable.
 
 **Release workflow:** PR review + green CI → merge to `main` → manually Git Sync → Rebuild → Deploy only the portfolio stack in Dockhand. Cloudflare and the shared Docker bridge do not change.
+
+## Quality maintenance (v0.7)
+
+- The landing page's title, description and hero strings now use **semantic JSON keys** (for example `home.hero.line1`) instead of treating the complete Danish text as a key. Existing route labels and thesis text remain on legacy keys until migrated in subsequent bounded changes. New UI copy should use semantic keys.
+- The language switcher preserves homepage section hashes for **any** supported language, rather than special-casing `/en/`. Detail-page switches never carry unrelated section hashes.
+- Static tests verify all language-alternate links resolve to generated pages, preserving localized SEO metadata and both language routes.
+- CI still runs on each PR; this release does **not** include an npm lockfile. Dependency-locking must be done using npm against the real dependency registry, then `npm ci` can replace `npm install` in CI and the Docker builder. Do not invent a package-lock.
+
+**Deployment:** No automation. Merge after CI and review; manually Git Sync → Rebuild → Deploy the existing portfolio stack in Dockhand.

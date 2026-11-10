@@ -1,5 +1,4 @@
 {
-  "Friis-Jakobsen | Om mig, erfaring og projekter": "Friis-Jakobsen | About me, experience and projects",
   "Forside": "Home",
   "Om mig": "About",
   "Kompetencer": "Skills",
@@ -9,13 +8,6 @@
   "Kontakt": "Contact",
   "Lad os tage en snak": "Let's talk",
   "Personlig portfolio / friis-jakobsen.dk": "Personal portfolio / friis-jakobsen.dk",
-  "Teknologi.": "Technology.",
-  "Håndværk.": "Craftsmanship.",
-  "Perspektiv.": "Perspective.",
-  "Jeg er elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Min erfaring forbinder elinstallationer og industri med udvikling af software og tekniske systemer.": "I'm an electrician, an MSc software engineer and self-employed. My experience connects electrical installations and industry with software development and technical systems.",
-  "Læs om min baggrund": "Explore my background",
-  "Se projekter": "View projects",
-  "Portfolio for faglig erfaring, projekter, rapporter og artikler": "A portfolio of professional experience, projects, reports and articles",
   "ÉN SAMLET": "ONE COMPLETE",
   "PROFIL": "PROFILE",
   "EL & INDUSTRI": "ELECTRICAL & INDUSTRY",
@@ -168,7 +160,6 @@
   "Vælg percentil": "Choose percentile",
   "Udvalgte projekter inden for software, el, automation og tekniske systemer.": "Selected projects in software, electrical engineering, automation and technical systems.",
   "Faglige artikler, studieprojekter og tekniske rapporter skrevet af Jon Friis Jakobsen.": "Technical articles, academic projects and reports by Jon Friis Jakobsen.",
-  "Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.": "Personal portfolio of an electrician, MSc software engineer and self-employed professional. Experience in electrical engineering, industry, software, projects and publications.",
   "resultCount": "{shown} of {total} shown",
   "Læs projekt": "Read project",
   "Læs online · PDF": "Read online · PDF",
@@ -347,5 +338,14 @@
   "Softwarearkitektur": "Software architecture",
   "Taleoversættelse": "Speech translation",
   "Evaluering": "Evaluation",
-  "PLC": "PLC"
+  "PLC": "PLC",
+  "home.meta.title": "Friis-Jakobsen | About me, experience and projects",
+  "home.meta.description": "Personal portfolio of an electrician, MSc software engineer and self-employed professional. Experience in electrical engineering, industry, software, projects and publications.",
+  "home.hero.line1": "Technology.",
+  "home.hero.line2": "Craftsmanship.",
+  "home.hero.line3": "Perspective.",
+  "home.hero.lead": "I'm an electrician, an MSc software engineer and self-employed. My experience connects electrical installations and industry with software development and technical systems.",
+  "home.hero.primaryCta": "Explore my background",
+  "home.hero.secondaryCta": "View projects",
+  "home.hero.caption": "A portfolio of professional experience, projects, reports and articles"
 }

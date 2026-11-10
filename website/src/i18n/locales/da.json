@@ -1,5 +1,4 @@
 {
-  "Friis-Jakobsen | Om mig, erfaring og projekter": "Friis-Jakobsen | Om mig, erfaring og projekter",
   "friis—jakobsen": "friis—jakobsen",
   "Forside": "Forside",
   "Om mig": "Om mig",
@@ -10,13 +9,6 @@
   "Kontakt": "Kontakt",
   "Lad os tage en snak": "Lad os tage en snak",
   "Personlig portfolio / friis-jakobsen.dk": "Personlig portfolio / friis-jakobsen.dk",
-  "Teknologi.": "Teknologi.",
-  "Håndværk.": "Håndværk.",
-  "Perspektiv.": "Perspektiv.",
-  "Jeg er elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Min erfaring forbinder elinstallationer og industri med udvikling af software og tekniske systemer.": "Jeg er elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Min erfaring forbinder elinstallationer og industri med udvikling af software og tekniske systemer.",
-  "Læs om min baggrund": "Læs om min baggrund",
-  "Se projekter": "Se projekter",
-  "Portfolio for faglig erfaring, projekter, rapporter og artikler": "Portfolio for faglig erfaring, projekter, rapporter og artikler",
   "ÉN SAMLET": "ÉN SAMLET",
   "PROFIL": "PROFIL",
   "EL & INDUSTRI": "EL & INDUSTRI",
@@ -167,7 +159,6 @@
   "Vælg percentil": "Vælg percentil",
   "Udvalgte projekter inden for software, el, automation og tekniske systemer.": "Udvalgte projekter inden for software, el, automation og tekniske systemer.",
   "Faglige artikler, studieprojekter og tekniske rapporter skrevet af Jon Friis Jakobsen.": "Faglige artikler, studieprojekter og tekniske rapporter skrevet af Jon Friis Jakobsen.",
-  "Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.": "Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.",
   "resultCount": "{shown} af {total} vist",
   "Læs projekt": "Læs projekt",
   "Læs online · PDF": "Læs online · PDF",
@@ -347,5 +338,14 @@
   "Softwarearkitektur": "Softwarearkitektur",
   "Taleoversættelse": "Taleoversættelse",
   "Evaluering": "Evaluering",
-  "PLC": "PLC"
+  "PLC": "PLC",
+  "home.meta.title": "Friis-Jakobsen | Om mig, erfaring og projekter",
+  "home.meta.description": "Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.",
+  "home.hero.line1": "Teknologi.",
+  "home.hero.line2": "Håndværk.",
+  "home.hero.line3": "Perspektiv.",
+  "home.hero.lead": "Jeg er elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Min erfaring forbinder elinstallationer og industri med udvikling af software og tekniske systemer.",
+  "home.hero.primaryCta": "Læs om min baggrund",
+  "home.hero.secondaryCta": "Se projekter",
+  "home.hero.caption": "Portfolio for faglig erfaring, projekter, rapporter og artikler"
 }

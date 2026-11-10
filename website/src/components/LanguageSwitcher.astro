@@ -17,14 +17,14 @@ const { locale, pathname } = Astro.props;
   @media(max-width:720px){.language-switcher{margin-left:auto}.language-switcher a{padding:6px}}
 </style>
 <script>
-  // Preserve home section anchors when switching languages.
+  // Preserve section anchors on the homepage for any locale; avoid anchors on detail pages.
   document.querySelectorAll('.language-switcher a').forEach(link => link.addEventListener('click', event => {
-    if (!location.hash || event.defaultPrevented || event.ctrlKey || event.metaKey) return;
+    if (!location.hash || event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    if (event.button !== 0) return;
+    if (!/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?$/.test(location.pathname)) return;
     const a = event.currentTarget;
     if (!(a instanceof HTMLAnchorElement)) return;
     const destination = new URL(a.href);
-    if (destination.pathname.endsWith('/en/') || destination.pathname === '/' || destination.pathname.match(/^\/[a-z]{2}(?:-[a-z]{2})?\/$/)) {
-      a.hash = location.hash;
-    }
+    if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?$/.test(destination.pathname)) a.hash = location.hash;
   }));
 </script>

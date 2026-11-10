@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: friis-jakobsen-portfolio:0.6.0
+    image: friis-jakobsen-portfolio:0.7.0
     restart: unless-stopped
     user: "101:101"
     read_only: true
