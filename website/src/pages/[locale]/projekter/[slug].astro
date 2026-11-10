@@ -1,0 +1,8 @@
+---
+import ProjectDetail from '../../../components/pages/ProjectDetail.astro';
+import { getCollection } from 'astro:content';
+import { locales, defaultLocale } from '../../../i18n/index';
+export async function getStaticPaths(){const entries=await getCollection('projects',({data})=>!data.draft);return locales.filter(code=>code!==defaultLocale).flatMap(locale=>entries.map(entry=>({params:{locale,slug:entry.id},props:{entry,locale}})));}
+const {entry,locale}=Astro.props;
+---
+<ProjectDetail entry={entry} locale={locale} />

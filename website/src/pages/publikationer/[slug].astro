@@ -1,44 +1,7 @@
 ---
-import { getCollection, render } from 'astro:content';
-import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
-import ThesisExperience from '../../components/ThesisExperience.astro';
-export async function getStaticPaths() {
-  const publications = await getCollection('publications', ({ data }) => !data.draft);
-  return publications.map(entry => ({ params: { slug: entry.id }, props: { entry } }));
-}
-const { entry } = Astro.props;
-const { Content } = await render(entry);
-const pub = entry.data;
-const typeLabel = { rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Publikation' }[pub.type];
+import PublicationDetail from '../../components/pages/PublicationDetail.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths(){const records=await getCollection('publications',({data})=>!data.draft);return records.map(entry=>({params:{slug:entry.id},props:{entry}}));}
+const {entry}=Astro.props;
 ---
-{entry.id === 'analysis-and-design-of-a-platform-for-real-time-speech-translation' ? (
-  <ThesisExperience />
-) : (
-<ArchiveLayout title={pub.title} description={pub.summary}>
-  <section class="wrap archive-hero">
-    <a class="archive-breadcrumb" href="/publikationer/">← Alle publikationer</a>
-    <div class="eyebrow">{typeLabel}</div>
-    <h1 class="section-title">{pub.title}</h1>
-    <p class="section-intro">{pub.summary}</p>
-    <div class="detail-meta">
-      {pub.date && <span>{pub.date.toLocaleDateString('da-DK', { year: 'numeric', month: 'long' })}</span>}
-      {pub.authors && <span>{pub.authors.join(', ')}</span>}
-    </div>
-    <div class="detail-tags">{pub.tags.map(tag => <span>{tag}</span>)}</div>
-    <div class="detail-actions">
-      {pub.pdf ? (
-        <>
-          <a class="btn btn-primary" href={pub.pdf} target="_blank" rel="noopener noreferrer">Åbn PDF ↗</a>
-          <a class="btn" href={pub.pdf} download>Hent PDF ↓</a>
-        </>
-      ) : <p class="muted">PDF er endnu ikke offentliggjort.</p>}
-      {pub.externalUrl && <a class="btn" href={pub.externalUrl} target="_blank" rel="noopener noreferrer">Eksternt link ↗</a>}
-    </div>
-  </section>
-  <section class="wrap archive-footer-space">
-    <article class="article-body"><Content /></article>
-    {pub.pdf && <div style="margin-top:35px"><h2 class="section-title" style="font-size:28px">Læs dokumentet</h2><iframe class="pdf-preview" src={pub.pdf + '#view=FitH'} title={'PDF: ' + pub.title} loading="lazy"></iframe></div>}
-    <a class="about-link" href="/publikationer/">← Til publikationsarkivet</a>
-  </section>
-</ArchiveLayout>
-)}
+<PublicationDetail entry={entry} locale="da" />

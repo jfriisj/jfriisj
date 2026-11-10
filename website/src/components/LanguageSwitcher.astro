@@ -1,0 +1,30 @@
+---
+import { locales, localeName, switchPath } from '../i18n/index';
+interface Props { locale: string; pathname: string; }
+const { locale, pathname } = Astro.props;
+---
+<nav class="language-switcher" aria-label="Language / Sprog">
+  {locales.map(code => (
+    <a href={switchPath(code, pathname)} lang={code} hreflang={code} aria-current={code === locale ? 'page' : undefined}
+       aria-label={localeName(code)}>{code.toUpperCase()}</a>
+  ))}
+</nav>
+<style>
+  .language-switcher{display:flex;gap:3px;align-items:center;padding:3px;border:1px solid #b7c7c1;border-radius:100px;flex-shrink:0}
+  .language-switcher a{font-size:11px;font-weight:780;padding:6px 8px;border-radius:100px;color:#4a6760}
+  .language-switcher a[aria-current="page"]{background:#1d413a;color:#fff}
+  .language-switcher a:focus-visible{outline:2px solid #56a89a;outline-offset:2px}
+  @media(max-width:720px){.language-switcher{margin-left:auto}.language-switcher a{padding:6px}}
+</style>
+<script>
+  // Preserve home section anchors when switching languages.
+  document.querySelectorAll('.language-switcher a').forEach(link => link.addEventListener('click', event => {
+    if (!location.hash || event.defaultPrevented || event.ctrlKey || event.metaKey) return;
+    const a = event.currentTarget;
+    if (!(a instanceof HTMLAnchorElement)) return;
+    const destination = new URL(a.href);
+    if (destination.pathname.endsWith('/en/') || destination.pathname === '/' || destination.pathname.match(/^\/[a-z]{2}(?:-[a-z]{2})?\/$/)) {
+      a.hash = location.hash;
+    }
+  }));
+</script>

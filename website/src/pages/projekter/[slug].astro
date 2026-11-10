@@ -1,28 +1,7 @@
 ---
-import { getCollection, render } from 'astro:content';
-import ArchiveLayout from '../../layouts/ArchiveLayout.astro';
-export async function getStaticPaths() {
-  const projects = await getCollection('projects', ({ data }) => !data.draft);
-  return projects.map(entry => ({ params: { slug: entry.id }, props: { entry } }));
-}
-const { entry } = Astro.props;
-const { Content } = await render(entry);
-const project = entry.data;
+import ProjectDetail from '../../components/pages/ProjectDetail.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths(){const records=await getCollection('projects',({data})=>!data.draft);return records.map(entry=>({params:{slug:entry.id},props:{entry}}));}
+const {entry}=Astro.props;
 ---
-<ArchiveLayout title={project.title} description={project.summary}>
-  <section class="wrap archive-hero">
-    <a class="archive-breadcrumb" href="/projekter/">← Alle projekter</a>
-    <div class="eyebrow">{project.typeLabel}</div>
-    <h1 class="section-title">{project.title}</h1>
-    <p class="section-intro">{project.summary}</p>
-    <div class="detail-meta">
-      <span>Projekt</span>{project.year && <span>· {project.year}</span>}
-    </div>
-    <div class="detail-tags">{project.tags.map(tag => <span>{tag}</span>)}</div>
-    {project.externalUrl && <div class="detail-actions"><a class="btn" href={project.externalUrl} target="_blank" rel="noopener noreferrer">Eksternt projektlink ↗</a></div>}
-  </section>
-  <section class="wrap archive-footer-space">
-    <article class="article-body"><Content /></article>
-    <a class="about-link" href="/projekter/">← Til projektoversigten</a>
-  </section>
-</ArchiveLayout>
+<ProjectDetail entry={entry} locale="da" />

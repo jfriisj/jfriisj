@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from '../ProjectCard.astro';
+import PublicationRow from '../PublicationRow.astro';
+import '../../styles/global.css';
+import '../../styles/i18n.css';
+
+
+import { translate, pathFor, locales } from '../../i18n/index';
+import LanguageSwitcher from '../LanguageSwitcher.astro';
+interface Props {locale:string;}
+const {locale}=Astro.props;
+const tr=(key:string)=>translate(locale,key);
+const featuredProjects = (await getCollection('projects', ({data}) => !data.draft && data.featured)).sort((a,b)=>a.data.order-b.data.order);
+const featuredPublications = (await getCollection('publications', ({data}) => !data.draft && data.featured)).sort((a,b)=>a.data.order-b.data.order);
+---
+<!doctype html>
+<html lang={locale}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content={tr("Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.")}>
+  <meta name="theme-color" content="#f6f7f3">
+  <title>{tr("Friis-Jakobsen | Om mig, erfaring og projekter")}</title>
+  <link rel="canonical" href={new URL(pathFor(locale, '/'), Astro.site).toString()} />
+  {locales.map(code => <link rel="alternate" hreflang={code} href={new URL(pathFor(code,'/'),Astro.site).toString()} />)}
+  <link rel="alternate" hreflang="x-default" href={new URL('/',Astro.site).toString()} />
+  
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <header class="header">
+    <nav class="wrap nav" aria-label={tr("Hovednavigation")}>
+      <a class="brand" href="#top" aria-label={tr("Friis-Jakobsen, til toppen")}>{tr("friis—jakobsen")}<span class="dot">.</span></a>
+      <button class="menu-toggle" data-open-label={tr("Åbn menu")} data-close-label={tr("Luk menu")} type="button" aria-expanded="false" aria-controls="navlinks" aria-label={tr("Åbn menu")}>
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      </button>
+      <div class="navlinks" id="navlinks">
+        <a href="#profil">{tr("Forside")}</a><a href="#om-mig">{tr("Om mig")}</a><a href="#kompetencer">{tr("Kompetencer")}</a><a href="#erfaring">{tr("Erfaring")}</a><a href="#projekter">{tr("Projekter")}</a><a href="#publikationer">{tr("Publikationer")}</a><a href="#kontakt">{tr("Kontakt")}</a>
+      </div>
+      <LanguageSwitcher locale={locale} pathname={Astro.url.pathname} />
+      <a class="nav-contact" href="#kontakt">{tr("Lad os tage en snak")} <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main id="top">
+    <section class="wrap hero" id="profil" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">{tr("Personlig portfolio / friis-jakobsen.dk")}</div>
+        <h1 class="display" id="hero-title">{tr("Teknologi.")}<br><span class="hero-highlight">{tr("Håndværk.")}</span><br>{tr("Perspektiv.")}</h1>
+        <p class="lead">{tr("Jeg er elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Min erfaring forbinder elinstallationer og industri med udvikling af software og tekniske systemer.")}</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#om-mig">{tr("Læs om min baggrund")} <span aria-hidden="true">↘</span></a><a class="btn" href="#projekter">{tr("Se projekter")} <span aria-hidden="true">→</span></a></div>
+        <div class="hero-sub"><span class="marker" aria-hidden="true"></span>{tr("Portfolio for faglig erfaring, projekter, rapporter og artikler")}</div>
+      </div>
+      <div class="hero-visual" aria-label={tr("Illustration, der forbinder el og industri, software og selvstændig virksomhed")} role="img">
+        <div class="connector"></div><div class="connector b"></div><div class="orbit"><span class="orbit-satellite" aria-hidden="true"></span></div>
+        <div class="visual-center"><div><span>↗</span><br>{tr("ÉN SAMLET")}<br>{tr("PROFIL")}</div></div>
+        <div class="skill-pill pill-a"><i></i> {tr("EL & INDUSTRI")}</div>
+        <div class="skill-pill pill-b"><i></i> {tr("SOFTWARE")}</div>
+        <div class="skill-pill pill-c"><i></i> {tr("SELVSTÆNDIG")}</div>
+        <div class="visual-caption">{tr("Faglig dybde · Praktisk indsigt")}</div>
+      </div>
+    </section>
+    <div class="strip"><div class="wrap strip-content"><span class="strip-label">{tr("Flere fagområder · Ét perspektiv")}</span><div class="area-list"><span>{tr("El & industri")}</span><span>{tr("Software engineering")}</span><span>{tr("Data & netværk")}</span><span>{tr("Selvstændig")}</span></div></div></div>
+
+    <section class="section about-section" id="om-mig" aria-labelledby="about-title">
+      <div class="wrap about-grid">
+        <div data-reveal>
+          <div class="eyebrow">{tr("01 / Om mig")}</div>
+          <h2 class="section-title" id="about-title">{tr("Fra el-faget til software.")}</h2>
+          <p class="section-intro">{tr("En faglig baggrund, hvor praktisk håndværk, teknisk systemforståelse og softwareudvikling supplerer hinanden.")}</p>
+          <a class="about-link" href="#erfaring">{tr("Gå til mit CV")} <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="about-copy" data-reveal>
+          <p>{tr("Jeg begyndte min karriere som elektriker og har arbejdet med installationer, industri, service og fejlfinding. Gennem årene har jeg opbygget en praktisk forståelse for tekniske anlæg og for, hvordan løsninger skal fungere i virkeligheden.")}</p>
+          <p>{tr("Senere videreuddannede jeg mig på Syddansk Universitet og blev civilingeniør i Software Engineering. Under studiet arbejdede jeg som Student Software Engineer hos Bankdata, hvor jeg fik erfaring med udvikling af større softwaresystemer.")}</p>
+          <p>{tr("Jeg driver også Simpeltnetvaerk og arbejder i dag selvstændigt med tekniske opgaver. På denne side samler jeg erfaring, projekter og faglige publikationer fra hele min professionelle baggrund.")}</p>
+          <div class="about-facts" aria-label={tr("Udvalgte fakta om min baggrund")}>
+            <div class="fact"><span class="fact-top">2002–2019</span><span class="fact-label">{tr("Baggrund i el-faget")}</span></div>
+            <div class="fact"><span class="fact-top">{tr("SDU · 2026")}</span><span class="fact-label">{tr("Civilingeniør i software")}</span></div>
+            <div class="fact"><span class="fact-top">{tr("Siden 2019")}</span><span class="fact-label">{tr("Simpeltnetvaerk")}</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section wrap" id="kompetencer" aria-labelledby="competence-title">
+      <div class="section-head" data-reveal><div><div class="eyebrow">{tr("02 / Kompetencer")}</div><h2 class="section-title" id="competence-title">{tr("Tværfaglighed i praksis.")}</h2></div><p class="section-intro">{tr("Min baggrund spænder fra arbejde med fysiske installationer til udvikling af software og tekniske systemer. Fagområderne supplerer hinanden.")}</p></div>
+      <div class="competency-grid">
+        <article class="competency" data-reveal><span class="comp-index">01 /</span><div class="comp-symbol" aria-hidden="true">↯</div><h3>{tr("El & industri")}</h3><p>{tr("Elinstallationer, industriel service, fejlfinding, tekniske anlæg og arbejde i ATEX-miljøer.")}</p></article>
+        <article class="competency" data-reveal><span class="comp-index">02 /</span><div class="comp-symbol" aria-hidden="true">⌘</div><h3>{tr("Software engineering")}</h3><p>{tr("Java, Spring Boot, backendudvikling, softwarearkitektur, integration, test og CI/CD.")}</p></article>
+        <article class="competency" data-reveal><span class="comp-index">03 /</span><div class="comp-symbol" aria-hidden="true">⌁</div><h3>{tr("Data & netværk")}</h3><p>{tr("Datanetværk, struktureret kabling, infrastruktur, opsætning og forståelse for drift.")}</p></article>
+        <article class="competency" data-reveal><span class="comp-index">04 /</span><div class="comp-symbol" aria-hidden="true">◎</div><h3>{tr("Selvstændig")}</h3><p>{tr("Tekniske opgaver, kundedialog og selvstændig problemløsning gennem Simpeltnetvaerk.")}</p></article>
+      </div>
+    </section>
+    <section class="section timeline-section" id="erfaring" aria-labelledby="experience-title">
+      <div class="wrap time-layout">
+        <div class="time-intro" data-reveal><div class="eyebrow">{tr("03 / Erfaring & uddannelse")}</div><h2 class="section-title" id="experience-title">{tr("Min faglige rejse.")}</h2><p class="section-intro">{tr("En CV-tidslinje, der viser forbindelsen mellem praktisk erhvervserfaring, uddannelse og selvstændigt arbejde.")}</p><span class="time-note">{tr("Tidslinjen viser de væsentligste perioder. En detaljeret oversigt over tidligere arbejdsgivere findes under el-erfaringen.")}</span></div>
+        <div>
+          <div class="time-filters" role="group" aria-label={tr("Filtrer tidslinje")}><button class="filter-btn" data-timeline-filter="alle" aria-pressed="true">{tr("Alle")}</button><button class="filter-btn" data-timeline-filter="arbejde" aria-pressed="false">{tr("Arbejde")}</button><button class="filter-btn" data-timeline-filter="uddannelse" aria-pressed="false">{tr("Uddannelse")}</button><button class="filter-btn" data-timeline-filter="virksomhed" aria-pressed="false">{tr("Virksomhed")}</button></div>
+          <div class="timeline">
+                        <article class="timeline-item" data-reveal data-timeline-type="arbejde virksomhed"><span class="timeline-date">{tr("2026 – nu")}</span><div class="timeline-card"><h3>{tr("Selvstændig elektriker · Simpeltnetvaerk")}</h3><p>{tr("Selvstændige elektrikeropgaver for virksomheder med fokus på praktisk udførelse, tekniske løsninger og samarbejde.")}</p><div class="chip-line"><span class="chip">{tr("Elinstallationer")}</span><span class="chip">{tr("Teknisk service")}</span><span class="chip">{tr("Selvstændig")}</span></div></div></article>
+            <article class="timeline-item" data-reveal data-timeline-type="uddannelse"><span class="timeline-date">2024 – 2026</span><div class="timeline-card"><h3>{tr("Civilingeniør · Software Engineering, SDU")}</h3><p>{tr("Kandidatuddannelse ved Syddansk Universitet med fokus på software engineering, analyse, systemdesign og akademiske projekter.")}</p><div class="chip-line"><span class="chip">{tr("Cand.polyt.")}</span><span class="chip">{tr("Software engineering")}</span><span class="chip">{tr("Systemdesign")}</span></div></div></article>
+            <article class="timeline-item" data-reveal data-timeline-type="arbejde"><span class="timeline-date">2024 – 2026</span><div class="timeline-card"><h3>{tr("Student Software Engineer · Bankdata")}</h3><p>{tr("Studiejob med softwareudvikling i et større IT-miljø, blandt andet backendudvikling, test og samarbejde om eksisterende systemer.")}</p><div class="chip-line"><span class="chip">{tr("Java")}</span><span class="chip">{tr("Backend")}</span><span class="chip">{tr("Teamarbejde")}</span></div></div></article>
+            <article class="timeline-item" data-reveal data-timeline-type="uddannelse"><span class="timeline-date">2021 – 2024</span><div class="timeline-card"><h3>{tr("Bachelor · Software Engineering, SDU")}</h3><p>{tr("Bacheloruddannelse i Software Engineering ved Syddansk Universitet.")}</p><div class="chip-line"><span class="chip">{tr("BSc")}</span><span class="chip">{tr("Softwareudvikling")}</span><span class="chip">{tr("IT-systemer")}</span></div></div></article>
+            <article class="timeline-item" data-reveal data-timeline-type="uddannelse"><span class="timeline-date">2020 – 2021</span><div class="timeline-card"><h3>{tr("Adgangsgivende ingeniøruddannelse")}</h3><p>{tr("Adgangsgivende forløb som grundlag for videre uddannelse inden for ingeniørfaget.")}</p><div class="chip-line"><span class="chip">{tr("Ingeniørstudier")}</span><span class="chip">{tr("Fagligt skifte")}</span></div></div></article>
+            <article class="timeline-item" data-reveal data-timeline-type="virksomhed"><span class="timeline-date">{tr("2019 – nu")}</span><div class="timeline-card"><h3>{tr("Simpeltnetvaerk etableres")}</h3><p>{tr("Virksomhed etableret i 2019. Senere videreudviklet med selvstændigt arbejde inden for teknik og elektrikerfaget.")}</p><div class="chip-line"><span class="chip">{tr("Virksomhed")}</span><span class="chip">{tr("Tekniske ydelser")}</span></div></div></article>
+            <article class="timeline-item" data-reveal data-timeline-type="arbejde"><span class="timeline-date">2006 – 2019</span><div class="timeline-card"><h3>{tr("Elektriker · industri, service og installation")}</h3><p>{tr("Mange års erfaring fra forskellige virksomheder og opgaver inden for el-faget med blandt andet industrielle installationer, fejlfinding, service og ATEX-relaterede miljøer.")}</p><div class="chip-line"><span class="chip">{tr("Elinstallationer")}</span><span class="chip">{tr("Industri")}</span><span class="chip">{tr("ATEX")}</span><span class="chip">{tr("Fejlfinding")}</span></div><details class="employment-details"><summary>{tr("Se tidligere arbejdspladser")}</summary><div class="employment-list" aria-label="Tidligere arbejdspladser"><div><span>2018–2019</span><strong>{tr("Bravida")}</strong></div><div><span>2016–2018</span><strong>{tr("Ecotechniq")}</strong></div><div><span>2015–2016</span><strong>{tr("Caverion")}</strong></div><div><span>2012–2015</span><strong>{tr("Bravida")}</strong></div><div><span>2011–2012</span><strong>{tr("Wicotec Kirkebjerg")}</strong></div><div><span>2010</span><strong>Carl Christensen &amp; Co.</strong></div><div><span>2008–2010</span><strong>{tr("Bravida")}</strong></div><div><span>2006–2008</span><strong>{tr("JKS")}</strong></div><div><span>2003–2006</span><strong>{tr("Espenheims eft. (læretid)")}</strong></div></div><p class="employment-note">{tr("Perioderne er afrundet til år og bør gennemgås før offentliggørelse.")}</p></details></div></article>
+            <article class="timeline-item" data-reveal data-timeline-type="uddannelse"><span class="timeline-date">2002 – 2006</span><div class="timeline-card"><h3>{tr("Elektrikeruddannelse · Slagelse Tekniske Skole")}</h3><p>{tr("Erhvervsuddannelse inden for lys og energi med praktisk læretid og faglig specialisering i el-faget.")}</p><div class="chip-line"><span class="chip">{tr("Elektriker")}</span><span class="chip">{tr("Lys og energi")}</span><span class="chip">{tr("Læretid")}</span></div></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section wrap" id="projekter" aria-labelledby="projects-title">
+      <div class="section-head" data-reveal><div><div class="eyebrow">{tr("04 / Udvalgte projekter")}</div><h2 class="section-title" id="projects-title">{tr("Fra idé til løsning.")}</h2></div><p class="section-intro">{tr("Projekter fra studiet, egne softwareinitiativer og teknisk arbejde. Hvert projekt kan senere få sin egen side med metode, resultater og dokumentation.")}</p></div>
+      <div class="project-filters" role="group" aria-label={tr("Filtrer projekter")}><button class="filter-btn" data-project-filter="alle" aria-pressed="true">{tr("Alle projekter")}</button><button class="filter-btn" data-project-filter="software" aria-pressed="false">{tr("Software")}</button><button class="filter-btn" data-project-filter="research" aria-pressed="false">{tr("Studie & research")}</button><button class="filter-btn" data-project-filter="automation" aria-pressed="false">{tr("Automation")}</button></div>
+      <div class="projects-meta"><span class="swipe-hint">{tr("Swipe for at udforske projekter")} <span aria-hidden="true">↔</span></span><span class="project-position" id="project-position">01 / 03</span></div>
+      <div class="projects-grid" tabindex="0" role="region" aria-label={tr("Projektkort, kan rulles vandret på mobil")}>
+        {featuredProjects.map(project => <ProjectCard entry={project} locale={locale} />)}
+      </div>
+      <a class="section-more" href={pathFor(locale,"/projekter/")}>{tr("Udforsk alle projekter")} <span aria-hidden="true">→</span></a>
+    </section>
+    <section class="section publication-section" id="publikationer" aria-labelledby="publication-title"><div class="wrap"><div class="section-head" data-reveal><div><div class="eyebrow">{tr("05 / Viden & dokumentation")}</div><h2 class="section-title" id="publication-title">{tr("Rapporter & artikler.")}</h2></div><p class="section-intro">{tr("Faglige artikler og rapporter kan læses direkte på hjemmesiden med arkitekturdiagrammer, resultater og teknisk formidling.")}</p></div>
+      <div class="pub-list">
+        {featuredPublications.map(pub => <PublicationRow entry={pub} locale={locale} />)}
+      </div>
+      <a class="section-more" href={pathFor(locale,"/publikationer/")}>{tr("Se alle publikationer")} <span aria-hidden="true">→</span></a>
+      <p class="note">{tr("PDF-filer offentliggøres løbende, når dokumenterne er gennemgået og klar.")}</p>
+    </div></section>
+    <section class="contact-section" id="kontakt" aria-labelledby="contact-title"><div class="wrap contact-inner" data-reveal><div><div class="eyebrow">{tr("06 / Kontakt")}</div><h2 id="contact-title">{tr("Skal vi udveksle idéer?")}</h2><p>{tr("Jeg er interesseret i faglig sparring, projekter og nye muligheder på tværs af teknik, industri og software.")}</p></div><div class="contact-actions"><a class="btn btn-primary" href="https://github.com/jfriisj" target="_blank" rel="noopener noreferrer">{tr("GitHub")} <span aria-hidden="true">↗</span></a><a class="btn" href="#top">{tr("Til toppen")} <span aria-hidden="true">↑</span></a></div></div></section>
+  </main>
+  <nav class="mobile-dock" aria-label={tr("Hurtig navigation")}>
+    <a href="#profil" data-dock="profil"><span class="dock-icon" aria-hidden="true">⌂</span><span>{tr("Profil")}</span></a>
+    <a href="#erfaring" data-dock="erfaring"><span class="dock-icon" aria-hidden="true">↗</span><span>{tr("CV")}</span></a>
+    <a href="#projekter" data-dock="projekter"><span class="dock-icon" aria-hidden="true">▦</span><span>{tr("Projekter")}</span></a>
+    <a href="#publikationer" data-dock="publikationer"><span class="dock-icon" aria-hidden="true">≡</span><span>{tr("Artikler")}</span></a>
+  </nav>
+  <footer class="footer"><div class="wrap footer-inner"><span class="brand">{tr("friis—jakobsen.")}</span><span>{tr("Elektriker · Civilingeniør i software · Selvstændig")}</span><span>{tr("Kontaktoplysninger opdateres løbende")}</span></div></footer>
+  <script is:inline src="/scripts/home.js"></script>
+</body>
+</html>

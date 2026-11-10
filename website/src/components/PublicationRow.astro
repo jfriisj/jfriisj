@@ -1,9 +1,13 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { entry: CollectionEntry<'publications'>; }
-const { entry } = Astro.props;
+interface Props { entry: CollectionEntry<'publications'>; locale: string; }
+const { entry, locale } = Astro.props;
+const tr=(key:string)=>translate(locale,key);
 const pub = entry.data;
-const label = ({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Publikation' } as const)[pub.type];
+const label = tr(({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave', andet: 'Andet' } as const)[pub.type]);
+const title = tr(`publication.${entry.id}.title`);
+const summary = tr(`publication.${entry.id}.summary`);
+import { translate, pathFor } from '../i18n/index';
 ---
 <article class="pub" data-reveal>
   <div class="pub-icon" aria-hidden="true">
@@ -11,8 +15,8 @@ const label = ({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave',
   </div>
   <div>
     <div class="pub-type">{label}</div>
-    <h3 class="pub-name"><a href={'/publikationer/' + entry.id + '/'}>{pub.title}</a></h3>
-    <p>{pub.summary}</p>
+    <h3 class="pub-name"><a href={pathFor(locale,'/publikationer/' + entry.id + '/')}>{title}</a></h3>
+    <p>{summary}</p>
   </div>
-  <span class="pub-status">{pub.pdf ? 'Læs online · PDF' : 'Læs online'}</span>
+  <span class="pub-status">{tr(pub.pdf ? 'Læs online · PDF' : 'Læs online')}</span>
 </article>

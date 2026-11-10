@@ -1,8 +1,12 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { entry: CollectionEntry<'projects'>; archive?: boolean; }
-const { entry, archive = false } = Astro.props;
+interface Props { entry: CollectionEntry<'projects'>; archive?: boolean; locale:string; }
+const { entry, archive = false, locale } = Astro.props;
+const tr=(key:string)=>translate(locale,key);
 const project = entry.data;
+const title = tr(`project.${entry.id}.title`);
+const summary = tr(`project.${entry.id}.summary`);
+const typeLabel = tr(`project.${entry.id}.typeLabel`);
 const types = {
   software: 'software',
   research: 'software research',
@@ -19,17 +23,18 @@ const palettes = {
   electrical: 'art-automation',
   business: 'art-software'
 };
+import { translate, pathFor } from '../i18n/index';
 ---
 <article
   class="project-card"
   data-reveal
   data-archive-item={archive ? '' : undefined}
   data-kind={project.category}
-  data-search-text={(project.title + ' ' + project.summary + ' ' + project.tags.join(' ')).toLocaleLowerCase('da-DK')}
+  data-search-text={(title + ' ' + summary + ' ' + project.tags.join(' ')).toLocaleLowerCase('da-DK')}
   data-project-type={types[project.category]}
 >
   <div class={'project-art ' + palettes[project.category]}>
-    <span class="art-label">{project.typeLabel}</span>
+    <span class="art-label">{typeLabel}</span>
     {project.category === 'research' ? (
       <svg viewBox="0 0 300 160" fill="none" aria-hidden="true">
         <rect x="14" y="37" width="272" height="87" rx="12" fill="#fafaff" stroke="#afb0d4"/>
@@ -60,9 +65,9 @@ const palettes = {
     )}
   </div>
   <div class="project-copy">
-    <span class="project-tag">{project.typeLabel}</span>
-    <h3>{project.title}</h3>
-    <p>{project.summary}</p>
-    <a class="project-card-link" href={'/projekter/' + entry.id + '/'} aria-label={'Læs om projektet ' + project.title}>Læs projekt <span aria-hidden="true">→</span></a>
+    <span class="project-tag">{typeLabel}</span>
+    <h3>{title}</h3>
+    <p>{summary}</p>
+    <a class="project-card-link" href={pathFor(locale,'/projekter/' + entry.id + '/')} aria-label={tr('Læs projekt') + ': ' + title}>{tr("Læs projekt")} <span aria-hidden="true">→</span></a>
   </div>
 </article>

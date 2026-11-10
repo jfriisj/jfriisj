@@ -9,117 +9,123 @@ const initial = [
   { c: 4, single: 2124, scaled: 2006 },
   { c: 5, single: 2175, scaled: 2692 },
 ];
+import { translate, dictionary, pathFor } from '../i18n/index';
+interface Props { locale:string; }
+const {locale}=Astro.props;
+const tr=(key:string)=>translate(locale,key);
+const clientKeys=["Kafka er den fælles eventlog til kommandoer og resultater. Avro-kontrakter og Schema Registry hjælper med at holde services på fælles hændelsesformater.","Validerer workflowtilstand, håndterer korrelations-id og beslutter, hvilken af de sekventielle VAD-, ASR-, MT- og TTS-faser der må køre næste gang.","De selvstændige VAD-, ASR-, MT- og TTS-services udfører hver deres opgave og publicerer resultater. De vælger ikke selv den globale faseorden.","Opbevarer workflowtilstand, så Orchestrator kan kontrollere progression og relationen mellem events.","Store lyd- og tekst-artefakter lagres særskilt. Events bærer referencer, så selve brokertrafikken kan holdes lettere.","Genkender talesegmentets ord og producerer tekst. Resultatet knyttes til den samme workflow-korrelation.","Oversætter den genkendte tekst mellem de valgte sprog. En ugyldig sprogkombination skal blokere videre progression.","Genererer syntetiseret tale ud fra oversættelsen. Det endelige lydartefakt bliver en del af den sporede resultatkæde.","Trin "," af 4","Pause flow Ⅱ"," i millisekunder — værdier fra afhandlingens evaluering",": Den skalerede opsætning havde højere latenstid for alle fem belastningstrin.",": Den skalerede opsætning er hurtigere ved c=1–4, men langsommere ved c=5.",": Forskellene går begge veje; ved c=5 er medianerne ens.","Afspil flow ▶","Modtager lyd, håndterer ind- og udgang og publicerer referencer til artefakter frem for at sende store lydfiler gennem eventloggen.","Identificerer et talesegment, som kan sendes videre. Afgrænsning af lyd er første led i den kontrollerede kæde."];
+const translations=Object.fromEntries(clientKeys.map(key=>[key,tr(key)]));
 ---
-<ArchiveLayout title="Realtidsoversættelse — interaktiv kandidatafhandling" description="En visuel gennemgang af arkitektur, flow og dokumenterede resultater fra en kandidatafhandling om realtidsoversættelse af tale.">
+<ArchiveLayout locale={locale} title={tr("Realtidsoversættelse — interaktiv kandidatafhandling")} description={tr("En visuel gennemgang af arkitektur, flow og dokumenterede resultater fra en kandidatafhandling om realtidsoversættelse af tale.")}>
   <article class="thesis" data-thesis>
     <header class="wrap thesis-hero">
-      <a class="archive-breadcrumb" href="/publikationer/">← Alle publikationer</a>
-      <p class="eyebrow">Kandidatafhandling / Software Engineering / SDU</p>
-      <h1>Fra tale til tale.<br/><span>En arkitektur under lup.</span></h1>
-      <p class="thesis-lead">Hvordan bygger man en sporbar, modulær pipeline til oversættelse af tale — og hvad koster det i latenstid, når AI-modellerne skal samarbejde på tværs af services?</p>
+      <a class="archive-breadcrumb" href={pathFor(locale, "/publikationer/")}>{tr("← Alle publikationer")}</a>
+      <p class="eyebrow">{tr("Kandidatafhandling / Software Engineering / SDU")}</p>
+      <h1>{tr("Fra tale til tale.")}<br/><span>{tr("En arkitektur under lup.")}</span></h1>
+      <p class="thesis-lead">{tr("Hvordan bygger man en sporbar, modulær pipeline til oversættelse af tale — og hvad koster det i latenstid, når AI-modellerne skal samarbejde på tværs af services?")}</p>
       <div class="thesis-hero-actions">
-        <a class="btn btn-primary" href="#problem">Udforsk afhandlingen ↓</a>
+        <a class="btn btn-primary" href="#problem">{tr("Udforsk afhandlingen ↓")}</a>
 
       </div>
-      <p class="thesis-source-note">Redaktionel, interaktiv formidling — ikke en ordret gengivelse. Faglig kilde: det private repository <code>Kandidat</code>, branch <code>multilanguage</code>. Original PDF afventer særskilt publiceringsgodkendelse.</p>
-      <dl class="thesis-highlights" aria-label="Udvalgte resultater fra afhandlingen">
-        <div><dt>25 / 25</dt><dd>gennemførte artefaktkæder på fast testmateriale</dd></div>
-        <div><dt>13,9 %</dt><dd>estimeret gennemsnitlig ikke-modeltid i målevinduet</dd></div>
-        <div><dt>P90 ↑</dt><dd>højere hale-latenstid i den skalerede opsætning</dd></div>
+      <p class="thesis-source-note">{tr("Redaktionel, interaktiv formidling — ikke en ordret gengivelse. Faglig kilde: det private repository")} <code>{tr("Kandidat")}</code>{tr(", branch")} <code>{tr("multilanguage")}</code>{tr(". Original PDF afventer særskilt publiceringsgodkendelse.")}</p>
+      <dl class="thesis-highlights" aria-label={tr("Udvalgte resultater fra afhandlingen")}>
+        <div><dt>25 / 25</dt><dd>{tr("gennemførte artefaktkæder på fast testmateriale")}</dd></div>
+        <div><dt>{locale === "da" ? "13,9 %" : "13.9%"}</dt><dd>{tr("estimeret gennemsnitlig ikke-modeltid i målevinduet")}</dd></div>
+        <div><dt>{tr("P90 ↑")}</dt><dd>{tr("højere hale-latenstid i den skalerede opsætning")}</dd></div>
       </dl>
     </header>
 
-    <nav class="thesis-toc" aria-label="Kapitler i afhandlingen">
+    <nav class="thesis-toc" aria-label={tr("Kapitler i afhandlingen")}>
       <div class="wrap thesis-toc-inner">
-        <a href="#problem">01 Problem</a>
-        <a href="#pipeline">02 Procesflow</a>
-        <a href="#arkitektur">03 Arkitektur</a>
-        <a href="#resultater">04 Evaluering</a>
-        <a href="#konklusion">05 Konklusion</a>
+        <a href="#problem">{tr("01 Problem")}</a>
+        <a href="#pipeline">{tr("02 Procesflow")}</a>
+        <a href="#arkitektur">{tr("03 Arkitektur")}</a>
+        <a href="#resultater">{tr("04 Evaluering")}</a>
+        <a href="#konklusion">{tr("05 Konklusion")}</a>
       </div>
     </nav>
 
     <section class="wrap thesis-chapter thesis-introduction" id="problem" aria-labelledby="problem-title">
-      <div class="thesis-chapter-number">01 / Problemstilling</div>
+      <div class="thesis-chapter-number">{tr("01 / Problemstilling")}</div>
       <div class="thesis-reading">
-        <h2 id="problem-title">Oversættelse er ikke kun et modelproblem.</h2>
-        <p>En tale-til-tale-oversættelse består af flere afhængige trin. Først skal systemet finde tale i lydstrømmen, derefter genkende ordene, oversætte dem og generere ny tale. Hvert trin kan fejle, og forsinkelserne akkumuleres gennem kæden.</p>
-        <p>Afhandlingen undersøger derfor ikke blot kvaliteten af AI-modellerne, men <strong>hvordan man orkestrerer, sporer og måler en distribueret pipeline</strong>. Centralt står et eventdrevet mikroservice-design og en kontrolleret evaluering i et lokalt k3s-miljø.</p>
-        <p class="thesis-caption">Forskningsfokus: sekventiel VAD → ASR → MT → TTS, kontrol over tilstande, sporbarhed via korrelations-id'er og måling af latenstid under belastning.</p>
+        <h2 id="problem-title">{tr("Oversættelse er ikke kun et modelproblem.")}</h2>
+        <p>{tr("En tale-til-tale-oversættelse består af flere afhængige trin. Først skal systemet finde tale i lydstrømmen, derefter genkende ordene, oversætte dem og generere ny tale. Hvert trin kan fejle, og forsinkelserne akkumuleres gennem kæden.")}</p>
+        <p>{tr("Afhandlingen undersøger derfor ikke blot kvaliteten af AI-modellerne, men")} <strong>{tr("hvordan man orkestrerer, sporer og måler en distribueret pipeline")}</strong>{tr(". Centralt står et eventdrevet mikroservice-design og en kontrolleret evaluering i et lokalt k3s-miljø.")}</p>
+        <p class="thesis-caption">{tr("Forskningsfokus: sekventiel VAD → ASR → MT → TTS, kontrol over tilstande, sporbarhed via korrelations-id'er og måling af latenstid under belastning.")}</p>
       </div>
     </section>
 
     <section class="thesis-band" id="pipeline" aria-labelledby="pipeline-title">
       <div class="wrap thesis-chapter">
-        <div class="thesis-chapter-number">02 / Interaktivt procesflow</div>
+        <div class="thesis-chapter-number">{tr("02 / Interaktivt procesflow")}</div>
         <div class="thesis-reading">
-          <h2 id="pipeline-title">Følg et talesegment gennem systemet.</h2>
-          <p>Vælg et trin for at se, hvad det gør. Afspilningen illustrerer rækkefølgen i afhandlingen; den er en forklarende animation og behandler ikke rigtig lyd.</p>
+          <h2 id="pipeline-title">{tr("Følg et talesegment gennem systemet.")}</h2>
+          <p>{tr("Vælg et trin for at se, hvad det gør. Afspilningen illustrerer rækkefølgen i afhandlingen; den er en forklarende animation og behandler ikke rigtig lyd.")}</p>
         </div>
         <div class="thesis-demo" data-pipeline>
-          <div class="thesis-flow" role="group" aria-label="Vælg pipeline-trin">
-            <button type="button" class="thesis-stage is-active" data-flow-step="0" aria-pressed="true"><span class="thesis-stage-index">01</span><strong>VAD</strong><small>Taleaktivitet</small></button>
+          <div class="thesis-flow" role="group" aria-label={tr("Vælg pipeline-trin")}>
+            <button type="button" class="thesis-stage is-active" data-flow-step="0" aria-pressed="true"><span class="thesis-stage-index">01</span><strong>{tr("VAD")}</strong><small>{tr("Taleaktivitet")}</small></button>
             <span class="thesis-flow-arrow" aria-hidden="true">→</span>
-            <button type="button" class="thesis-stage" data-flow-step="1" aria-pressed="false"><span class="thesis-stage-index">02</span><strong>ASR</strong><small>Tale → tekst</small></button>
+            <button type="button" class="thesis-stage" data-flow-step="1" aria-pressed="false"><span class="thesis-stage-index">02</span><strong>{tr("ASR")}</strong><small>{tr("Tale → tekst")}</small></button>
             <span class="thesis-flow-arrow" aria-hidden="true">→</span>
-            <button type="button" class="thesis-stage" data-flow-step="2" aria-pressed="false"><span class="thesis-stage-index">03</span><strong>MT</strong><small>Oversættelse</small></button>
+            <button type="button" class="thesis-stage" data-flow-step="2" aria-pressed="false"><span class="thesis-stage-index">03</span><strong>{tr("MT")}</strong><small>{tr("Oversættelse")}</small></button>
             <span class="thesis-flow-arrow" aria-hidden="true">→</span>
-            <button type="button" class="thesis-stage" data-flow-step="3" aria-pressed="false"><span class="thesis-stage-index">04</span><strong>TTS</strong><small>Tekst → tale</small></button>
+            <button type="button" class="thesis-stage" data-flow-step="3" aria-pressed="false"><span class="thesis-stage-index">04</span><strong>{tr("TTS")}</strong><small>{tr("Tekst → tale")}</small></button>
           </div>
           <div class="thesis-detail" aria-live="polite" aria-atomic="true">
-            <div><span class="eyebrow" data-flow-counter>Trin 1 af 4</span><h3 data-flow-title>VAD · Voice Activity Detection</h3><p data-flow-description>Identificerer et talesegment, som kan sendes videre. Afgrænsning af lyd er første led i den kontrollerede kæde.</p></div>
-            <div class="thesis-control"><button class="btn btn-primary" type="button" data-flow-play>Afspil flow ▶</button><button class="btn" type="button" data-flow-reset>Nulstil ↺</button></div>
+            <div><span class="eyebrow" data-flow-counter>{tr("Trin 1 af 4")}</span><h3 data-flow-title>{tr("VAD · Voice Activity Detection")}</h3><p data-flow-description>{tr("Identificerer et talesegment, som kan sendes videre. Afgrænsning af lyd er første led i den kontrollerede kæde.")}</p></div>
+            <div class="thesis-control"><button class="btn btn-primary" type="button" data-flow-play>{tr("Afspil flow ▶")}</button><button class="btn" type="button" data-flow-reset>{tr("Nulstil ↺")}</button></div>
           </div>
-          <p class="thesis-caption">En forenklet fremstilling. I implementeringen styrer Orchestrator faseovergange gennem events og validerer workflowets aktuelle tilstand, før næste service aktiveres.</p>
+          <p class="thesis-caption">{tr("En forenklet fremstilling. I implementeringen styrer Orchestrator faseovergange gennem events og validerer workflowets aktuelle tilstand, før næste service aktiveres.")}</p>
         </div>
       </div>
     </section>
 
     <section class="wrap thesis-chapter" id="arkitektur" aria-labelledby="architecture-title">
-      <div class="thesis-chapter-number">03 / Systemdesign</div>
+      <div class="thesis-chapter-number">{tr("03 / Systemdesign")}</div>
       <div class="thesis-reading">
-        <h2 id="architecture-title">Hvem bestemmer, hvad der sker bagefter?</h2>
-        <p>Det afgørende designvalg var <strong>central orchestration</strong> frem for, at hver AI-service selv bestemmer næste trin. Orchestrator styrer tilstandsovergange, mens Kafka transporterer kommandoer og resultater. Store lydartefakter ligger separat i MinIO.</p>
+        <h2 id="architecture-title">{tr("Hvem bestemmer, hvad der sker bagefter?")}</h2>
+        <p>{tr("Det afgørende designvalg var")} <strong>{tr("central orchestration")}</strong> {tr("frem for, at hver AI-service selv bestemmer næste trin. Orchestrator styrer tilstandsovergange, mens Kafka transporterer kommandoer og resultater. Store lydartefakter ligger separat i MinIO.")}</p>
       </div>
       <div class="thesis-architecture" data-architecture>
-        <div class="thesis-architecture-grid" role="group" aria-label="Udforsk arkitekturens komponenter">
-          <button type="button" data-architecture-node="gateway" aria-pressed="true" class="thesis-node is-active"><span>Indgang</span><strong>Gateway</strong><small>Ind- og udgående lyd</small></button>
-          <button type="button" data-architecture-node="kafka" aria-pressed="false" class="thesis-node"><span>Eventlog</span><strong>Kafka + Avro</strong><small>Kommandoer og resultater</small></button>
-          <button type="button" data-architecture-node="orchestrator" aria-pressed="false" class="thesis-node"><span>Kontrolplan</span><strong>Orchestrator</strong><small>Validerer næste fase</small></button>
-          <button type="button" data-architecture-node="workers" aria-pressed="false" class="thesis-node"><span>AI-services</span><strong>VAD · ASR · MT · TTS</strong><small>Udfører behandling</small></button>
-          <button type="button" data-architecture-node="redis" aria-pressed="false" class="thesis-node"><span>Tilstand</span><strong>Redis</strong><small>Workflowtilstand</small></button>
-          <button type="button" data-architecture-node="minio" aria-pressed="false" class="thesis-node"><span>Artefakter</span><strong>MinIO</strong><small>Lyd og større data</small></button>
+        <div class="thesis-architecture-grid" role="group" aria-label={tr("Udforsk arkitekturens komponenter")}>
+          <button type="button" data-architecture-node="gateway" aria-pressed="true" class="thesis-node is-active"><span>{tr("Indgang")}</span><strong>{tr("Gateway")}</strong><small>{tr("Ind- og udgående lyd")}</small></button>
+          <button type="button" data-architecture-node="kafka" aria-pressed="false" class="thesis-node"><span>{tr("Eventlog")}</span><strong>{tr("Kafka + Avro")}</strong><small>{tr("Kommandoer og resultater")}</small></button>
+          <button type="button" data-architecture-node="orchestrator" aria-pressed="false" class="thesis-node"><span>{tr("Kontrolplan")}</span><strong>{tr("Orchestrator")}</strong><small>{tr("Validerer næste fase")}</small></button>
+          <button type="button" data-architecture-node="workers" aria-pressed="false" class="thesis-node"><span>{tr("AI-services")}</span><strong>{tr("VAD · ASR · MT · TTS")}</strong><small>{tr("Udfører behandling")}</small></button>
+          <button type="button" data-architecture-node="redis" aria-pressed="false" class="thesis-node"><span>{tr("Tilstand")}</span><strong>{tr("Redis")}</strong><small>{tr("Workflowtilstand")}</small></button>
+          <button type="button" data-architecture-node="minio" aria-pressed="false" class="thesis-node"><span>{tr("Artefakter")}</span><strong>{tr("MinIO")}</strong><small>{tr("Lyd og større data")}</small></button>
         </div>
         <aside class="thesis-architecture-detail" aria-live="polite" aria-atomic="true">
-          <span class="eyebrow">Valgt komponent</span>
-          <h3 data-architecture-title>Gateway</h3>
-          <p data-architecture-description>Modtager lyd, håndterer ind- og udgang og publicerer referencer til artefakter frem for at sende store lydfiler gennem eventloggen.</p>
+          <span class="eyebrow">{tr("Valgt komponent")}</span>
+          <h3 data-architecture-title>{tr("Gateway")}</h3>
+          <p data-architecture-description>{tr("Modtager lyd, håndterer ind- og udgang og publicerer referencer til artefakter frem for at sende store lydfiler gennem eventloggen.")}</p>
         </aside>
       </div>
       <div class="thesis-two-column">
-        <div><h3>Claim Check</h3><p>Events bærer metadata og URI'er, mens MinIO opbevarer lyd og andre store artefakter. Det adskiller kontroltrafik fra datalagring.</p></div>
-        <div><h3>Fail-closed</h3><p>Ugyldige ruter eller manglende afhængigheder skal stoppe videre progression frem for at producere forkert output. Afhandlingen tester udvalgte fejlscenarier — ikke generel fejltolerance.</p></div>
+        <div><h3>{tr("Claim Check")}</h3><p>{tr("Events bærer metadata og URI'er, mens MinIO opbevarer lyd og andre store artefakter. Det adskiller kontroltrafik fra datalagring.")}</p></div>
+        <div><h3>{tr("Fail-closed")}</h3><p>{tr("Ugyldige ruter eller manglende afhængigheder skal stoppe videre progression frem for at producere forkert output. Afhandlingen tester udvalgte fejlscenarier — ikke generel fejltolerance.")}</p></div>
       </div>
-      <p class="thesis-caption">Diagrammet er en forenklet konceptuel oversigt baseret på designkapitlets PlantUML-kilder, ikke en fuldstændig netværkstopologi.</p>
+      <p class="thesis-caption">{tr("Diagrammet er en forenklet konceptuel oversigt baseret på designkapitlets PlantUML-kilder, ikke en fuldstændig netværkstopologi.")}</p>
     </section>
 
     <section class="thesis-band" id="resultater" aria-labelledby="evaluation-title">
       <div class="wrap thesis-chapter">
-        <div class="thesis-chapter-number">04 / Dokumenterede resultater</div>
+        <div class="thesis-chapter-number">{tr("04 / Dokumenterede resultater")}</div>
         <div class="thesis-reading">
-          <h2 id="evaluation-title">Skalering gjorde ikke systemet entydigt hurtigere.</h2>
-          <p>I de primære belastningstests med samtidighed <strong>c = 1–5</strong> gennemførte både single-lane og den skalerede opsætning uden målte fejl. Nogle medianer blev forbedret, men alle sammenlignede P90-målinger var højere i den skalerede opsætning.</p>
+          <h2 id="evaluation-title">{tr("Skalering gjorde ikke systemet entydigt hurtigere.")}</h2>
+          <p>{tr("I de primære belastningstests med samtidighed")} <strong>{tr("c = 1–5")}</strong> {tr("gennemførte både single-lane og den skalerede opsætning uden målte fejl. Nogle medianer blev forbedret, men alle sammenlignede P90-målinger var højere i den skalerede opsætning.")}</p>
         </div>
         <div class="thesis-chart" data-chart>
           <div class="thesis-chart-head">
-            <div><h3>Sammenlign latenstid</h3><p>Millisekunder · internt pipeline-målevindue</p></div>
+            <div><h3>{tr("Sammenlign latenstid")}</h3><p>{tr("Millisekunder · internt pipeline-målevindue")}</p></div>
             <div class="thesis-chart-controls">
-              <div role="group" aria-label="Vælg latenstidsmål"><button type="button" data-metric="ttft" aria-pressed="true">TTFT</button><button type="button" data-metric="ttfa" aria-pressed="false">TTFA</button></div>
-              <div role="group" aria-label="Vælg percentil"><button type="button" data-percentile="p50" aria-pressed="true">P50</button><button type="button" data-percentile="p90" aria-pressed="false">P90</button></div>
+              <div role="group" aria-label={tr("Vælg latenstidsmål")}><button type="button" data-metric="ttft" aria-pressed="true">{tr("TTFT")}</button><button type="button" data-metric="ttfa" aria-pressed="false">{tr("TTFA")}</button></div>
+              <div role="group" aria-label={tr("Vælg percentil")}><button type="button" data-percentile="p50" aria-pressed="true">{tr("P50")}</button><button type="button" data-percentile="p90" aria-pressed="false">{tr("P90")}</button></div>
             </div>
           </div>
-          <p class="thesis-chart-legend"><span><i class="thesis-key thesis-key-single"></i>Single-lane</span><span><i class="thesis-key thesis-key-scaled"></i>Skaleret</span></p>
-          <div class="thesis-chart-plot" aria-label="Søjler for samtidighed 1 til 5, tallene findes også i tabellen">
+          <p class="thesis-chart-legend"><span><i class="thesis-key thesis-key-single"></i>{tr("Single-lane")}</span><span><i class="thesis-key thesis-key-scaled"></i>{tr("Skaleret")}</span></p>
+          <div class="thesis-chart-plot" aria-label={tr("Søjler for samtidighed 1 til 5, tallene findes også i tabellen")}>
             {initial.map(item => (
               <div class="thesis-chart-row" data-chart-row>
                 <span class="thesis-c-label">c={item.c}</span>
@@ -128,52 +134,55 @@ const initial = [
               </div>
             ))}
           </div>
-          <p class="thesis-chart-message" data-chart-message aria-live="polite">TTFT P50: Den skalerede opsætning er hurtigere ved c=1–4, men langsommere ved c=5.</p>
+          <p class="thesis-chart-message" data-chart-message aria-live="polite">{tr("TTFT P50: Den skalerede opsætning er hurtigere ved c=1–4, men langsommere ved c=5.")}</p>
           <div class="thesis-table-scroll">
             <table class="thesis-table">
-              <caption data-table-caption>TTFT P50 i millisekunder — værdier fra afhandlingens evaluering</caption>
-              <thead><tr><th scope="col">Samtidighed</th><th scope="col">Single-lane (ms)</th><th scope="col">Skaleret (ms)</th></tr></thead>
+              <caption data-table-caption>{tr("TTFT P50 i millisekunder — værdier fra afhandlingens evaluering")}</caption>
+              <thead><tr><th scope="col">{tr("Samtidighed")}</th><th scope="col">{tr("Single-lane (ms)")}</th><th scope="col">{tr("Skaleret (ms)")}</th></tr></thead>
               <tbody>{initial.map(item => <tr data-table-row><th scope="row">{item.c}</th><td data-table-single>{item.single}</td><td data-table-scaled>{item.scaled}</td></tr>)}</tbody>
             </table>
           </div>
-          <p class="thesis-caption">TTFT: time to first text. TTFA: time to first audio. P50: median. P90: 90-percentil. Alle tal er afskrevet fra evalueringens sammenligningstabeller; der er ikke tale om en livebenchmark.</p>
+          <p class="thesis-caption">{tr("TTFT: time to first text. TTFA: time to first audio. P50: median. P90: 90-percentil. Alle tal er afskrevet fra evalueringens sammenligningstabeller; der er ikke tale om en livebenchmark.")}</p>
         </div>
         <div class="thesis-finding-grid">
-          <div><strong>25 / 25</strong><h3>Funktionel kæde</h3><p>Alle 25 prøver i det faste testmateriale gav både oversættelses- og TTS-artefakter. Resultatet gælder det evaluerede datasæt.</p></div>
-          <div><strong>246,2 ms</strong><h3>Estimeret ikke-modeltid</h3><p>Gennemsnitlig residualtid på tværs af 140 udvalgte korrelationer: omkring 13,9 % af gennemsnitlig intern pipelinelatenstid.</p></div>
-          <div><strong>P90 ↑</strong><h3>Langsommere hale</h3><p>Alle matchede P90-tal var dårligere ved den skalerede implementering. Placering og ressourcekonkurrence begrænser, hvad forsøget kan bevise.</p></div>
+          <div><strong>25 / 25</strong><h3>{tr("Funktionel kæde")}</h3><p>{tr("Alle 25 prøver i det faste testmateriale gav både oversættelses- og TTS-artefakter. Resultatet gælder det evaluerede datasæt.")}</p></div>
+          <div><strong>{tr("246,2 ms")}</strong><h3>{tr("Estimeret ikke-modeltid")}</h3><p>{tr("Gennemsnitlig residualtid på tværs af 140 udvalgte korrelationer: omkring 13,9 % af gennemsnitlig intern pipelinelatenstid.")}</p></div>
+          <div><strong>{tr("P90 ↑")}</strong><h3>{tr("Langsommere hale")}</h3><p>{tr("Alle matchede P90-tal var dårligere ved den skalerede implementering. Placering og ressourcekonkurrence begrænser, hvad forsøget kan bevise.")}</p></div>
         </div>
       </div>
     </section>
 
     <section class="wrap thesis-chapter thesis-conclusion" id="konklusion" aria-labelledby="conclusion-title">
-      <div class="thesis-chapter-number">05 / Konklusion og begrænsninger</div>
+      <div class="thesis-chapter-number">{tr("05 / Konklusion og begrænsninger")}</div>
       <div class="thesis-reading">
-        <h2 id="conclusion-title">Sporbarhed og kontrol er styrker. Realtid er stadig en udfordring.</h2>
-        <p>Afhandlingen viser, at eventdrevne mikroservices med central orchestration kan være et nyttigt fundament for en modulær og sporbar taleoversættelsespipeline. Det giver synlige kontrakter, kontrollerede faseovergange og mulighed for reproducerbar evaluering.</p>
-        <p>Men distribuerede grænser har en pris. Det estimerede gennemsnit på 13,9 % ikke-modeltid er et <strong>aggregat</strong>, ikke et præcist mål for hver enkelt sessions overhead. Den negative medianresidual i rapporten understreger usikkerhed ved at trække forskellige tidsstempler fra hinanden.</p>
-        <p>Evalueringen måler fra det øjeblik, Orchestrator modtager pipeline-eventet, til det endelige TTS-artefakt findes. Den måler <strong>ikke</strong> den fulde oplevede klient-til-klient-latenstid og dokumenterer ikke et produktionsklart realtidssystem.</p>
+        <h2 id="conclusion-title">{tr("Sporbarhed og kontrol er styrker. Realtid er stadig en udfordring.")}</h2>
+        <p>{tr("Afhandlingen viser, at eventdrevne mikroservices med central orchestration kan være et nyttigt fundament for en modulær og sporbar taleoversættelsespipeline. Det giver synlige kontrakter, kontrollerede faseovergange og mulighed for reproducerbar evaluering.")}</p>
+        <p>{tr("Men distribuerede grænser har en pris. Det estimerede gennemsnit på 13,9 % ikke-modeltid er et")} <strong>{tr("aggregat")}</strong>{tr(", ikke et præcist mål for hver enkelt sessions overhead. Den negative medianresidual i rapporten understreger usikkerhed ved at trække forskellige tidsstempler fra hinanden.")}</p>
+        <p>{tr("Evalueringen måler fra det øjeblik, Orchestrator modtager pipeline-eventet, til det endelige TTS-artefakt findes. Den måler")} <strong>{tr("ikke")}</strong> {tr("den fulde oplevede klient-til-klient-latenstid og dokumenterer ikke et produktionsklart realtidssystem.")}</p>
       </div>
       <div class="thesis-read-more">
-        <div><span class="eyebrow">Originalt akademisk materiale</span><h3>Læs videre i den fulde afhandling</h3><p>Her er en redigeret visuel introduktion. Metode, komplette tabeller, begrænsninger, referencer og appendikser findes i den originale afhandling.</p></div>
+        <div><span class="eyebrow">{tr("Originalt akademisk materiale")}</span><h3>{tr("Læs videre i den fulde afhandling")}</h3><p>{tr("Her er en redigeret visuel introduktion. Metode, komplette tabeller, begrænsninger, referencer og appendikser findes i den originale afhandling.")}</p></div>
         <div class="thesis-read-more-actions">
-          <p class="thesis-pdf-note">Den originale PDF er endnu ikke offentligt tilgængelig. En downloadmulighed tilføjes først efter gennemgang af publiceringsrettigheder og indhold.</p>
-          <a class="btn" href="/projekter/realtidsoversaettelse/">Se projektet →</a>
+          <p class="thesis-pdf-note">{tr("Den originale PDF er endnu ikke offentligt tilgængelig. En downloadmulighed tilføjes først efter gennemgang af publiceringsrettigheder og indhold.")}</p>
+          <a class="btn" href={pathFor(locale, "/projekter/realtidsoversaettelse/")}>{tr("Se projektet →")}</a>
         </div>
       </div>
     </section>
   </article>
+  <script type="application/json" id="thesis-i18n" set:html={JSON.stringify(translations).replace(/</g, '\\u003c')} />
   <script is:inline>
     (() => {
       const root = document.querySelector('[data-thesis]');
       if (!root) return;
+      const messages=JSON.parse(document.getElementById('thesis-i18n')?.textContent || '{}');
+      const tr=(key)=>messages[key]??key;
       const architecture = {
-        gateway: ['Gateway', 'Modtager lyd, håndterer ind- og udgang og publicerer referencer til artefakter frem for at sende store lydfiler gennem eventloggen.'],
-        kafka: ['Kafka + Avro', 'Kafka er den fælles eventlog til kommandoer og resultater. Avro-kontrakter og Schema Registry hjælper med at holde services på fælles hændelsesformater.'],
-        orchestrator: ['Pipeline Orchestrator', 'Validerer workflowtilstand, håndterer korrelations-id og beslutter, hvilken af de sekventielle VAD-, ASR-, MT- og TTS-faser der må køre næste gang.'],
-        workers: ['AI-workers', 'De selvstændige VAD-, ASR-, MT- og TTS-services udfører hver deres opgave og publicerer resultater. De vælger ikke selv den globale faseorden.'],
-        redis: ['Redis', 'Opbevarer workflowtilstand, så Orchestrator kan kontrollere progression og relationen mellem events.'],
-        minio: ['MinIO og Claim Check', 'Store lyd- og tekst-artefakter lagres særskilt. Events bærer referencer, så selve brokertrafikken kan holdes lettere.']
+        gateway: ['Gateway', tr("Modtager lyd, håndterer ind- og udgang og publicerer referencer til artefakter frem for at sende store lydfiler gennem eventloggen.")],
+        kafka: ['Kafka + Avro', tr("Kafka er den fælles eventlog til kommandoer og resultater. Avro-kontrakter og Schema Registry hjælper med at holde services på fælles hændelsesformater.")],
+        orchestrator: ['Pipeline Orchestrator', tr("Validerer workflowtilstand, håndterer korrelations-id og beslutter, hvilken af de sekventielle VAD-, ASR-, MT- og TTS-faser der må køre næste gang.")],
+        workers: ['AI-workers', tr("De selvstændige VAD-, ASR-, MT- og TTS-services udfører hver deres opgave og publicerer resultater. De vælger ikke selv den globale faseorden.")],
+        redis: ['Redis', tr("Opbevarer workflowtilstand, så Orchestrator kan kontrollere progression og relationen mellem events.")],
+        minio: ['MinIO og Claim Check', tr("Store lyd- og tekst-artefakter lagres særskilt. Events bærer referencer, så selve brokertrafikken kan holdes lettere.")]
       };
       const architectureTitle = root.querySelector('[data-architecture-title]');
       const architectureDescription = root.querySelector('[data-architecture-description]');
@@ -189,10 +198,10 @@ const initial = [
       });
 
       const flow = [
-        ['VAD · Voice Activity Detection', 'Identificerer et talesegment, som kan sendes videre. Afgrænsning af lyd er første led i den kontrollerede kæde.'],
-        ['ASR · Automatic Speech Recognition', 'Genkender talesegmentets ord og producerer tekst. Resultatet knyttes til den samme workflow-korrelation.'],
-        ['MT · Machine Translation', 'Oversætter den genkendte tekst mellem de valgte sprog. En ugyldig sprogkombination skal blokere videre progression.'],
-        ['TTS · Text-to-Speech', 'Genererer syntetiseret tale ud fra oversættelsen. Det endelige lydartefakt bliver en del af den sporede resultatkæde.']
+        ['VAD · Voice Activity Detection', tr("Identificerer et talesegment, som kan sendes videre. Afgrænsning af lyd er første led i den kontrollerede kæde.")],
+        ['ASR · Automatic Speech Recognition', tr("Genkender talesegmentets ord og producerer tekst. Resultatet knyttes til den samme workflow-korrelation.")],
+        ['MT · Machine Translation', tr("Oversætter den genkendte tekst mellem de valgte sprog. En ugyldig sprogkombination skal blokere videre progression.")],
+        ['TTS · Text-to-Speech', tr("Genererer syntetiseret tale ud fra oversættelsen. Det endelige lydartefakt bliver en del af den sporede resultatkæde.")]
       ];
       const buttons = [...root.querySelectorAll('[data-flow-step]')];
       const play = root.querySelector('[data-flow-play]');
@@ -201,7 +210,7 @@ const initial = [
       let timer = null;
       function stop() {
         if (timer !== null) { clearInterval(timer); timer = null; }
-        play.textContent = 'Afspil flow ▶';
+        play.textContent = tr("Afspil flow ▶");
       }
       function showStep(index) {
         current = index;
@@ -209,7 +218,7 @@ const initial = [
           button.classList.toggle('is-active', position === index);
           button.setAttribute('aria-pressed', String(position === index));
         });
-        root.querySelector('[data-flow-counter]').textContent = 'Trin ' + (index + 1) + ' af 4';
+        root.querySelector('[data-flow-counter]').textContent = tr("Trin ") + (index + 1) + tr(" af 4");
         root.querySelector('[data-flow-title]').textContent = flow[index][0];
         root.querySelector('[data-flow-description]').textContent = flow[index][1];
       }
@@ -218,7 +227,7 @@ const initial = [
       play.addEventListener('click', () => {
         if (timer !== null) { stop(); return; }
         showStep(0);
-        play.textContent = 'Pause flow Ⅱ';
+        play.textContent = tr("Pause flow Ⅱ");
         timer = setInterval(() => {
           if (current >= flow.length - 1) { stop(); return; }
           showStep(current + 1);
@@ -238,7 +247,7 @@ const initial = [
       };
       let selectedMetric = 'ttft';
       let selectedPercentile = 'p50';
-      const numberFormat = new Intl.NumberFormat('da-DK', {maximumFractionDigits: 1});
+      const numberFormat = new Intl.NumberFormat(document.documentElement.lang, {maximumFractionDigits: 1});
       function renderChart() {
         const series = measured[selectedMetric][selectedPercentile];
         const max = Math.max(...series[0], ...series[1]);
@@ -254,12 +263,12 @@ const initial = [
           row.querySelector('[data-table-scaled]').textContent = numberFormat.format(series[1][index]);
         });
         const label = selectedMetric.toUpperCase() + ' ' + selectedPercentile.toUpperCase();
-        root.querySelector('[data-table-caption]').textContent = label + ' i millisekunder — værdier fra afhandlingens evaluering';
+        root.querySelector('[data-table-caption]').textContent = label + tr(" i millisekunder — værdier fra afhandlingens evaluering");
         root.querySelector('[data-chart-message]').textContent = selectedPercentile === 'p90'
-          ? label + ': Den skalerede opsætning havde højere latenstid for alle fem belastningstrin.'
+          ? label + tr(": Den skalerede opsætning havde højere latenstid for alle fem belastningstrin.")
           : selectedMetric === 'ttft'
-            ? label + ': Den skalerede opsætning er hurtigere ved c=1–4, men langsommere ved c=5.'
-            : label + ': Forskellene går begge veje; ved c=5 er medianerne ens.';
+            ? label + tr(": Den skalerede opsætning er hurtigere ved c=1–4, men langsommere ved c=5.")
+            : label + tr(": Forskellene går begge veje; ved c=5 er medianerne ens.");
       }
       root.querySelectorAll('[data-metric]').forEach(button => button.addEventListener('click', () => {
         selectedMetric = button.dataset.metric;
