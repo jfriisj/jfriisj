@@ -33,3 +33,30 @@ https://github.com/jfriisj/development-knowledge/blob/main/deploy/dockhand/onboa
 This site does not mount Docker socket, existing networks, volumes or secrets. Its only published port is localhost:8188. To roll back, remove only this site's Cloudflare hostname, then stop or redeploy only the friis-jakobsen-portfolio Git stack. Never modify Gnosis, OpenCode, existing Dockhand instances, Hawser or Tailscale while launching this site.
 
 Status: review candidate, not deployed.
+
+
+## Target host: ci-runner / Proxmox VM 1214 (selected 2026-11-10)
+
+Owner selected VM 1214 to host this website. Dockhand screenshot shows Ubuntu 24.04.5 LTS, Docker 29.9.2 and Hawser Standard 0.2.52, with running containers for Cloudflare, Dockhand, Hawser, Tailscale, Gnosis and the Gnosis tunnel. SilverBullet is exited. This is visual evidence only, not an audited live runtime or network configuration.
+
+The existing documentation in development-knowledge explicitly identifies VM 1214 as a **remote Docker environment**, not the intended central Dockhand controller. Keep the VM-local Dockhand and its existing stacks untouched. Manage this new portfolio stack from the central controller through the verified VM 1214 Hawser environment; only one Dockhand must own the new portfolio Compose project.
+
+### Read-only preflight on VM 1214
+
+Run from an authorized shell. Never paste secret environment values or Cloudflare credentials:
+
+    hostname
+    docker compose ls --all
+    docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+    docker network ls --format 'table {{.Name}}\t{{.Driver}}'
+    docker inspect cloudflare-cloudflared-1 --format '{{.HostConfig.NetworkMode}}'
+    docker inspect cloudflare-cloudflared-1 --format '{{json .NetworkSettings.Networks}}'
+    sudo ss -ltn '( sport = :8188 )'
+
+Confirm that ci-runner VM 1214 is the exact selected Dockhand/Hawser environment. Validate existing Gnosis, Tunnel, Dockhand and Hawser health and compare after deployment. Verify Dockhand remote Git build context support, project identity, backups/rollback, operator permissions and port 8188 availability.
+
+**Cloudflare routing:** Cloudflared is containerized on VM 1214. Same VM does not imply shared localhost or shared Docker DNS. If cloudflared is host-networked, localhost:8188 may be usable. If bridge-networked, first review a narrowly scoped shared Docker network and a planned attachment of the existing Cloudflare container, or a separately reviewed private origin method. Preserve all existing Cloudflare hostnames and stacks. Never publish 8188 on 0.0.0.0 as a shortcut.
+
+After separate owner approval, manually deploy only the new Git stack, confirm /healthz and page content via the private origin, then add friis-jakobsen.dk to the existing Cloudflare Tunnel only when origin reachability and DNS ownership are verified. Public HTTPS, mobile/desktop display, existing container health and deployed commit SHA are required acceptance evidence. Keep automatic deployments disabled. Document rollback limited to this site's stack and hostname.
+
+**Status:** GitHub implementation is available; VM 1214 deployment and Cloudflare publication are unverified and not performed by this change.
