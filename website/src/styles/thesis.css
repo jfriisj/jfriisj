@@ -129,3 +129,59 @@
   .thesis-read-more{padding:25px}
 }
 @media(prefers-reduced-motion:reduce){.thesis-stage,.thesis-bar{transition:none}}
+
+
+/* Interactive source-grounded architecture explorer (v0.8). */
+.architecture-explorer{background:#fff;border:1px solid #d7e4dc;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px #18382e0c;margin-top:32px}
+.architecture-explorer-header{padding:28px 30px 22px;display:flex;gap:24px;align-items:start;justify-content:space-between}
+.architecture-explorer-header h3{font-size:clamp(22px,3vw,31px);letter-spacing:-.055em;margin:0 0 7px}
+.architecture-explorer-header p{color:#567066;font-size:14px;line-height:1.6;max-width:590px;margin:0}
+.architecture-legend{display:flex;flex-direction:column;gap:9px;flex-shrink:0;font-size:11px;color:#4e6e62}
+.architecture-legend span{display:flex;align-items:center;gap:8px}
+.architecture-legend-line{display:inline-block;width:22px;border-top:3px solid #6d938d}
+.architecture-legend-line.data{border-color:#4f9a79;border-top-style:dashed}
+.architecture-legend-line.state{border-color:#a1afb4;border-top-style:dotted}
+.architecture-graph-scroll{overflow-x:auto;background:radial-gradient(circle at 65% 50%,#f3faf6,#edf5ef);border-block:1px solid #dae9df;scrollbar-width:thin}
+.architecture-graph-scroll:focus-visible{outline:3px solid #1f7569;outline-offset:-4px}
+.architecture-graph{width:1000px;height:620px;position:relative;margin:0 auto}
+.architecture-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.architecture-wire{fill:none;stroke:#93b0a6;stroke-width:3;opacity:.5;transition:stroke .22s,opacity .22s,stroke-width .22s}
+.architecture-wire.data{stroke:#50967f;stroke-dasharray:8 7}
+.architecture-wire.state{stroke:#8a9d9e;stroke-dasharray:3 7}
+.architecture-wire.is-active{stroke:#0b685d;stroke-width:5;opacity:1;stroke-dasharray:10 6;animation:architecture-flow 1.4s linear infinite}
+.architecture-wire.data.is-active{stroke:#238b6e}
+@keyframes architecture-flow{to{stroke-dashoffset:-32}}
+.architecture-graph-node{position:absolute;width:205px;min-height:92px;display:flex;flex-direction:column;align-items:start;justify-content:center;gap:5px;padding:15px 17px;text-align:left;background:#fff;border:1.5px solid #a8c9ba;box-shadow:0 8px 25px #143b2915;border-radius:15px;color:#193e36;cursor:pointer;transition:background .16s,border-color .16s,box-shadow .16s,transform .16s}
+.architecture-graph-node:hover{transform:translateY(-2px);border-color:#29796b}
+.architecture-graph-node.is-in-path{border-color:#1c826c;box-shadow:0 0 0 3px #3fb38932,0 9px 24px #143b291a}
+.architecture-graph-node.is-selected{background:#194b42;color:#fff;border-color:#194b42;box-shadow:0 8px 24px #1d4a3d38}
+.architecture-graph-node:focus-visible,.architecture-steps button:focus-visible,.architecture-sequence-controls button:focus-visible{outline:3px solid #58b89c;outline-offset:4px}
+.architecture-graph-node-kind{text-transform:uppercase;letter-spacing:.075em;font-size:9px;font-weight:750;line-height:1.2;opacity:.7}
+.architecture-graph-node strong{font-size:17px;line-height:1.15;letter-spacing:-.03em}
+.architecture-graph-node small{font-size:11px;opacity:.8}
+.architecture-graph-node.node-gateway{left:50px;top:240px}
+.architecture-graph-node.node-broker{left:375px;top:240px}
+.architecture-graph-node.node-orchestrator{left:705px;top:68px}
+.architecture-graph-node.node-redis{left:705px;top:264px}
+.architecture-graph-node.node-worker{left:705px;top:448px}
+.architecture-graph-node.node-storage{left:375px;top:448px}
+.architecture-component-panel{background:#183e37;color:#e8f6ed;padding:23px 30px 26px;min-height:135px}
+.architecture-component-panel .eyebrow{color:#a3d5c3}
+.architecture-component-panel h4{font-size:25px;letter-spacing:-.04em;margin:10px 0 7px;color:#fff}
+.architecture-component-panel p{font-size:14px;line-height:1.7;max-width:780px;color:#cfe1d7;margin:0}
+.architecture-sequence{padding:27px 30px 30px}
+.architecture-sequence-heading{display:flex;flex-wrap:wrap;gap:15px;justify-content:space-between;align-items:center}
+.architecture-sequence-heading h4{font-size:22px;letter-spacing:-.04em;margin:0}
+.architecture-sequence-controls{display:flex;flex-wrap:wrap;gap:7px}
+.architecture-sequence-controls .btn{font-size:12px;padding:9px 12px}
+.architecture-sequence-controls button:disabled{opacity:.4;cursor:not-allowed}
+.architecture-steps{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:6px;margin-top:20px}
+.architecture-steps button{background:#ecf4ee;color:#3c6c5b;border:1px solid #b7d3c2;border-radius:9px;min-height:42px;cursor:pointer;font-size:12px;font-weight:720}
+.architecture-steps button:hover{border-color:#1c735f}
+.architecture-steps button.is-active{background:#1c6154;border-color:#1c6154;color:#fff}
+.architecture-step-detail{background:#f2f8f3;border-left:3px solid #2a8c73;padding:21px 23px;margin-top:17px;border-radius:0 11px 11px 0;min-height:139px}
+.architecture-step-detail h5{font-size:21px;letter-spacing:-.035em;margin:9px 0 7px;color:#20453a}
+.architecture-step-detail p{font-size:14px;color:#536c61;line-height:1.7;margin:0}
+@media(max-width:950px){.architecture-explorer-header{flex-direction:column;gap:15px}.architecture-legend{flex-direction:row;flex-wrap:wrap;gap:12px}}
+@media(max-width:640px){.architecture-explorer{border-radius:15px}.architecture-explorer-header,.architecture-component-panel,.architecture-sequence{padding:19px}.architecture-legend{font-size:10px}.architecture-steps{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}.architecture-steps button{min-height:40px}.architecture-sequence-controls .btn{font-size:11px;padding:8px}.architecture-step-detail{padding:16px}.architecture-component-panel h4{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.architecture-wire.is-active{animation:none}.architecture-wire,.architecture-graph-node{transition:none}}

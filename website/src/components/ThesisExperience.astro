@@ -1,5 +1,6 @@
 ---
 import ArchiveLayout from '../layouts/ArchiveLayout.astro';
+import ArchitectureExplorer from './ArchitectureExplorer.astro';
 import '../styles/thesis.css';
 
 const initial = [
@@ -87,21 +88,7 @@ const translations=Object.fromEntries(clientKeys.map(key=>[key,tr(key)]));
         <h2 id="architecture-title">{tr("Hvem bestemmer, hvad der sker bagefter?")}</h2>
         <p>{tr("Det afgørende designvalg var")} <strong>{tr("central orchestration")}</strong> {tr("frem for, at hver AI-service selv bestemmer næste trin. Orchestrator styrer tilstandsovergange, mens Kafka transporterer kommandoer og resultater. Store lydartefakter ligger separat i MinIO.")}</p>
       </div>
-      <div class="thesis-architecture" data-architecture>
-        <div class="thesis-architecture-grid" role="group" aria-label={tr("Udforsk arkitekturens komponenter")}>
-          <button type="button" data-architecture-node="gateway" aria-pressed="true" class="thesis-node is-active"><span>{tr("Indgang")}</span><strong>{tr("Gateway")}</strong><small>{tr("Ind- og udgående lyd")}</small></button>
-          <button type="button" data-architecture-node="kafka" aria-pressed="false" class="thesis-node"><span>{tr("Eventlog")}</span><strong>{tr("Kafka + Avro")}</strong><small>{tr("Kommandoer og resultater")}</small></button>
-          <button type="button" data-architecture-node="orchestrator" aria-pressed="false" class="thesis-node"><span>{tr("Kontrolplan")}</span><strong>{tr("Orchestrator")}</strong><small>{tr("Validerer næste fase")}</small></button>
-          <button type="button" data-architecture-node="workers" aria-pressed="false" class="thesis-node"><span>{tr("AI-services")}</span><strong>{tr("VAD · ASR · MT · TTS")}</strong><small>{tr("Udfører behandling")}</small></button>
-          <button type="button" data-architecture-node="redis" aria-pressed="false" class="thesis-node"><span>{tr("Tilstand")}</span><strong>{tr("Redis")}</strong><small>{tr("Workflowtilstand")}</small></button>
-          <button type="button" data-architecture-node="minio" aria-pressed="false" class="thesis-node"><span>{tr("Artefakter")}</span><strong>{tr("MinIO")}</strong><small>{tr("Lyd og større data")}</small></button>
-        </div>
-        <aside class="thesis-architecture-detail" aria-live="polite" aria-atomic="true">
-          <span class="eyebrow">{tr("Valgt komponent")}</span>
-          <h3 data-architecture-title>{tr("Gateway")}</h3>
-          <p data-architecture-description>{tr("Modtager lyd, håndterer ind- og udgang og publicerer referencer til artefakter frem for at sende store lydfiler gennem eventloggen.")}</p>
-        </aside>
-      </div>
+      <ArchitectureExplorer locale={locale} />
       <div class="thesis-two-column">
         <div><h3>{tr("Claim Check")}</h3><p>{tr("Events bærer metadata og URI'er, mens MinIO opbevarer lyd og andre store artefakter. Det adskiller kontroltrafik fra datalagring.")}</p></div>
         <div><h3>{tr("Fail-closed")}</h3><p>{tr("Ugyldige ruter eller manglende afhængigheder skal stoppe videre progression frem for at producere forkert output. Afhandlingen tester udvalgte fejlscenarier — ikke generel fejltolerance.")}</p></div>
@@ -176,27 +163,6 @@ const translations=Object.fromEntries(clientKeys.map(key=>[key,tr(key)]));
       if (!root) return;
       const messages=JSON.parse(document.getElementById('thesis-i18n')?.textContent || '{}');
       const tr=(key)=>messages[key]??key;
-      const architecture = {
-        gateway: ['Gateway', tr("Modtager lyd, håndterer ind- og udgang og publicerer referencer til artefakter frem for at sende store lydfiler gennem eventloggen.")],
-        kafka: ['Kafka + Avro', tr("Kafka er den fælles eventlog til kommandoer og resultater. Avro-kontrakter og Schema Registry hjælper med at holde services på fælles hændelsesformater.")],
-        orchestrator: ['Pipeline Orchestrator', tr("Validerer workflowtilstand, håndterer korrelations-id og beslutter, hvilken af de sekventielle VAD-, ASR-, MT- og TTS-faser der må køre næste gang.")],
-        workers: ['AI-workers', tr("De selvstændige VAD-, ASR-, MT- og TTS-services udfører hver deres opgave og publicerer resultater. De vælger ikke selv den globale faseorden.")],
-        redis: ['Redis', tr("Opbevarer workflowtilstand, så Orchestrator kan kontrollere progression og relationen mellem events.")],
-        minio: ['MinIO og Claim Check', tr("Store lyd- og tekst-artefakter lagres særskilt. Events bærer referencer, så selve brokertrafikken kan holdes lettere.")]
-      };
-      const architectureTitle = root.querySelector('[data-architecture-title]');
-      const architectureDescription = root.querySelector('[data-architecture-description]');
-      root.querySelectorAll('[data-architecture-node]').forEach(button => {
-        button.addEventListener('click', () => {
-          root.querySelectorAll('[data-architecture-node]').forEach(other => {
-            other.classList.toggle('is-active', other === button);
-            other.setAttribute('aria-pressed', String(other === button));
-          });
-          const item = architecture[button.dataset.architectureNode];
-          if (item) { architectureTitle.textContent = item[0]; architectureDescription.textContent = item[1]; }
-        });
-      });
-
       const flow = [
         ['VAD · Voice Activity Detection', tr("Identificerer et talesegment, som kan sendes videre. Afgrænsning af lyd er første led i den kontrollerede kæde.")],
         ['ASR · Automatic Speech Recognition', tr("Genkender talesegmentets ord og producerer tekst. Resultatet knyttes til den samme workflow-korrelation.")],

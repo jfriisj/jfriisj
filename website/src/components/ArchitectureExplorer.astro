@@ -1,0 +1,186 @@
+---
+import { translate } from '../i18n/index';
+interface Props { locale: string; }
+const { locale } = Astro.props;
+const tr = (key: string) => translate(locale, 'architectureExplorer.' + key);
+const components = [
+  { id: 'gateway', title: tr('gateway'), description: tr('gatewayDesc') },
+  { id: 'broker', title: tr('broker'), description: tr('brokerDesc') },
+  { id: 'orchestrator', title: tr('orchestrator'), description: tr('orchestratorDesc') },
+  { id: 'worker', title: tr('worker'), description: tr('workerDesc') },
+  { id: 'storage', title: tr('storage'), description: tr('storageDesc') },
+  { id: 'redis', title: tr('redis'), description: tr('redisDesc') },
+];
+const connections = [
+  { id: 'gateway-storage', kind: 'data', path: 'M 245 320 Q 295 432 385 490' },
+  { id: 'storage-gateway', kind: 'data', path: 'M 385 510 Q 280 460 245 330' },
+  { id: 'gateway-broker', kind: 'control', path: 'M 245 280 L 385 280' },
+  { id: 'broker-orchestrator', kind: 'control', path: 'M 550 270 Q 622 132 715 118' },
+  { id: 'orchestrator-broker', kind: 'control', path: 'M 710 140 Q 625 168 560 285' },
+  { id: 'broker-worker', kind: 'control', path: 'M 550 315 Q 620 442 715 494' },
+  { id: 'worker-storage', kind: 'data', path: 'M 720 512 L 560 512' },
+  { id: 'worker-broker', kind: 'control', path: 'M 710 479 Q 612 412 555 332' },
+  { id: 'broker-gateway', kind: 'control', path: 'M 385 308 L 250 308' },
+  { id: 'orchestrator-redis', kind: 'state', path: 'M 805 160 L 805 272' },
+];
+const flow = [
+  { edge: 'gateway-storage', nodes: ['gateway','storage'] },
+  { edge: 'storage-gateway', nodes: ['storage','gateway'] },
+  { edge: 'gateway-broker', nodes: ['gateway','broker'] },
+  { edge: 'broker-orchestrator', nodes: ['broker','orchestrator'] },
+  { edge: 'orchestrator-broker', nodes: ['orchestrator','broker'] },
+  { edge: 'broker-worker', nodes: ['broker','worker'] },
+  { edge: 'worker-storage', nodes: ['worker','storage'] },
+  { edge: 'worker-broker', nodes: ['worker','broker'] },
+  { edge: 'broker-orchestrator', nodes: ['broker','orchestrator'] },
+  { edge: 'broker-gateway', nodes: ['broker','gateway'] },
+  { edge: 'gateway-storage', nodes: ['gateway','storage'] },
+].map((item, index) => ({
+  ...item, title: tr('step' + (index + 1)),
+  description: tr('step' + (index + 1) + 'Desc')
+}));
+const labels = {
+  step: tr('step'), of: tr('of'), play: tr('play'),
+  pause: tr('pause'), restart: tr('restart'),
+};
+const clientData = JSON.stringify({ components, flow, labels }).replace(/</g, '\\u003c');
+---
+<div class="architecture-explorer" data-architecture-explorer>
+  <div class="architecture-explorer-header">
+    <div>
+      <h3>{tr('title')}</h3>
+      <p>{tr('intro')}</p>
+    </div>
+    <div class="architecture-legend" aria-label={tr('diagram')}>
+      <span><i class="architecture-legend-line control"></i>{tr('legend.control')}</span>
+      <span><i class="architecture-legend-line data"></i>{tr('legend.data')}</span>
+      <span><i class="architecture-legend-line state"></i>{tr('legend.state')}</span>
+    </div>
+  </div>
+  <div class="architecture-graph-scroll" tabindex="0" role="region" aria-label={tr('diagram')}>
+    <div class="architecture-graph">
+      <svg class="architecture-wires" viewBox="0 0 1000 620" aria-hidden="true" focusable="false">
+        <defs>
+          <marker id="architecture-arrow-control" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker>
+          <marker id="architecture-arrow-data" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker>
+        </defs>
+        {connections.map(c => <path class={'architecture-wire ' + c.kind} d={c.path} data-architecture-edge={c.id} marker-end={c.kind === 'state' ? undefined : 'url(#architecture-arrow-' + (c.kind === 'data' ? 'data' : 'control') + ')'} />)}
+      </svg>
+      {components.map(component => (
+        <button type="button" class={'architecture-graph-node node-' + component.id}
+          data-architecture-node={component.id} aria-pressed={component.id === 'gateway' ? 'true' : 'false'}
+          aria-label={component.title} title={component.title}>
+          <span class="architecture-graph-node-kind">{component.id === 'storage' ? tr('legend.data') : component.id === 'redis' ? tr('legend.state') : component.id === 'worker' ? tr('components') : tr('legend.control')}</span>
+          <strong>{component.title}</strong>
+          {component.id === 'worker' && <small>VAD · ASR · MT · TTS</small>}
+        </button>
+      ))}
+    </div>
+  </div>
+  <div class="architecture-component-panel">
+    <span class="eyebrow">{tr('selected')}</span>
+    <h4 data-architecture-title>{tr('gateway')}</h4>
+    <p data-architecture-description>{tr('gatewayDesc')}</p>
+  </div>
+  <div class="architecture-sequence" aria-label={tr('flow')}>
+    <div class="architecture-sequence-heading">
+      <h4>{tr('flow')}</h4>
+      <div class="architecture-sequence-controls">
+        <button type="button" class="btn" data-arch-prev disabled>{tr('prev')}</button>
+        <button type="button" class="btn btn-primary" data-arch-play>{tr('play')}</button>
+        <button type="button" class="btn" data-arch-next>{tr('next')}</button>
+        <button type="button" class="btn" data-arch-reset>{tr('restart')}</button>
+      </div>
+    </div>
+    <div class="architecture-steps" role="group" aria-label={tr('flow')}>
+      {flow.map((step, index) =>
+        <button type="button" data-architecture-step={index} aria-pressed={index === 0 ? 'true' : 'false'}
+          aria-label={tr('step') + ' ' + (index + 1) + ': ' + step.title}
+          class={index === 0 ? 'is-active' : ''}>{index + 1}</button>
+      )}
+    </div>
+    <div class="architecture-step-detail" aria-live="polite" aria-atomic="true">
+      <span class="eyebrow" data-arch-counter>{tr('step')} 1 {tr('of')} 11</span>
+      <h5 data-arch-step-title>{flow[0].title}</h5>
+      <p data-arch-step-description>{flow[0].description}</p>
+    </div>
+    <p class="thesis-caption">{tr('instructions')}</p>
+  </div>
+  <script type="application/json" data-architecture-payload set:html={clientData}/>
+</div>
+<script is:inline>
+(() => {
+  const root = document.querySelector('[data-architecture-explorer]');
+  if (!root) return;
+  const payload = root.querySelector('[data-architecture-payload]');
+  if (!payload) return;
+  const { components, flow, labels } = JSON.parse(payload.textContent);
+  const nodes = [...root.querySelectorAll('[data-architecture-node]')];
+  const stepButtons = [...root.querySelectorAll('[data-architecture-step]')];
+  const connections = [...root.querySelectorAll('[data-architecture-edge]')];
+  const prev = root.querySelector('[data-arch-prev]');
+  const next = root.querySelector('[data-arch-next]');
+  const play = root.querySelector('[data-arch-play]');
+  const reset = root.querySelector('[data-arch-reset]');
+  const title = root.querySelector('[data-architecture-title]');
+  const description = root.querySelector('[data-architecture-description]');
+  const counter = root.querySelector('[data-arch-counter]');
+  const stepTitle = root.querySelector('[data-arch-step-title]');
+  const stepDescription = root.querySelector('[data-arch-step-description]');
+  let selectedStep = 0;
+  let running = null;
+  function stop() {
+    if (running !== null) { clearInterval(running); running = null; }
+    play.textContent = labels.play;
+    play.setAttribute('aria-pressed','false');
+  }
+  function chooseComponent(id) {
+    const component = components.find(item => item.id === id);
+    if (!component) return;
+    nodes.forEach(button => {
+      const selected = button.dataset.architectureNode === id;
+      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle('is-selected', selected);
+    });
+    title.textContent = component.title;
+    description.textContent = component.description;
+  }
+  function showStep(index) {
+    selectedStep = Math.max(0, Math.min(index, flow.length - 1));
+    const step = flow[selectedStep];
+    stepButtons.forEach((button, position) => {
+      const active = position === selectedStep;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    nodes.forEach(button => button.classList.toggle('is-in-path', step.nodes.includes(button.dataset.architectureNode)));
+    connections.forEach(edge => edge.classList.toggle('is-active', edge.dataset.architectureEdge === step.edge));
+    counter.textContent = labels.step + ' ' + (selectedStep + 1) + ' ' + labels.of + ' ' + flow.length;
+    stepTitle.textContent = step.title;
+    stepDescription.textContent = step.description;
+    prev.disabled = selectedStep === 0;
+    next.disabled = selectedStep === flow.length - 1;
+  }
+  nodes.forEach(button => button.addEventListener('click', () => chooseComponent(button.dataset.architectureNode)));
+  stepButtons.forEach(button => button.addEventListener('click', () => {
+    stop();
+    showStep(Number(button.dataset.architectureStep));
+  }));
+  prev.addEventListener('click', () => { stop(); showStep(selectedStep - 1); });
+  next.addEventListener('click', () => { stop(); showStep(selectedStep + 1); });
+  reset.addEventListener('click', () => { stop(); showStep(0); });
+  play.addEventListener('click', () => {
+    if (running !== null) { stop(); return; }
+    if (selectedStep >= flow.length - 1) showStep(0);
+    play.textContent = labels.pause;
+    play.setAttribute('aria-pressed','true');
+    running = setInterval(() => {
+      if (selectedStep >= flow.length - 1) { stop(); return; }
+      showStep(selectedStep + 1);
+      if (selectedStep >= flow.length - 1) stop();
+    }, 1600);
+  });
+  chooseComponent('gateway');
+  showStep(0);
+})();
+</script>
