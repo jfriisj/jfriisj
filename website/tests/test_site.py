@@ -136,7 +136,7 @@ class SiteTests(unittest.TestCase):
         for html_file in DIST.rglob("*.html"):
             with self.subTest(page=str(html_file.relative_to(DIST))):
                 html = html_file.read_text(encoding="utf-8")
-                links = re.findall(r'<link\\s+rel="alternate"\\s+hreflang="([^"]+)"\\s+href="([^"]+)"', html)
+                links = re.findall(r'<link\s+rel="alternate"\s+hreflang="([^"]+)"\s+href="([^"]+)"', html)
                 names = [code for code, _ in links]
                 self.assertEqual(len(names), len(set(names)))
                 self.assertEqual(set(locales) | {"x-default"}, set(names))
