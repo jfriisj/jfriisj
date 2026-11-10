@@ -173,3 +173,11 @@ Featured cases:
 All three papers have **multiple authors**. The case-study content attributes documented individual roles where the paper states them; the caching paper does not substantiate individual module ownership. These are *editorial summaries and reproductions of numerical results*, not full published academic papers. Original PDFs are **not copied to this public repository**; request explicit approval of rights and coauthors before releasing the PDFs, original figures or other source artifacts.
 
 The current pages use clickable process stages and tabbed numeric comparisons with accessible HTML tables. No live music playback, VR execution or model inference is represented. Charts are built from reported numbers, not live data. A new academic project only needs one data record, three locale strings for the card, and its content keys — not a new Astro layout.
+
+## UX audit follow-up, v1.0
+
+First bounded slice of the November 2026 source-based UI/UX audit: make the first viewport immediately identify software-engineering experience; direct the primary hero action to the three academic cases; remove misleading empty category filters from the curated three-card homepage section; provide a source-bounded, quickly skimmable challenge/contribution/result summary and onward navigation on every academic case; add a keyboard skip link on every page using the shared Astro layouts.
+
+The audit identified missing direct contact details. **No new personal email, phone or LinkedIn URL has been invented or published.** The GitHub profile is clearly labelled as such; the direct contact destination needs owner approval before a contact CTA can be considered complete.
+
+This is not a browser-verified visual accessibility audit. Review at 320/375/390/768/1280 px, with keyboard, 200% zoom, screen reader and both locales. Remaining audit actions include visual project differentiation, mobile chart testing, formal WCAG checks, social previews and component consolidation.
