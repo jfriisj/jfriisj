@@ -1,5 +1,5 @@
 /* The interactive thesis: scoped to the editorial case study only. */
-.thesis{--thesis-ink:#1a3030;--thesis-green:#1f7569;--thesis-light:#e8f3ed;--thesis-line:#cddfd5;overflow:hidden}
+.thesis{--thesis-ink:#1a3030;--thesis-green:#1f7569;--thesis-light:#e8f3ed;--thesis-line:#cddfd5;overflow:clip}
 .thesis-hero{padding-top:80px;padding-bottom:70px;position:relative}
 .thesis-hero::after{content:"";position:absolute;z-index:-1;right:-210px;top:65px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,#d8e9dd 0,#d8e9dd00 72%);pointer-events:none}
 .thesis-hero h1{max-width:960px;font-size:clamp(44px,7.6vw,103px);font-weight:670;letter-spacing:-.075em;line-height:1.035;margin:17px 0 28px}
@@ -113,9 +113,8 @@
   .thesis-chapter,.thesis-band .thesis-chapter{padding-block:59px}
   .thesis-reading p{font-size:15px}
   .thesis-demo,.thesis-chart{padding:16px;border-radius:16px}
-  .thesis-flow{display:grid;grid-template-columns:1fr 24px 1fr;gap:6px}
-  .thesis-flow-arrow:nth-of-type(4){display:none}
-  .thesis-flow-arrow:nth-of-type(2){display:none}
+  .thesis-flow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .thesis-flow-arrow{display:none}
   .thesis-stage{min-height:94px;padding:13px}
   .thesis-stage strong{font-size:24px}
   .thesis-stage small{font-size:10px}
