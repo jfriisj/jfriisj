@@ -167,6 +167,35 @@ class SiteTests(unittest.TestCase):
         self.assertIn("switchPath(code, pathname)", switcher)
         self.assertNotIn("destination.pathname.endsWith('/en/')", switcher)
 
+
+    def test_architecture_explorer_source_grounding(self):
+        from html import unescape
+        for prefix, expected in (("", "Interaktiv systemarkitektur"), ("en/", "Interactive system architecture")):
+            page = DIST / prefix / "publikationer" / "analysis-and-design-of-a-platform-for-real-time-speech-translation" / "index.html"
+            markup = unescape(page.read_text(encoding="utf-8"))
+            with self.subTest(locale=prefix or "da"):
+                self.assertIn('data-architecture-explorer', markup)
+                self.assertIn('data-architecture-payload', markup)
+                for name in ("gateway", "broker", "orchestrator", "worker", "storage", "redis"):
+                    self.assertIn('data-architecture-node="' + name + '"', markup)
+                self.assertIn('data-architecture-edge="gateway-storage"', markup)
+                self.assertIn('data-architecture-edge="broker-orchestrator"', markup)
+                self.assertIn('data-architecture-edge="orchestrator-redis"', markup)
+                self.assertEqual(len(re.findall(r'data-architecture-step="\\d+"', markup)), 11)
+                self.assertIn(expected, markup)
+                self.assertIn('pipeline.completed', markup)
+                self.assertIn('tts_audio_uri', markup)
+                self.assertIn('input_uri', markup)
+                self.assertIn('output_uri', markup)
+
+    def test_architecture_explorer_controls_and_reduced_motion(self):
+        component = (ROOT / "src" / "components" / "ArchitectureExplorer.astro").read_text(encoding="utf-8")
+        css = (ROOT / "src" / "styles" / "thesis.css").read_text(encoding="utf-8")
+        for marker in ('data-arch-prev', 'data-arch-next', 'data-arch-play', 'data-arch-reset', "aria-pressed", "aria-live"):
+            self.assertIn(marker, component)
+        self.assertIn('@media(prefers-reduced-motion:reduce)', css)
+        self.assertNotIn("fetch(", component)
+
     def test_drafts_not_published(self):
         self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
         self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))

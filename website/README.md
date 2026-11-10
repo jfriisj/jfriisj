@@ -144,3 +144,19 @@ Language-specific canonical and `hreflang` tags are generated for each route. Th
 - CI still runs on each PR; this release does **not** include an npm lockfile. Dependency-locking must be done using npm against the real dependency registry, then `npm ci` can replace `npm install` in CI and the Docker builder. Do not invent a package-lock.
 
 **Deployment:** No automation. Merge after CI and review; manually Git Sync → Rebuild → Deploy the existing portfolio stack in Dockhand.
+
+## Interactive thesis architecture explorer (v0.8)
+
+The thesis contains one shared `ArchitectureExplorer.astro` component, rendered on the existing Danish and English publication routes. The architecture component and its 11-step Claim Check sequence are sourced from the private `jfriisj/Kandidat` repository on branch `multilanguage`:
+
+- `report/figures/planuml/design_orchestration.puml` — Gateway, shared event log, centrally coordinated orchestration and pipeline workers;
+- `report/figures/planuml/design_claim_check_flow.puml` — the **eleven** recorded control/data messages from storing input audio to retrieving synthesized speech;
+- `report/figures/planuml/design_deployment_topology.puml` — backing workflow state and artifact storage dependencies.
+
+The interactive flow is a **conceptual, editorial visualization**, not a live execution or a measured performance trace. Its illustrated messages are examples of the documented control-plane and data-plane handoffs. Redis is shown as a supporting state dependency, not an invented twelfth stage. All explanatory strings come from shared semantic `architectureExplorer.*` translation keys in `da.json` and `en.json`; geometry, event transitions and code are reused.
+
+No PDF, private source diagram, source data, or generated academic artifact was copied from the private repository. The publicly released visualization uses fresh HTML/SVG/CSS primitives and explicitly credits the source in the publication.
+
+Review: build, run site tests, inspect the architecture on desktop and narrow screens (diagram is horizontally scrollable), Tab through the component and 11 step buttons, try previous/next/play/reset, check aria-live text and reduced-motion settings in both locales.
+
+Manual deployment remains: reviewed merge → Dockhand Git Sync → Rebuild → Deploy only the portfolio stack.
