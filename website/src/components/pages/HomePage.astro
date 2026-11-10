@@ -19,9 +19,9 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content={tr("Personlig portfolio for en elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Erfaring fra el og industri, software, projekter og publikationer.")}>
+  <meta name="description" content={tr("home.meta.description")}>
   <meta name="theme-color" content="#f6f7f3">
-  <title>{tr("Friis-Jakobsen | Om mig, erfaring og projekter")}</title>
+  <title>{tr("home.meta.title")}</title>
   <link rel="canonical" href={new URL(pathFor(locale, '/'), Astro.site).toString()} />
   {locales.map(code => <link rel="alternate" hreflang={code} href={new URL(pathFor(code,'/'),Astro.site).toString()} />)}
   <link rel="alternate" hreflang="x-default" href={new URL('/',Astro.site).toString()} />
@@ -46,10 +46,10 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
     <section class="wrap hero" id="profil" aria-labelledby="hero-title">
       <div>
         <div class="eyebrow">{tr("Personlig portfolio / friis-jakobsen.dk")}</div>
-        <h1 class="display" id="hero-title">{tr("Teknologi.")}<br><span class="hero-highlight">{tr("Håndværk.")}</span><br>{tr("Perspektiv.")}</h1>
-        <p class="lead">{tr("Jeg er elektriker, civilingeniør i Software Engineering og selvstændig erhvervsdrivende. Min erfaring forbinder elinstallationer og industri med udvikling af software og tekniske systemer.")}</p>
-        <div class="hero-actions"><a class="btn btn-primary" href="#om-mig">{tr("Læs om min baggrund")} <span aria-hidden="true">↘</span></a><a class="btn" href="#projekter">{tr("Se projekter")} <span aria-hidden="true">→</span></a></div>
-        <div class="hero-sub"><span class="marker" aria-hidden="true"></span>{tr("Portfolio for faglig erfaring, projekter, rapporter og artikler")}</div>
+        <h1 class="display" id="hero-title">{tr("home.hero.line1")}<br><span class="hero-highlight">{tr("home.hero.line2")}</span><br>{tr("home.hero.line3")}</h1>
+        <p class="lead">{tr("home.hero.lead")}</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#om-mig">{tr("home.hero.primaryCta")} <span aria-hidden="true">↘</span></a><a class="btn" href="#projekter">{tr("home.hero.secondaryCta")} <span aria-hidden="true">→</span></a></div>
+        <div class="hero-sub"><span class="marker" aria-hidden="true"></span>{tr("home.hero.caption")}</div>
       </div>
       <div class="hero-visual" aria-label={tr("Illustration, der forbinder el og industri, software og selvstændig virksomhed")} role="img">
         <div class="connector"></div><div class="connector b"></div><div class="orbit"><span class="orbit-satellite" aria-hidden="true"></span></div>

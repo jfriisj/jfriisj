@@ -18,6 +18,10 @@ for (const file of names) {
   catalogs.set(file, data);
 }
 const baseline = Object.keys(catalogs.get('da.json')).sort();
+const stableKeyPattern = /^[a-z][a-z0-9]*(?:\.[a-z][a-zA-Z0-9]*)+$/;
+const stableKeys = baseline.filter(key => stableKeyPattern.test(key));
+const accidentalDuplicates = stableKeys.filter(key => !catalogs.get('da.json')[key].trim());
+if (accidentalDuplicates.length) throw new Error('Invalid stable translation values: ' + accidentalDuplicates.join(', '));
 for (const [file, data] of catalogs) {
   const keys = Object.keys(data);
   const missing = baseline.filter(key => !(key in data));

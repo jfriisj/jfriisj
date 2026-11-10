@@ -124,6 +124,49 @@ class SiteTests(unittest.TestCase):
         self.assertIn("Independent software initiative", project)
         self.assertIn("domain modelling", project)
 
+
+    def test_language_alternates_link_to_real_pages(self):
+        import json
+        from urllib.parse import urlparse
+        locales_dir = ROOT / "src" / "i18n" / "locales"
+        locales = sorted(path.stem for path in locales_dir.glob("*.json"))
+        for locale in locales:
+            home = DIST / ("index.html" if locale == "da" else f"{locale}/index.html")
+            self.assertTrue(home.exists(), home)
+        for html_file in DIST.rglob("*.html"):
+            with self.subTest(page=str(html_file.relative_to(DIST))):
+                html = html_file.read_text(encoding="utf-8")
+                links = re.findall(r'<link\\s+rel="alternate"\\s+hreflang="([^"]+)"\\s+href="([^"]+)"', html)
+                names = [code for code, _ in links]
+                self.assertEqual(len(names), len(set(names)))
+                self.assertEqual(set(locales) | {"x-default"}, set(names))
+                for code, href in links:
+                    parsed = urlparse(href)
+                    self.assertEqual(parsed.netloc, "friis-jakobsen.dk")
+                    relative = parsed.path.lstrip("/")
+                    target = DIST / relative / "index.html" if relative else DIST / "index.html"
+                    self.assertTrue(target.exists(), f"{html_file}: {code} -> {href}")
+
+    def test_hero_uses_stable_translation_keys(self):
+        import json
+        keys = (
+            "home.meta.title", "home.meta.description",
+            "home.hero.line1", "home.hero.line2", "home.hero.line3",
+            "home.hero.lead", "home.hero.primaryCta",
+            "home.hero.secondaryCta", "home.hero.caption",
+        )
+        for code in ("da", "en"):
+            values = json.loads((ROOT / "src" / "i18n" / "locales" / f"{code}.json").read_text(encoding="utf-8"))
+            self.assertTrue(all(isinstance(values.get(key), str) and values[key].strip() for key in keys))
+        source = (ROOT / "src" / "components" / "pages" / "HomePage.astro").read_text(encoding="utf-8")
+        self.assertIn('tr("home.hero.line1")', source)
+        self.assertIn('tr("home.hero.lead")', source)
+
+    def test_language_switcher_is_locale_agnostic(self):
+        switcher = (ROOT / "src" / "components" / "LanguageSwitcher.astro").read_text(encoding="utf-8")
+        self.assertIn("switchPath(code, pathname)", switcher)
+        self.assertNotIn("destination.pathname.endsWith('/en/')", switcher)
+
     def test_drafts_not_published(self):
         self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
         self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))
