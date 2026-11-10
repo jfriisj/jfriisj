@@ -25,7 +25,7 @@ const typeLabel = tr(({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieo
       {pub.date && <span>{pub.date.toLocaleDateString('da-DK', { year: 'numeric', month: 'long' })}</span>}
       {pub.authors && <span>{pub.authors.join(', ')}</span>}
     </div>
-    <div class="detail-tags">{pub.tags.map(tag => <span>{tag}</span>)}</div>
+    <div class="detail-tags">{pub.tags.map(tag => <span>{tr(tag)}</span>)}</div>
     <div class="detail-actions">
       {pub.pdf ? (
         <>

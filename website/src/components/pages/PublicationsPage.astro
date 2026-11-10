@@ -39,7 +39,7 @@ const tr=(key:string)=>translate(locale,key);
           <span class="meta">{tr(labels[entry.data.type])}{entry.data.date ? ' · ' + entry.data.date.getFullYear() : ''}{entry.data.pdf ? ' · PDF' : ''}</span>
           <h2>{tr(`publication.${entry.id}.title`)}</h2>
           <p>{tr(`publication.${entry.id}.summary`)}</p>
-          <span class="tags">{entry.data.tags.map(tag => <span>{tag}</span>)}</span>
+          <span class="tags">{entry.data.tags.map(tag => <span>{tr(tag)}</span>)}</span>
         </a>)}
       </div>
     ) : <p class="archive-empty">{tr("Ingen publikationer er offentliggjort endnu.")}</p>}

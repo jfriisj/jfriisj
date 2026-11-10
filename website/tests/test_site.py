@@ -114,7 +114,7 @@ class SiteTests(unittest.TestCase):
     def test_english_content_and_thesis(self):
         en = (DIST / "en/publikationer/analysis-and-design-of-a-platform-for-real-time-speech-translation/index.html").read_text(encoding="utf-8")
         self.assertIn("From speech to speech.", en)
-        self.assertIn("Explore the architecture.", en)
+        self.assertIn("Exploring the architecture.", en)
         self.assertIn("Compare latency", en)
         self.assertIn("Traceability and control are strengths.", en)
         self.assertIn('data-flow-step="3"', en)

@@ -30,7 +30,7 @@ const translations=Object.fromEntries(clientKeys.map(key=>[key,tr(key)]));
       <p class="thesis-source-note">{tr("Redaktionel, interaktiv formidling — ikke en ordret gengivelse. Faglig kilde: det private repository")} <code>{tr("Kandidat")}</code>{tr(", branch")} <code>{tr("multilanguage")}</code>{tr(". Original PDF afventer særskilt publiceringsgodkendelse.")}</p>
       <dl class="thesis-highlights" aria-label={tr("Udvalgte resultater fra afhandlingen")}>
         <div><dt>25 / 25</dt><dd>{tr("gennemførte artefaktkæder på fast testmateriale")}</dd></div>
-        <div><dt>13,9 %</dt><dd>{tr("estimeret gennemsnitlig ikke-modeltid i målevinduet")}</dd></div>
+        <div><dt>{locale === "da" ? "13,9 %" : "13.9%"}</dt><dd>{tr("estimeret gennemsnitlig ikke-modeltid i målevinduet")}</dd></div>
         <div><dt>{tr("P90 ↑")}</dt><dd>{tr("højere hale-latenstid i den skalerede opsætning")}</dd></div>
       </dl>
     </header>

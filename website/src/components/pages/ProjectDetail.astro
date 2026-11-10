@@ -21,7 +21,7 @@ const typeLabel=tr(`project.${entry.id}.typeLabel`);
     <div class="detail-meta">
       <span>{tr("Projekt")}</span>{project.year && <span>· {project.year}</span>}
     </div>
-    <div class="detail-tags">{project.tags.map(tag => <span>{tag}</span>)}</div>
+    <div class="detail-tags">{project.tags.map(tag => <span>{tr(tag)}</span>)}</div>
     {project.externalUrl && <div class="detail-actions"><a class="btn" href={project.externalUrl} target="_blank" rel="noopener noreferrer">{tr("Eksternt projektlink ↗")}</a></div>}
   </section>
   <section class="wrap archive-footer-space">
