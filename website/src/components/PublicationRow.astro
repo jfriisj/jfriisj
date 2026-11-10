@@ -14,5 +14,5 @@ const label = ({ rapport: 'Rapport', artikel: 'Artikel', opgave: 'Studieopgave',
     <h3 class="pub-name"><a href={'/publikationer/' + entry.id + '/'}>{pub.title}</a></h3>
     <p>{pub.summary}</p>
   </div>
-  <span class="pub-status">{pub.pdf ? 'PDF tilgængelig' : 'PDF afventes'}</span>
+  <span class="pub-status">{pub.pdf ? 'Læs online · PDF' : 'Læs online'}</span>
 </article>
