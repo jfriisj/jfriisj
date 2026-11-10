@@ -253,6 +253,32 @@ class SiteTests(unittest.TestCase):
                     self.assertIn(name, values)
                     self.assertTrue(values[name].strip())
 
+
+    def test_ux_primary_ctas_and_no_empty_home_filters(self):
+        for language, label in (("", "Se studieprojekter"), ("en/", "Explore academic projects")):
+            html = (DIST / language / "index.html").read_text(encoding="utf-8")
+            self.assertIn(label, html)
+            self.assertIn('href="#projekter"', html)
+            self.assertIn('href="#kontakt"', html)
+            self.assertNotIn('class="project-filters"', html)
+            self.assertIn('class="skip-link"', html)
+            self.assertIn('href="#top"', html)
+        for language in ("", "en/"):
+            html = (DIST / language / "projekter" / "index.html").read_text(encoding="utf-8")
+            self.assertIn('class="skip-link"', html)
+            self.assertIn('tabindex="-1"', html)
+
+    def test_academic_case_at_a_glance_and_onward_links(self):
+        slugs = ("adaptive-game-soundtracks", "co-located-vr", "work-storage-caching")
+        for language in ("", "en/"):
+            for slug in slugs:
+                html = (DIST / language / "projekter" / slug / "index.html").read_text(encoding="utf-8")
+                with self.subTest(language=language or "da", slug=slug):
+                    self.assertIn("academic-glance-grid", html)
+                    self.assertIn("academic-footer-actions", html)
+                    self.assertIn("academic.glance", (ROOT / "src" / "components" / "AcademicCase.astro").read_text(encoding="utf-8"))
+                    self.assertIn('href="/' + language + '#kontakt"', html)
+
     def test_drafts_not_published(self):
         self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
         self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))

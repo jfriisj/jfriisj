@@ -28,6 +28,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
   
 </head>
 <body>
+  <a class="skip-link" href="#top">{tr("accessibility.skip")}</a>
   <div class="scroll-progress" aria-hidden="true"></div>
   <header class="header">
     <nav class="wrap nav" aria-label={tr("Hovednavigation")}>
@@ -42,13 +43,13 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
       <a class="nav-contact" href="#kontakt">{tr("Lad os tage en snak")} <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
-  <main id="top">
+  <main id="top" tabindex="-1">
     <section class="wrap hero" id="profil" aria-labelledby="hero-title">
       <div>
-        <div class="eyebrow">{tr("Personlig portfolio / friis-jakobsen.dk")}</div>
+        <div class="eyebrow">{tr("home.hero.role")}</div>
         <h1 class="display" id="hero-title">{tr("home.hero.line1")}<br><span class="hero-highlight">{tr("home.hero.line2")}</span><br>{tr("home.hero.line3")}</h1>
         <p class="lead">{tr("home.hero.lead")}</p>
-        <div class="hero-actions"><a class="btn btn-primary" href="#om-mig">{tr("home.hero.primaryCta")} <span aria-hidden="true">↘</span></a><a class="btn" href="#projekter">{tr("home.hero.secondaryCta")} <span aria-hidden="true">→</span></a></div>
+        <div class="hero-actions"><a class="btn btn-primary" href="#projekter">{tr("home.hero.primaryCta")} <span aria-hidden="true">↘</span></a><a class="btn" href="#kontakt">{tr("home.hero.secondaryCta")} <span aria-hidden="true">→</span></a></div>
         <div class="hero-sub"><span class="marker" aria-hidden="true"></span>{tr("home.hero.caption")}</div>
       </div>
       <div class="hero-visual" aria-label={tr("Illustration, der forbinder el og industri, software og selvstændig virksomhed")} role="img">
@@ -110,8 +111,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
       </div>
     </section>
     <section class="section wrap" id="projekter" aria-labelledby="projects-title">
-      <div class="section-head" data-reveal><div><div class="eyebrow">{tr("04 / Udvalgte projekter")}</div><h2 class="section-title" id="projects-title">{tr("Fra idé til løsning.")}</h2></div><p class="section-intro">{tr("Projekter fra studiet, egne softwareinitiativer og teknisk arbejde. Hvert projekt kan senere få sin egen side med metode, resultater og dokumentation.")}</p></div>
-      <div class="project-filters" role="group" aria-label={tr("Filtrer projekter")}><button class="filter-btn" data-project-filter="alle" aria-pressed="true">{tr("Alle projekter")}</button><button class="filter-btn" data-project-filter="software" aria-pressed="false">{tr("Software")}</button><button class="filter-btn" data-project-filter="research" aria-pressed="false">{tr("Studie & research")}</button><button class="filter-btn" data-project-filter="automation" aria-pressed="false">{tr("Automation")}</button></div>
+      <div class="section-head" data-reveal><div><div class="eyebrow">{tr("04 / Udvalgte projekter")}</div><h2 class="section-title" id="projects-title">{tr("Fra idé til løsning.")}</h2></div><p class="section-intro">{tr("home.projects.intro")}</p></div>
       <div class="projects-meta"><span class="swipe-hint">{tr("Swipe for at udforske projekter")} <span aria-hidden="true">↔</span></span><span class="project-position" id="project-position">01 / 03</span></div>
       <div class="projects-grid" tabindex="0" role="region" aria-label={tr("Projektkort, kan rulles vandret på mobil")}>
         {featuredProjects.map(project => <ProjectCard entry={project} locale={locale} />)}
@@ -125,7 +125,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
       <a class="section-more" href={pathFor(locale,"/publikationer/")}>{tr("Se alle publikationer")} <span aria-hidden="true">→</span></a>
       <p class="note">{tr("PDF-filer offentliggøres løbende, når dokumenterne er gennemgået og klar.")}</p>
     </div></section>
-    <section class="contact-section" id="kontakt" aria-labelledby="contact-title"><div class="wrap contact-inner" data-reveal><div><div class="eyebrow">{tr("06 / Kontakt")}</div><h2 id="contact-title">{tr("Skal vi udveksle idéer?")}</h2><p>{tr("Jeg er interesseret i faglig sparring, projekter og nye muligheder på tværs af teknik, industri og software.")}</p></div><div class="contact-actions"><a class="btn btn-primary" href="https://github.com/jfriisj" target="_blank" rel="noopener noreferrer">{tr("GitHub")} <span aria-hidden="true">↗</span></a><a class="btn" href="#top">{tr("Til toppen")} <span aria-hidden="true">↑</span></a></div></div></section>
+    <section class="contact-section" id="kontakt" aria-labelledby="contact-title"><div class="wrap contact-inner" data-reveal><div><div class="eyebrow">{tr("06 / Kontakt")}</div><h2 id="contact-title">{tr("Skal vi udveksle idéer?")}</h2><p>{tr("Jeg er interesseret i faglig sparring, projekter og nye muligheder på tværs af teknik, industri og software.")}</p></div><div class="contact-actions"><a class="btn btn-primary" href="https://github.com/jfriisj" target="_blank" rel="noopener noreferrer">{tr("home.contact.github")} <span aria-hidden="true">↗</span></a><a class="btn" href="#top">{tr("Til toppen")} <span aria-hidden="true">↑</span></a></div><p class="contact-disclosure">{tr("home.contact.note")}</p></div></section>
   </main>
   <nav class="mobile-dock" aria-label={tr("Hurtig navigation")}>
     <a href="#profil" data-dock="profil"><span class="dock-icon" aria-hidden="true">⌂</span><span>{tr("Profil")}</span></a>
@@ -133,7 +133,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
     <a href="#projekter" data-dock="projekter"><span class="dock-icon" aria-hidden="true">▦</span><span>{tr("Projekter")}</span></a>
     <a href="#publikationer" data-dock="publikationer"><span class="dock-icon" aria-hidden="true">≡</span><span>{tr("Artikler")}</span></a>
   </nav>
-  <footer class="footer"><div class="wrap footer-inner"><span class="brand">{tr("friis—jakobsen.")}</span><span>{tr("Elektriker · Civilingeniør i software · Selvstændig")}</span><span>{tr("Kontaktoplysninger opdateres løbende")}</span></div></footer>
+  <footer class="footer"><div class="wrap footer-inner"><span class="brand">{tr("friis—jakobsen.")}</span><span>{tr("Elektriker · Civilingeniør i software · Selvstændig")}</span><span>{tr("home.contact.note")}</span></div></footer>
   <script is:inline src="/scripts/home.js"></script>
 </body>
 </html>

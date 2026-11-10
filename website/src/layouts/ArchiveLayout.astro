@@ -21,6 +21,7 @@ import '../styles/i18n.css';
     <title>{title} | Friis-Jakobsen</title>
   </head>
   <body>
+    <a class="skip-link" href="#top">{tr("accessibility.skip")}</a>
     <header class="header">
       <nav class="wrap nav" aria-label={tr("Hovednavigation")}>
         <a class="brand" href={pathFor(locale,"/")} aria-label={tr("Friis-Jakobsen, til forsiden")}>{tr("friis—jakobsen")}<span class="dot">.</span></a>
@@ -40,7 +41,7 @@ import '../styles/i18n.css';
       <a class="nav-contact" href={pathFor(locale,"/") + "#kontakt"}>{tr("Kontakt")} <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
-    <main class="archive-page" id="top">
+    <main class="archive-page" id="top" tabindex="-1">
       <slot />
     </main>
     <nav class="mobile-dock" aria-label={tr("Hurtig navigation")}>

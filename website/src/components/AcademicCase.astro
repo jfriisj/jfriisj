@@ -15,6 +15,8 @@ const clientPayload = JSON.stringify({
   charts: caseStudy.charts.map(view => ({title:tx('chart.'+view.key),unit:view.unit,max:view.max,rows:view.rows})),
   locale
 }).replace(/</g, '\\u003c');
+const caseIds = Object.keys(academicCases) as (keyof typeof academicCases)[];
+const nextId = caseIds[(caseIds.indexOf(id) + 1) % caseIds.length];
 const formatNumber = (n:number)=>new Intl.NumberFormat(locale, {maximumFractionDigits: 2}).format(n);
 ---
 <ArchiveLayout locale={locale} title={tx('title')} description={tx('summary')}>
@@ -24,6 +26,15 @@ const formatNumber = (n:number)=>new Intl.NumberFormat(locale, {maximumFractionD
       <div class="eyebrow">{tx('typeLabel')}</div>
       <h1>{tx('title')}</h1>
       <p class="academic-lead">{tx('summary')}</p>
+      <aside class="academic-glance" aria-label={tr('academic.glance.title')}>
+        <h2>{tr('academic.glance.title')}</h2>
+        <div class="academic-glance-grid">
+          {(['challenge', 'role', 'result'] as const).map(key => <div>
+            <h3>{tr('academic.glance.' + key)}</h3>
+            <p>{tx('glance.' + key)}</p>
+          </div>)}
+        </div>
+      </aside>
       <dl class="academic-metrics">
         {caseStudy.metrics.map(metric => <div class="academic-metric">
           <dt>{metric.value}</dt>
@@ -116,6 +127,10 @@ const formatNumber = (n:number)=>new Intl.NumberFormat(locale, {maximumFractionD
       <p><strong>{caseStudy.source}</strong></p>
       <p>{tr('academic.paper.note')}</p>
       <p>{tr('academic.paper.notice')}</p>
+      <div class="academic-footer-actions">
+        <a class="btn btn-primary" href={pathFor(locale, '/') + '#kontakt'}>{tr('academic.contact')} <span aria-hidden="true">↗</span></a>
+        <a class="btn" href={pathFor(locale, '/projekter/' + nextId)}>{tr('academic.next')} <span aria-hidden="true">→</span></a>
+      </div>
       <a class="about-link" href={pathFor(locale,'/projekter/')}>{tr('academic.navigation.back')} →</a>
     </footer>
   </article>
