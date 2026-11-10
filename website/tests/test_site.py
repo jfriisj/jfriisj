@@ -83,6 +83,47 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn('PDF er endnu ikke offentliggjort.', html)
         self.assertIn("Original PDF afventer særskilt publiceringsgodkendelse", html)
 
+
+    def test_english_routes_and_language_metadata(self):
+        for path in [
+            "en/index.html",
+            "en/projekter/index.html",
+            "en/projekter/operiva/index.html",
+            "en/publikationer/index.html",
+            "en/publikationer/analysis-and-design-of-a-platform-for-real-time-speech-translation/index.html",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue((DIST / path).is_file(), path)
+                html = (DIST / path).read_text(encoding="utf-8")
+                self.assertIn('<html lang="en">', html)
+                self.assertIn('hreflang="da"', html)
+                self.assertIn('hreflang="en"', html)
+                self.assertIn('rel="canonical"', html)
+
+    def test_same_home_layout_in_both_languages(self):
+        da = (DIST / "index.html").read_text(encoding="utf-8")
+        en = (DIST / "en/index.html").read_text(encoding="utf-8")
+        self.assertIn("Teknologi.", da)
+        self.assertIn("Technology.", en)
+        self.assertIn("Craftsmanship.", en)
+        self.assertIn('href="/en/projekter/"', en)
+        self.assertIn('href="/en/publikationer/"', en)
+        self.assertIn('hreflang="en"', da)
+        self.assertIn('href="/"', en)
+
+    def test_english_content_and_thesis(self):
+        en = (DIST / "en/publikationer/analysis-and-design-of-a-platform-for-real-time-speech-translation/index.html").read_text(encoding="utf-8")
+        self.assertIn("From speech to speech.", en)
+        self.assertIn("Explore the architecture.", en)
+        self.assertIn("Compare latency", en)
+        self.assertIn("Traceability and control are strengths.", en)
+        self.assertIn('data-flow-step="3"', en)
+        self.assertIn('data-architecture-node="orchestrator"', en)
+        self.assertNotIn("Original PDF afventer særskilt publiceringsgodkendelse", en)
+        project = (DIST / "en/projekter/operiva/index.html").read_text(encoding="utf-8")
+        self.assertIn("Independent software initiative", project)
+        self.assertIn("domain modelling", project)
+
     def test_drafts_not_published(self):
         self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
         self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))
