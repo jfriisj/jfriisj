@@ -1,8 +1,7 @@
 ---
 import ArchiveLayout from '../layouts/ArchiveLayout.astro';
+import '../styles/thesis.css';
 
-const pdfUrl = 'https://github.com/jfriisj/Kandidat/blob/multilanguage/Analysis-and-design-of-a-platform-for-real-time-speech-translation/report/main.pdf';
-const sourceUrl = 'https://github.com/jfriisj/Kandidat/tree/multilanguage/Analysis-and-design-of-a-platform-for-real-time-speech-translation/report';
 const initial = [
   { c: 1, single: 1039, scaled: 1014 },
   { c: 2, single: 1343, scaled: 1297 },
@@ -20,9 +19,9 @@ const initial = [
       <p class="thesis-lead">Hvordan bygger man en sporbar, modulær pipeline til oversættelse af tale — og hvad koster det i latenstid, når AI-modellerne skal samarbejde på tværs af services?</p>
       <div class="thesis-hero-actions">
         <a class="btn btn-primary" href="#problem">Udforsk afhandlingen ↓</a>
-        <a class="btn" href={pdfUrl} target="_blank" rel="noopener noreferrer">Læs original PDF ↗</a>
+
       </div>
-      <p class="thesis-source-note">Redaktionel, interaktiv formidling af afhandlingen — ikke en ordret gengivelse. Diagrammer og målinger bygger på <a href={sourceUrl} target="_blank" rel="noopener noreferrer">LaTeX-kilden på <code>Kandidat/multilanguage</code></a>.</p>
+      <p class="thesis-source-note">Redaktionel, interaktiv formidling — ikke en ordret gengivelse. Faglig kilde: det private repository <code>Kandidat</code>, branch <code>multilanguage</code>. Original PDF afventer særskilt publiceringsgodkendelse.</p>
       <dl class="thesis-highlights" aria-label="Udvalgte resultater fra afhandlingen">
         <div><dt>25 / 25</dt><dd>gennemførte artefaktkæder på fast testmateriale</dd></div>
         <div><dt>13,9 %</dt><dd>estimeret gennemsnitlig ikke-modeltid i målevinduet</dd></div>
@@ -124,7 +123,7 @@ const initial = [
             {initial.map(item => (
               <div class="thesis-chart-row" data-chart-row>
                 <span class="thesis-c-label">c={item.c}</span>
-                <div class="thesis-chart-pair" aria-hidden="true"><div data-bar-single class="thesis-bar thesis-bar-single" style={'width:' + (item.single/4078.4*100) + '%'}></div><div data-bar-scaled class="thesis-bar thesis-bar-scaled" style={'width:' + (item.scaled/4078.4*100) + '%'}></div></div>
+                <div class="thesis-chart-pair" aria-hidden="true"><div data-bar-single class="thesis-bar thesis-bar-single" style={'width:' + (item.single/2692*100) + '%'}></div><div data-bar-scaled class="thesis-bar thesis-bar-scaled" style={'width:' + (item.scaled/2692*100) + '%'}></div></div>
                 <span class="thesis-chart-values"><span data-value-single>{item.single}</span> / <span data-value-scaled>{item.scaled}</span></span>
               </div>
             ))}
@@ -156,10 +155,9 @@ const initial = [
         <p>Evalueringen måler fra det øjeblik, Orchestrator modtager pipeline-eventet, til det endelige TTS-artefakt findes. Den måler <strong>ikke</strong> den fulde oplevede klient-til-klient-latenstid og dokumenterer ikke et produktionsklart realtidssystem.</p>
       </div>
       <div class="thesis-read-more">
-        <div><span class="eyebrow">Originalt akademisk materiale</span><h3>Læs videre i den fulde afhandling</h3><p>Her er en redigeret visuel introduktion. Metode, komplette tabeller, begrænsninger, referencer og appendikser findes i originalen.</p></div>
+        <div><span class="eyebrow">Originalt akademisk materiale</span><h3>Læs videre i den fulde afhandling</h3><p>Her er en redigeret visuel introduktion. Metode, komplette tabeller, begrænsninger, referencer og appendikser findes i den originale afhandling.</p></div>
         <div class="thesis-read-more-actions">
-          <a class="btn btn-primary" href={pdfUrl} target="_blank" rel="noopener noreferrer">Åbn original PDF ↗</a>
-          <a class="btn" href={sourceUrl} target="_blank" rel="noopener noreferrer">LaTeX og diagramkilder ↗</a>
+          <p class="thesis-pdf-note">Den originale PDF er endnu ikke offentligt tilgængelig. En downloadmulighed tilføjes først efter gennemgang af publiceringsrettigheder og indhold.</p>
           <a class="btn" href="/projekter/realtidsoversaettelse/">Se projektet →</a>
         </div>
       </div>
