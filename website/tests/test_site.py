@@ -279,6 +279,21 @@ class SiteTests(unittest.TestCase):
                     self.assertIn("academic.glance", (ROOT / "src" / "components" / "AcademicCase.astro").read_text(encoding="utf-8"))
                     self.assertIn('href="/' + language + '#kontakt"', html)
 
+
+    def test_dual_contact_addresses_and_localized_purpose(self):
+        for locale, personal, business in (
+            ("", "Privat og faglig kontakt", "Arbejdsopgaver"),
+            ("en/", "Personal and professional contact", "Business enquiries"),
+        ):
+            with self.subTest(locale=locale or "da"):
+                html = (DIST / locale / "index.html").read_text(encoding="utf-8")
+                self.assertIn('href="mailto:jonfjakobsen@gmail.com"', html)
+                self.assertIn('href="mailto:simpeltnetvaerk@gmail.com"', html)
+                self.assertIn(personal, html)
+                self.assertIn(business, html)
+                self.assertIn("Send e-mail" if not locale else "Send email", html)
+                self.assertNotIn('class="contact-disclosure"', html)
+
     def test_drafts_not_published(self):
         self.assertFalse((DIST / "publikationer" / "_draft-eksempel").exists())
         self.assertNotIn("Eksempel på en kommende teknisk artikel", (DIST / "publikationer" / "index.html").read_text(encoding="utf-8"))

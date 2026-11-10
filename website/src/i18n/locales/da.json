@@ -522,5 +522,12 @@
   "academic.co-located-vr.glance.result": "85,1 minutters tre-headset-session; middel-RTT 58,2 ms, P95 86 ms",
   "academic.work-storage-caching.glance.challenge": "Balancere behandlingstid og cachelager med klassiske og RL-baserede strategier",
   "academic.work-storage-caching.glance.role": "Fælles forskningsprojekt; individuelt modulansvar er ikke dokumenteret",
-  "academic.work-storage-caching.glance.result": "TTL opnåede 94,53 % hit-rate ved 1 req/s; RL var ikke bedre i forsøgene"
+  "academic.work-storage-caching.glance.result": "TTL opnåede 94,53 % hit-rate ved 1 req/s; RL var ikke bedre i forsøgene",
+  "contact.options.heading": "Vælg henvendelsestype",
+  "contact.private.title": "Privat og faglig kontakt",
+  "contact.private.description": "CV, softwareudvikling, studieprojekter og faglig sparring.",
+  "contact.business.title": "Arbejdsopgaver · Simpeltnetvaerk",
+  "contact.business.description": "Henvendelser om el, teknik, service og tilbud på opgaver.",
+  "contact.action": "Send e-mail",
+  "contact.footer": "Kontakt"
 }

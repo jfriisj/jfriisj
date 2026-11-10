@@ -8,6 +8,7 @@ import '../../styles/i18n.css';
 
 import { translate, pathFor, locales } from '../../i18n/index';
 import LanguageSwitcher from '../LanguageSwitcher.astro';
+import ContactOptions from '../ContactOptions.astro';
 interface Props {locale:string;}
 const {locale}=Astro.props;
 const tr=(key:string)=>translate(locale,key);
@@ -125,7 +126,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
       <a class="section-more" href={pathFor(locale,"/publikationer/")}>{tr("Se alle publikationer")} <span aria-hidden="true">→</span></a>
       <p class="note">{tr("PDF-filer offentliggøres løbende, når dokumenterne er gennemgået og klar.")}</p>
     </div></section>
-    <section class="contact-section" id="kontakt" aria-labelledby="contact-title"><div class="wrap contact-inner" data-reveal><div><div class="eyebrow">{tr("06 / Kontakt")}</div><h2 id="contact-title">{tr("Skal vi udveksle idéer?")}</h2><p>{tr("Jeg er interesseret i faglig sparring, projekter og nye muligheder på tværs af teknik, industri og software.")}</p></div><div class="contact-actions"><a class="btn btn-primary" href="https://github.com/jfriisj" target="_blank" rel="noopener noreferrer">{tr("home.contact.github")} <span aria-hidden="true">↗</span></a><a class="btn" href="#top">{tr("Til toppen")} <span aria-hidden="true">↑</span></a></div><p class="contact-disclosure">{tr("home.contact.note")}</p></div></section>
+    <section class="contact-section" id="kontakt" aria-labelledby="contact-title"><div class="wrap contact-inner" data-reveal><div><div class="eyebrow">{tr("06 / Kontakt")}</div><h2 id="contact-title">{tr("Skal vi udveksle idéer?")}</h2><p>{tr("Jeg er interesseret i faglig sparring, projekter og nye muligheder på tværs af teknik, industri og software.")}</p></div><ContactOptions locale={locale} /></div></section>
   </main>
   <nav class="mobile-dock" aria-label={tr("Hurtig navigation")}>
     <a href="#profil" data-dock="profil"><span class="dock-icon" aria-hidden="true">⌂</span><span>{tr("Profil")}</span></a>
@@ -133,7 +134,7 @@ const featuredPublications = (await getCollection('publications', ({data}) => !d
     <a href="#projekter" data-dock="projekter"><span class="dock-icon" aria-hidden="true">▦</span><span>{tr("Projekter")}</span></a>
     <a href="#publikationer" data-dock="publikationer"><span class="dock-icon" aria-hidden="true">≡</span><span>{tr("Artikler")}</span></a>
   </nav>
-  <footer class="footer"><div class="wrap footer-inner"><span class="brand">{tr("friis—jakobsen.")}</span><span>{tr("Elektriker · Civilingeniør i software · Selvstændig")}</span><span>{tr("home.contact.note")}</span></div></footer>
+  <footer class="footer"><div class="wrap footer-inner"><span class="brand">{tr("friis—jakobsen.")}</span><span>{tr("Elektriker · Civilingeniør i software · Selvstændig")}</span><a href="mailto:jonfjakobsen@gmail.com">{tr("contact.footer")}</a></div></footer>
   <script is:inline src="/scripts/home.js"></script>
 </body>
 </html>
